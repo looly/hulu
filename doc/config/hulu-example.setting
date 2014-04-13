@@ -1,0 +1,20 @@
+#--------------------------------------
+# Hulu Setting example
+# @see com.sohu.fortune.hulu.HuluSetting
+# author xiaoleilu
+#--------------------------------------
+
+# 字符集编码, default GBK
+charset = utf8
+
+# Action包，用于自动扫描Action方法
+# 框架会自动扫描包下所有的类下所有的public无参数方法做为Action
+package.action = com.company.app.action
+
+# url请求的参数分隔符，默认为英文逗号
+# request /<app>/hello/hello/1,2,3,4 将获得参数为[1,2,3,4]
+url.param.separator = ,
+
+# 是否为开发模式[true, false]
+# 开发者模式提供更多的调试信息，例如打印堆栈到客户端等
+mode.dev = true

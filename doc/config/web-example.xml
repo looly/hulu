@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 
+	Servlet3 的 web.xml配置方式，因为Maven识别web项目必须用此文件，故请参照如下方式配置
+ -->
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+</web-app>

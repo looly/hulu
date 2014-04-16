@@ -3,7 +3,7 @@
 # author xiaoleilu
 #--------------------------------------
 
-# 字符集编码, default GBK
+# 字符集编码, default utf8
 charset = utf8
 
 # Action包，用于自动扫描Action方法

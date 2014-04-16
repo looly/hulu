@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="GBK"?>
+<?xml version="1.0" encoding="utf8"?>
 <!-- 
 	Servlet3 的 web.xml配置方式，因为Maven识别web项目必须用此文件，故请参照如下方式配置
  -->

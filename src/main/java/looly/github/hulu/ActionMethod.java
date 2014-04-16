@@ -16,9 +16,6 @@ import looly.github.hutool.StrUtil;
  */
 public class ActionMethod {
 
-	/** Action类的后缀 */
-	private static final String ACTION_SUFFIX = "Action";
-
 	/** 过滤器执行位置记录器 */
 	private static ThreadLocal<Integer> interceptorPosition = new ThreadLocal<Integer>();
 
@@ -90,8 +87,7 @@ public class ActionMethod {
 			try {
 				this.method.invoke(this.action);
 			} catch(InvocationTargetException te) {
-				//异常原因来自被调用方时显示被调用方的异常信息
-				throw new ActionException(te.getCause());
+				throw new ActionException(te);
 			} catch (Exception e) {
 				throw new ActionException("Invoke action method error!", e);
 			}
@@ -122,7 +118,7 @@ public class ActionMethod {
 			return routePath;
 		}
 
-		final String actionName = StrUtil.removeSuffix(this.action.getClass().getSimpleName(), ACTION_SUFFIX).toLowerCase();
+		final String actionName = StrUtil.removeSuffix(this.action.getClass().getSimpleName(), HuluSetting.actionSuffix).toLowerCase();
 		return String.format("/%s/%s", actionName, this.method.getName());
 	}
 
@@ -134,7 +130,7 @@ public class ActionMethod {
 	 */
 	private String getRouteAnnotationPath(Method method) {
 		final Route routeAnnotation = method.getAnnotation(Route.class);
-		if (routeAnnotation == null) {
+		if (null == routeAnnotation) {
 			return null;
 		}
 		
@@ -149,6 +145,7 @@ public class ActionMethod {
 		if (routePath.startsWith(StrUtil.SLASH) == false) {
 			routePath = StrUtil.SLASH + routePath;
 		}
+		
 		
 		return routePath;
 	}

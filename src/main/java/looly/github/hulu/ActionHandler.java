@@ -11,6 +11,7 @@ import looly.github.hulu.interceptor.Interceptor;
 import looly.github.hulu.interceptor.InterceptorBuilder;
 import looly.github.hulu.render.ErrorRender;
 import looly.github.hutool.ClassUtil;
+import looly.github.hutool.ClassUtil.ClassFilter;
 import looly.github.hutool.CollectionUtil;
 import looly.github.hutool.Log;
 import looly.github.hutool.StrUtil;
@@ -113,17 +114,14 @@ public class ActionHandler {
 	 * @throws Exception
 	 */
 	private final Map<String, ActionMethod> generateActionMap(String[] packageNames) {
-		Map<String, ActionMethod> actionMethodMap = new HashMap<String, ActionMethod>();
+		final Map<String, ActionMethod> actionMethodMap = new HashMap<String, ActionMethod>();
 		
-		//Object里的那些方法不能被识别成Action方法
-		Set<String> forbiddenMethod = ClassUtil.getMethods(Object.class);
-
-		Set<Class<?>> actionClasses = new HashSet<Class<?>>();
+		final Set<Class<?>> actionClasses = new HashSet<Class<?>>();
+		ClassFilter actionClassFilter = createActionClassFilter();	//Action类的过滤器，剔除不符合过滤条件的类
 		for (String packageName : packageNames) {
-			if(StrUtil.isBlank(packageName)) {
-				continue;
+			if(StrUtil.isBlank(packageName) == false) {
+				actionClasses.addAll(ClassUtil.scanPackage(packageName.trim(), actionClassFilter));
 			}
-			actionClasses.addAll(ClassUtil.scanPackage(packageName.trim()));
 		}
 		
 		if (HuluSetting.isDevMode) {
@@ -131,6 +129,9 @@ public class ActionHandler {
 				log.debug("Finded Action class: [{}]", clazz.getName());
 			}
 		}
+		
+		//Object里的那些方法不能被识别成Action方法
+		Set<String> forbiddenMethod = ClassUtil.getMethods(Object.class);
 		
 		for (Class<?> actionClass : actionClasses) {
 			
@@ -162,7 +163,7 @@ public class ActionHandler {
 				String key = actionMethod.getRequestPath();
 				if(actionMethodMap.containsKey(key)) {
 					//当有同一个请求路径对应不同的ActionMethod时，给出Log ERROR， 并不阻断初始化
-					String errorMsg = StrUtil.format("Duplicate request path [{}]", key);
+					final String errorMsg = StrUtil.format("Duplicate request path [{}]", key);
 					log.error(errorMsg, new ActionException(errorMsg));
 				}
 				
@@ -171,6 +172,19 @@ public class ActionHandler {
 			}
 		}
 		return actionMethodMap;
+	}
+	
+	/**
+	 * @return 创建Action类扫描过滤器
+	 */
+	private ClassFilter createActionClassFilter() {
+		return new ClassFilter(){
+			@Override
+			public boolean accept(Class<?> clazz) {
+				//过滤条件是必须为给定后缀
+				return clazz.getSimpleName().endsWith(HuluSetting.actionSuffix);
+			}
+		};
 	}
 	//------------------------------------------------------------- Private method end
 }

@@ -7,13 +7,19 @@
 charset = utf8
 
 # Action包，用于自动扫描Action方法
-# 框架会自动扫描包下所有的类下所有的public无参数方法做为Action
-package.action = com.company.app.action
+# 框架会自动扫描包下所有的类下所有的public无参数方法做为Action，默认不扫描
+action.package = com.company.app.action
+
+#Action类的识别后缀，只有指定后缀的类才会被识别为Action类，默认 Action
+action.suffix = Action
 
 # url请求的参数分隔符，默认为英文逗号
 # request /<app>/hello/hello/1,2,3,4 将获得参数为[1,2,3,4]
 url.param.separator = ,
 
+#当需要自定义Request和Response过滤字符集时，其URL参数名称，默认 charset
+param.name.charset = charset
+
 # 是否为开发模式[true, false]
-# 开发者模式提供更多的调试信息，例如打印堆栈到客户端等
+# 开发者模式提供更多的调试信息，例如打印堆栈到客户端等，默认关闭
 mode.dev = true

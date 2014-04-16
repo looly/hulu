@@ -28,9 +28,6 @@ import org.slf4j.Logger;
 public class ActionFilter implements Filter{
 	private final static Logger log = Log.get();
 	
-	/** 用户自定义字符集的参数名称 */
-	private final static String PARAM_NAME_CHARSET = "charset";
-	
 	/** 项目路径的长度，用于请求时去掉项目路径 */
 	private int contextPathLength;
 	
@@ -61,7 +58,7 @@ public class ActionFilter implements Filter{
 		HttpServletResponse response = (HttpServletResponse)res;
 		
 		//-- 字符集的过滤
-		String charset = req.getParameter(PARAM_NAME_CHARSET);
+		String charset = req.getParameter(HuluSetting.param_name_charset);
 		if(StrUtil.isBlank(charset)) {
 			charset = HuluSetting.charset;
 		}

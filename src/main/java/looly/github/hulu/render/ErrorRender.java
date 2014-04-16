@@ -8,11 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import looly.github.hulu.ActionContext;
 import looly.github.hulu.HuluSetting;
-import looly.github.hutool.FileUtil;
 import looly.github.hutool.Log;
 
 import org.slf4j.Logger;
-
 
 /**
  * 生成和处理Action返回错误结果的类
@@ -34,21 +32,20 @@ public class ErrorRender {
 	 * @param e 异常
 	 */
 	public static void render500(Exception e) {
+		//500错误打印到错误日志
 		log.error("500 error!", e);
 		
-		if(! HuluSetting.isDevMode) {
+		if(HuluSetting.isDevMode == false) {
 			render(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "500 Server Error!");
 		}
 		
-		ByteArrayOutputStream ostr = new ByteArrayOutputStream();
+		final ByteArrayOutputStream ostr = new ByteArrayOutputStream();	//无需关闭
 		try {
 			// 把错误堆栈储存到流中
 			e.printStackTrace(new PrintStream(ostr));
 			render(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ostr.toString(HuluSetting.charset).replace("\tat", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;\tat"));
 		} catch (IOException e2) {
 			log.error("Error when output to client!", e2);
-		} finally {
-			FileUtil.close(ostr);
 		}
 	}
 	

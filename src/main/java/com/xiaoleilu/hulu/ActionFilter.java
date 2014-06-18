@@ -49,7 +49,7 @@ public class ActionFilter implements Filter{
 		
 		handler = new ActionHandler(HuluSetting.actionPackages);
 		
-		log.info("***** Hulu framwork init fiished, spend {}ms *****", DateUtil.spendMs(start));
+		log.info("***** Hulu framwork init finished, spend {}ms *****", DateUtil.spendMs(start));
 	}
 
 	@Override

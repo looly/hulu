@@ -61,9 +61,8 @@ public class ActionHandler {
 		}
 
 		final ActionMethod actionMethod = getActionMethod(target);
-
-		if (actionMethod == null) {
-			//无对应的Action，跳过执行后续过程
+		if (actionMethod == null || actionMethod.isHttpMethodMatch() == false) {
+			//无对应的Action或者Http方法不匹配，跳过执行后续过程
 			return true;
 		}
 
@@ -154,7 +153,7 @@ public class ActionHandler {
 					continue;
 				}
 				
-				//设置方法的拦截器
+				//设置方法的拦截器（Action对象和方法的拦截器都对此方法有效）
 				Interceptor[] interceptors = CollectionUtil.addAll(actionInterceptors, InterceptorBuilder.build(method));
 				
 				ActionMethod actionMethod = new ActionMethod(actionInstance, method, interceptors);

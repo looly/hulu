@@ -2,10 +2,12 @@ package com.xiaoleilu.hulu;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import com.xiaoleilu.hulu.annotation.Route;
 import com.xiaoleilu.hulu.exception.ActionException;
 import com.xiaoleilu.hulu.interceptor.Interceptor;
+import com.xiaoleilu.hutool.Log;
 import com.xiaoleilu.hutool.StrUtil;
 
 /**
@@ -15,14 +17,14 @@ import com.xiaoleilu.hutool.StrUtil;
  * @author xiaoleilu
  */
 public class ActionMethod {
-
 	/** 过滤器执行位置记录器 */
 	private static ThreadLocal<Integer> interceptorPosition = new ThreadLocal<Integer>();
 
-	private Object action;
-	private Method method;
-	private String requestPath;
-	private Interceptor[] interceptors;
+	private Object action;						//Action对象
+	private Method method;					//Action方法
+	private String requestPath;				//请求路径
+	private String httpMethod;				//HTTP方法（GET、POST等）
+	private Interceptor[] interceptors;	//过滤器
 
 	// -------------------------------------------------------------------- Constructor start
 	public ActionMethod(Object action, Method method) {
@@ -46,7 +48,7 @@ public class ActionMethod {
 	/**
 	 * 获得请求路径
 	 * 
-	 * @return
+	 * @return 请求路径
 	 */
 	public String getRequestPath() {
 		return requestPath;
@@ -55,7 +57,7 @@ public class ActionMethod {
 	/**
 	 * 获得Action方法
 	 * 
-	 * @return
+	 * @return Action方法
 	 */
 	protected Method getMethod() {
 		return this.method;
@@ -65,7 +67,9 @@ public class ActionMethod {
 
 	/**
 	 * 执行Action方法<br>
-	 * 同时会执行过滤器方法
+	 * 同时会执行过滤器方法<br>
+	 * 此方法为递归调用，每次递归调用此方法，都会判断执行到了第几个拦截器，从而执行拦截器。<br>
+	 * 当拦截器数量执行完毕后，执行本体方法
 	 * 
 	 * @param urlParam URL参数
 	 * @throws ActionException
@@ -76,14 +80,12 @@ public class ActionMethod {
 			position = 0;
 		}
 
-		if (interceptors != null) {
-			if (position < interceptors.length) {
-				interceptorPosition.set(position + 1);
-				interceptors[position].invoke(this);
-			}
-		}
-
-		if (interceptors == null || position == interceptors.length) {
+		if (interceptors != null && position < interceptors.length) {
+			//执行过滤器，递归调用本方法
+			interceptorPosition.set(position + 1);
+			interceptors[position].invoke(this);
+		}else {
+			//过滤器执行完毕，执行本体方法
 			try {
 				this.method.invoke(this.action);
 			} catch(InvocationTargetException te) {
@@ -91,40 +93,87 @@ public class ActionMethod {
 			} catch (Exception e) {
 				throw new ActionException("Invoke action method error!", e);
 			}
-
+			
 			// 执行了Action本体方法，说明过滤器使用完毕，清理游标防止重复执行
 			resetInterceptorPosition();
 		}
-
 	}
 
 	/**
-	 * 重置过滤器执行顺序游标
+	 * 重置过滤器执行顺序游标<br>
+	 * 游标记录了执行到了第几个过滤器
 	 */
 	protected void resetInterceptorPosition() {
 		interceptorPosition.remove();
 	}
+	
+	/**
+	 * 指定用户请求的HTTP方法是否和定义的方法匹配<br>
+	 * 用户只有在Route注解中定义方法后才会匹配有效性
+	 * @return 是否匹配
+	 */
+	protected boolean isHttpMethodMatch() {
+		if(StrUtil.isNotBlank(httpMethod) && httpMethod.equalsIgnoreCase(Request.getServletRequest().getMethod()) == false) {
+			if(HuluSetting.isDevMode) {
+				Log.warn("Request [{}] method [{}] is not match [{}]", requestPath, Request.getServletRequest().getMethod(), httpMethod);
+			}
+			return false;
+		}
+		return true;
+	}
 
 	// ------------------------------------------------------------- Private method start
 	/**
-	 * 生成请求路径
-	 * 
+	 * 生成请求路径<br>
 	 * @return
 	 */
 	private String genRequestPath() {
 		// 根据Annotation自定义请求路径
 		String routePath = getRouteAnnotationPath(this.method);
-		if(routePath != null) {
-			return routePath;
+		if(routePath == null) {
+			//用户没有定义Annotation，使用标准请求路径
+			return genNormalRequestPath();
 		}
 
+		//提取HTTP方法名（如果路径是类似于get:/test/testMethod）
+		if(routePath.contains(":")) {
+			final List<String> methodAndPath = StrUtil.split(routePath, ':', 2);
+			this.httpMethod = methodAndPath.get(0).trim().toUpperCase();
+			routePath = methodAndPath.get(1).trim();
+		}
+		
+		return fixRoutePath(routePath);
+	}
+	
+	/**
+	 * 修正请求路径<br>
+	 * 1、去除空白符
+	 * 2、去除尾部斜杠
+	 * 3、补全开头的斜杠
+	 * @param routePath 原请求路径
+	 * @return 修正后的请求路径
+	 */
+	private String fixRoutePath(String routePath) {
+		routePath = StrUtil.cleanBlank(routePath);							//去除空白符
+		routePath = StrUtil.removeSuffix(routePath, StrUtil.SLASH); // 去除尾部斜杠
+		if (routePath.startsWith(StrUtil.SLASH) == false) {
+			routePath = StrUtil.SLASH + routePath;							//在路径前补全“/”
+		}
+		
+		return routePath;
+	}
+	
+	/**
+	 * 生成标准的请求路径
+	 * @return 标准请求路径
+	 */
+	private String genNormalRequestPath() {
 		final String actionName = StrUtil.removeSuffix(this.action.getClass().getSimpleName(), HuluSetting.actionSuffix).toLowerCase();
 		return String.format("/%s/%s", actionName, this.method.getName());
 	}
 
 	/**
 	 * 获得Route注解的自定义请求路径<br>
-	 * 会自动在前加"/"，尾部去"/"
 	 * @param method Action方法
 	 * @return 处理后的请求路径，无定义为null
 	 */
@@ -137,15 +186,8 @@ public class ActionMethod {
 		String routePath = routeAnnotation.value();
 		if (StrUtil.isBlank(routePath)) {
 			//index请求
-			return "";
+			return StrUtil.EMPTY;
 		}
-		
-		routePath = StrUtil.cleanBlank(routePath);
-		routePath = StrUtil.removeSuffix(routePath, StrUtil.SLASH); // 去除尾部斜杠
-		if (routePath.startsWith(StrUtil.SLASH) == false) {
-			routePath = StrUtil.SLASH + routePath;
-		}
-		
 		
 		return routePath;
 	}

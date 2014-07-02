@@ -7,7 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 注解，用于自定义访问的URL路径
+ * 注解，用于自定义访问的URL路径<br>
+ * 值可以是一个请求路径，如果需要指定HTTP方法，在前面加方法名用":"分隔既可<br>
+ * 例如："get:/test/testMethod"
  * @author loolly
  *
  */

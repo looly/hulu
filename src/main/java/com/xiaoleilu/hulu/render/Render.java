@@ -32,15 +32,15 @@ public class Render {
 	public final static String DEFAULT_CALLBACK_NAME = "callback";
 
 	/** 返回内容类型：普通文本 */
-	public final static String CONTENT_TYPE_TEXT = "text/plain;Global.charset=" + HuluSetting.charset;
+	public final static String CONTENT_TYPE_TEXT = "text/plain";
 	/** 返回内容类型：HTML */
-	public final static String CONTENT_TYPE_HTML = "text/html;Global.charset=" + HuluSetting.charset;
+	public final static String CONTENT_TYPE_HTML = "text/html";
 	/** 返回内容类型：XML */
-	public final static String CONTENT_TYPE_XML = "text/xml;Global.charset=" + HuluSetting.charset;
+	public final static String CONTENT_TYPE_XML = "text/xml";
 	/** 返回内容类型：JAVASCRIPT */
-	public final static String CONTENT_TYPE_JAVASCRIPT = "application/javascript;Global.charset=" + HuluSetting.charset;
+	public final static String CONTENT_TYPE_JAVASCRIPT = "application/javascript";
 	/** 返回内容类型：JSON */
-	public final static String CONTENT_TYPE_JSON = "application/json;Global.charset=" + HuluSetting.charset;
+	public final static String CONTENT_TYPE_JSON = "application/json";
 
 	/**
 	 * 重定向到一个新地址<br>

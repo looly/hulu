@@ -58,18 +58,14 @@ public class ActionFilter implements Filter{
 		HttpServletResponse response = (HttpServletResponse)res;
 		
 		//-- 字符集的过滤
-		String charset = req.getParameter(HuluSetting.param_name_charset);
-		if(StrUtil.isBlank(charset)) {
-			charset = HuluSetting.charset;
-		}
-		
+		String charset = HuluSetting.charset;
 		try {
 			request.setCharacterEncoding(charset);
 			response.setCharacterEncoding(charset);
 		} catch (Exception e) {
 			log.warn("User [{}] use charset [{}] not support!", HttpUtil.getClientIP(request), charset);
 		}
-
+		
 		//-- 填充请求和响应对象到ActionContext本地线程
 		ActionContext.fillReqRes(request, response);
 		

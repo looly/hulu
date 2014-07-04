@@ -22,8 +22,6 @@ public class HuluSetting {
 	public final static String DEFAULT_CHARSET = "utf-8";
 	/** 默认的URL参数分隔符 */
 	public final static String DEFAULT_URL_PARAM_SEPERATOR = ",";
-	/** 用户自定义字符集的参数名称 */
-	public final static String DEFAULT_PARAM_NAME_CHARSET = "charset";
 	/** 默认的配置文件路径（相对ClassPath）*/
 	public final static String DEFAULT_SETTING_PATH = "config/hulu.setting";
 	/** 默认Action类的后缀，既无后缀 */
@@ -38,8 +36,6 @@ public class HuluSetting {
 	public static String[] actionPackages;
 	/** Action类的后缀 */
 	public static String actionSuffix;
-	/** 用户自定义字符集的参数名称 */
-	public static String param_name_charset;
 	/** 是否为开发模式 */
 	public static boolean isDevMode;
 	
@@ -70,7 +66,6 @@ public class HuluSetting {
 		urlParamSeparator = setting.getStringWithDefault("url.param.separator", DEFAULT_URL_PARAM_SEPERATOR);
 		actionPackages = setting.getStringsWithDefault("action.package", new String[]{""});
 		actionSuffix = setting.getStringWithDefault("action.suffix", DEFAULT_ACTION_SUFFIX);
-		param_name_charset = setting.getString("param.name.charset", DEFAULT_PARAM_NAME_CHARSET);
 		
 		isDevMode = setting.getBool("mode.dev");
 	}

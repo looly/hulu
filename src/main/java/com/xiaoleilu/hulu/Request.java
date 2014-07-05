@@ -363,9 +363,12 @@ public class Request {
 	 * @return 客户浏览器是否为IE
 	 */
 	public static boolean isIE() {
-		final String userAgent = Request.getHeader("User-Agent");
-		if(StrUtil.isNotBlank(userAgent) && userAgent.toUpperCase().contains("MSIE")) {
-			return true;
+		String userAgent = Request.getHeaderIgnoreCase("User-Agent");
+		if(StrUtil.isNotBlank(userAgent)) {
+			userAgent = userAgent.toUpperCase();
+			if(userAgent.contains("MSIE") || userAgent.contains("TRIDENT")) {
+				return true;
+			}
 		}
 		return false;
 	}

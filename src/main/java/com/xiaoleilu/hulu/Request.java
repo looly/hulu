@@ -186,8 +186,7 @@ public class Request {
 		}
 		
 		String destCharset = CharsetUtil.UTF_8;
-		final String userAgent = Request.getHeader("User-Agent");
-		if(StrUtil.isNotBlank(userAgent) && userAgent.toUpperCase().contains("MSIE")) {
+		if(isIE()) {
 			//IE浏览器GET请求使用GBK编码
 			destCharset = CharsetUtil.GBK;
 		}
@@ -358,6 +357,17 @@ public class Request {
 		for (Entry<String, Object> entry : values.entrySet()) {
 			ActionContext.getRequest().setAttribute(entry.getKey(), entry.getValue());
 		}
+	}
+	
+	/**
+	 * @return 客户浏览器是否为IE
+	 */
+	public static boolean isIE() {
+		final String userAgent = Request.getHeader("User-Agent");
+		if(StrUtil.isNotBlank(userAgent) && userAgent.toUpperCase().contains("MSIE")) {
+			return true;
+		}
+		return false;
 	}
 	// --------------------------------------------------------- Parameter end
 

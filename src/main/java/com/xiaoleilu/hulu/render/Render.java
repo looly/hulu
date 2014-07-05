@@ -41,6 +41,7 @@ public class Render {
 	public final static String CONTENT_TYPE_JAVASCRIPT = "application/javascript";
 	/** 返回内容类型：JSON */
 	public final static String CONTENT_TYPE_JSON = "application/json";
+	public final static String CONTENT_TYPE_JSON_IE = "text/json";
 
 	/**
 	 * 重定向到一个新地址<br>
@@ -127,7 +128,7 @@ public class Render {
 	 * @param json
 	 */
 	public static void renderJson(String json) {
-		render(json, CONTENT_TYPE_JSON);
+		render(json, Request.isIE() ? CONTENT_TYPE_JSON_IE : CONTENT_TYPE_JSON);
 	}
 	
 	/**

@@ -2,6 +2,7 @@ package com.xiaoleilu.hulu;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import com.xiaoleilu.hulu.exception.ActionRuntimeException;
 import com.xiaoleilu.hulu.upload.MultipartFormData;
 import com.xiaoleilu.hulu.upload.UploadSetting;
+import com.xiaoleilu.hutool.CharsetUtil;
 import com.xiaoleilu.hutool.Conver;
 import com.xiaoleilu.hutool.DateUtil;
 import com.xiaoleilu.hutool.HttpUtil;
@@ -27,6 +29,15 @@ import com.xiaoleilu.hutool.StrUtil;
  * @author xiaoleilu
  */
 public class Request {
+	
+	public static final String METHOD_DELETE = "DELETE";
+	public static final String METHOD_HEAD = "HEAD";
+	public static final String METHOD_GET = "GET";
+	public static final String METHOD_OPTIONS = "OPTIONS";
+	public static final String METHOD_POST = "POST";
+	public static final String METHOD_PUT = "PUT";
+	public static final String METHOD_TRACE = "TRACE";
+	
 	
 	/** 存放每次请求的参数，由于ActionMethod为单例存在，故在此使用ThreadLocal */
 	private static ThreadLocal<String[]> params = new ThreadLocal<String[]>();
@@ -158,6 +169,34 @@ public class Request {
 	 */
 	public static String getParam(String name) {
 		return ActionContext.getRequest().getParameter(name);
+	}
+	
+	/**
+	 * 获得GET请求参数<br>
+	 * 会根据浏览器类型自动识别GET请求的编码方式从而解码<br>
+	 * 考虑到Servlet容器中会首先解码，给定的charsetOfServlet就是Servlet设置的解码charset<br>
+	 * charsetOfServlet为null则默认的ISO_8859_1
+	 * @param name 参数名
+	 * @param charset Servlet容器中的字符集
+	 * @return 获得请求参数
+	 */
+	public static String getParam(String name, Charset charsetOfServlet) {
+		if(null == charsetOfServlet) {
+			charsetOfServlet = Charset.forName(CharsetUtil.ISO_8859_1);
+		}
+		
+		String destCharset = CharsetUtil.UTF_8;
+		final String userAgent = Request.getHeader("User-Agent");
+		if(StrUtil.isNotBlank(userAgent) && userAgent.toUpperCase().contains("MSIE")) {
+			//IE浏览器GET请求使用GBK编码
+			destCharset = CharsetUtil.GBK;
+		}
+		
+		String value = getParam(name);
+		if(METHOD_GET.equalsIgnoreCase(Request.getServletRequest().getMethod())) {
+			value = CharsetUtil.convert(value, charsetOfServlet.toString(), destCharset);
+		}
+		return value;
 	}
 	
 	/**

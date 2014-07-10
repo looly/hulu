@@ -55,10 +55,9 @@ public class ErrorRender {
 	
 	/**
 	 * 在页面打印堆栈信息<br>
-	 * TODO 500页面内容
 	 * @param e 异常
 	 */
-	public static void render500(Exception e) {
+	public static void render500(Throwable e) {
 		//500错误打印到错误日志
 		log.error("500 error!", e);
 		
@@ -78,7 +77,6 @@ public class ErrorRender {
 	
 	/**
 	 * 输出404信息
-	 *TODO 404页面内容
 	 */
 	public static void render404() {
 		sendError(HttpServletResponse.SC_NOT_FOUND, "404 Not Found!");

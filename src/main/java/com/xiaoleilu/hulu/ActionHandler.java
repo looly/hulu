@@ -71,7 +71,7 @@ public class ActionHandler {
 		try {
 			actionMethod.invoke();
 		} catch (ActionException e) {
-			ErrorRender.render500(e);
+			ErrorRender.render500(e.getCause());
 		}
 
 		return false;

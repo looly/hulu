@@ -10,7 +10,9 @@ import org.slf4j.Logger;
 
 import com.xiaoleilu.hulu.ActionContext;
 import com.xiaoleilu.hulu.HuluSetting;
+import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hutool.Log;
+import com.xiaoleilu.hutool.StrUtil;
 
 /**
  * 生成和处理Action返回错误结果的类
@@ -20,7 +22,7 @@ import com.xiaoleilu.hutool.Log;
 public class ErrorRender {
 	private static Logger log = Log.get();
 	
-	private final static TEMPLATE_ERROR = "";
+	private final static String TEMPLATE_ERROR = "<!DOCTYPE html><html><head><title>Hulu framework - Error report</title><style>h1,h3 {color:white; background-color: gray;}</style></head><body><h1>HTTP Status {} - {}</h1><hr size=\"1\" noshade=\"noshade\" /><p>{}</p><hr size=\"1\" noshade=\"noshade\" /><h3>Hulu framework</h3></body></html>";
 	
 	/**
 	 * 将错误发送到容器
@@ -68,7 +70,10 @@ public class ErrorRender {
 		final StringWriter writer = new StringWriter();
 		// 把错误堆栈储存到流中
 		e.printStackTrace(new PrintWriter(writer));
-		render(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, writer.toString().replace("\tat", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;\tat"));
+		String content = writer.toString().replace("\tat", "&nbsp;&nbsp;&nbsp;&nbsp;\tat");
+		content = content.replace("\n", "<br/>\n");
+		content = StrUtil.format(TEMPLATE_ERROR, 500, Request.getServletRequest().getRequestURI(), content);
+		render(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, content);
 	}
 	
 	/**

@@ -1,8 +1,8 @@
 package com.xiaoleilu.hulu.render;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,6 +20,31 @@ import com.xiaoleilu.hutool.Log;
 public class ErrorRender {
 	private static Logger log = Log.get();
 	
+	private final static TEMPLATE_ERROR = "";
+	
+	/**
+	 * 将错误发送到容器
+	 * @param errorCode 错误代码
+	 * @param errorContent 错误信息
+	 */
+	public static void sendError(int errorCode, String errorContent) {
+		HttpServletResponse response = ActionContext.getResponse();
+		try {
+			if(HuluSetting.isDevMode) {
+				response.sendError(errorCode);
+			}else {
+				response.sendError(errorCode, errorContent);
+			}
+		} catch (IOException e) {
+			log.error("Error when sendError!", e);
+		}
+	}
+	
+	/**
+	 * 将错误发送到容器
+	 * @param errorCode 错误代码
+	 * @param errorContent 错误信息
+	 */
 	public static void render(int errorCode, String errorContent) {
 		HttpServletResponse response = ActionContext.getResponse();
 		response.setStatus(errorCode);
@@ -36,17 +61,14 @@ public class ErrorRender {
 		log.error("500 error!", e);
 		
 		if(HuluSetting.isDevMode == false) {
-			render(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "500 Server Error!");
+			sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "500 Server Error!");
+			return;
 		}
 		
-		final ByteArrayOutputStream ostr = new ByteArrayOutputStream();	//无需关闭
-		try {
-			// 把错误堆栈储存到流中
-			e.printStackTrace(new PrintStream(ostr));
-			render(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ostr.toString(HuluSetting.charset).replace("\tat", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;\tat"));
-		} catch (IOException e2) {
-			log.error("Error when output to client!", e2);
-		}
+		final StringWriter writer = new StringWriter();
+		// 把错误堆栈储存到流中
+		e.printStackTrace(new PrintWriter(writer));
+		render(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, writer.toString().replace("\tat", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;\tat"));
 	}
 	
 	/**
@@ -54,6 +76,6 @@ public class ErrorRender {
 	 *TODO 404页面内容
 	 */
 	public static void render404() {
-		render(HttpServletResponse.SC_NOT_FOUND, "404 Not Found!");
+		sendError(HttpServletResponse.SC_NOT_FOUND, "404 Not Found!");
 	}
 }

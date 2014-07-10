@@ -89,7 +89,7 @@ public class ActionMethod {
 			try {
 				this.method.invoke(this.action);
 			} catch(InvocationTargetException te) {
-				throw new ActionException(te);
+				throw new ActionException(te.getCause());
 			} catch (Exception e) {
 				throw new ActionException("Invoke action method error!", e);
 			}

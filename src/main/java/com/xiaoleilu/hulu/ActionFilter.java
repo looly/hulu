@@ -74,7 +74,9 @@ public class ActionFilter implements Filter{
 		//去掉项目名部分
 		target = target.substring(contextPathLength);
 		//如果以"/"结尾则去之
-		target = StrUtil.removeSuffix(target, StrUtil.SLASH);
+		if(StrUtil.isNotEmpty(target) && false ==target.equals(StrUtil.SLASH)) {
+			target = StrUtil.removeSuffix(target, StrUtil.SLASH);
+		}
 		
 		//-- 处理请求
 		if(handler.handle(target)) {

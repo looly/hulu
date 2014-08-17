@@ -28,6 +28,40 @@ public class Validator {
 	}
 	
 	/**
+	 * 验证是否与指定无效值相等<br>
+	 * 当表单数据和无效值都为null时抛出验证异常<br>
+	 * 表单数据与无效值相等时抛出验证异常
+	 * @param formValue 表单值
+	 * @param badValue 无效值
+	 * @param errorMsg 错误信息
+	 * @throws ValidateException
+	 */
+	public static <T> void validateEqual(T formValue, T badValue, String errorMsg) throws ValidateException {
+		if(null == formValue) {
+			if(null == badValue) {
+				throw new ValidateException(errorMsg);
+			}
+		}else if(formValue.equals(badValue)) {
+			throw new ValidateException(errorMsg);
+		}
+	}
+	
+	/**
+	 * 验证是否非空且与指定无效值相等<br>
+	 * 当表单数据为空时抛出验证异常<br>
+	 * 当表单数据和无效值都为null时抛出验证异常<br>
+	 * 表单数据与无效值相等时抛出验证异常
+	 * @param formValue 表单值
+	 * @param badValue 无效值
+	 * @param errorMsg 错误信息
+	 * @throws ValidateException
+	 */
+	public static <T> void validateEmptyEqual(T formValue, T badValue, String errorMsg) throws ValidateException {
+		validateEmpty(formValue, errorMsg);
+		validateEqual(formValue, badValue, errorMsg);
+	}
+	
+	/**
 	 * 通过正则表达式验证
 	 * @param regex 正则
 	 * @param formValue 表单值

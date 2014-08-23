@@ -229,6 +229,24 @@ public class Request {
 	/**
 	 * @param name 参数名
 	 * @param defaultValue 当客户端未传参的默认值
+	 * @return 获得Double类型请求参数
+	 */
+	public static Double getDoubleParam(String name, Double defaultValue) {
+		return Conver.toDouble(getParam(name), defaultValue);
+	}
+	
+	/**
+	 * @param name 参数名
+	 * @param defaultValue 当客户端未传参的默认值
+	 * @return 获得Float类型请求参数
+	 */
+	public static Float getFloatParam(String name, Float defaultValue) {
+		return Conver.toFloat(getParam(name), defaultValue);
+	}
+	
+	/**
+	 * @param name 参数名
+	 * @param defaultValue 当客户端未传参的默认值
 	 * @return 获得Boolean类型请求参数
 	 */
 	public static Boolean getBoolParam(String name, Boolean defaultValue) {

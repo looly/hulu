@@ -23,7 +23,7 @@ public class InterceptorBuilder{
 	/**
 	 * 获得指定Action类的拦截器单例对象列表
 	 * @param actionClass Action类
-	 * @return
+	 * @return 拦截器列表
 	 */
 	public static Interceptor[] build(Class<?> actionClass) {
 		return build(actionClass.getAnnotation(Intercept.class));
@@ -32,7 +32,7 @@ public class InterceptorBuilder{
 	/**
 	 * 获得指定Action类的拦截器单例对象列表
 	 * @param actionMethod Action方法
-	 * @return
+	 * @return 拦截器列表
 	 */
 	public static Interceptor[] build(Method actionMethod) {
 		return build(actionMethod.getAnnotation(Intercept.class));
@@ -43,7 +43,7 @@ public class InterceptorBuilder{
 	 * 拦截器为单例
 	 * 
 	 * @param annotation Intercept注解
-	 * @return
+	 * @return 拦截器列表
 	 */
 	public static Interceptor[] build(Intercept annotation) {
 		if (annotation == null) {

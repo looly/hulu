@@ -51,8 +51,6 @@ public class ActionHandler {
 	 * 处理请求
 	 * 
 	 * @param target 请求目标（请求路径）
-	 * @param request 请求对象
-	 * @param response 响应对象
 	 * @return 是否继续执行后续步骤
 	 */
 	public final boolean handle(String target) {
@@ -82,7 +80,7 @@ public class ActionHandler {
 	 * 带参数时同时填充参数
 	 * 
 	 * @param path 请求路径（去掉ContextPath的）
-	 * @return
+	 * @return ActionMethod
 	 */
 	public final ActionMethod getActionMethod(String path) {
 		// 不带参数的请求

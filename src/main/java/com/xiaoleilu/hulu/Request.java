@@ -136,8 +136,7 @@ public class Request {
 	/**
 	 * 将cookie封装到Map里面
 	 * 
-	 * @param request
-	 * @return
+	 * @return Cookie map
 	 */
 	public final static Map<String, Cookie> readCookieMap() {
 		Map<String, Cookie> cookieMap = new HashMap<String, Cookie>();
@@ -157,7 +156,7 @@ public class Request {
 	/**
 	 * 获得url中的参数，RestFull风格
 	 * 
-	 * @return
+	 * @return url中的参数
 	 */
 	public static String[] getUrlParams() {
 		return params.get();
@@ -177,7 +176,7 @@ public class Request {
 	 * 考虑到Servlet容器中会首先解码，给定的charsetOfServlet就是Servlet设置的解码charset<br>
 	 * charsetOfServlet为null则默认的ISO_8859_1
 	 * @param name 参数名
-	 * @param charset Servlet容器中的字符集
+	 * @param charsetOfServlet Servlet容器中的字符集
 	 * @return 获得请求参数
 	 */
 	public static String getParam(String name, Charset charsetOfServlet) {
@@ -303,7 +302,7 @@ public class Request {
 	 * 从Request中获得Vo对象
 	 * @param clazz VO类，必须包含默认造方法
 	 * @param isWtihModeName 参数是否带Vo类名，i.e true: user.name, false: name
-	 * @return
+	 * @return value Object
 	 */
 	public static <T> T getVo(Class<T> clazz, boolean isWtihModeName) {
 		T vo = null;
@@ -329,7 +328,7 @@ public class Request {
 	/**
 	 * 获得MultiPart表单内容，多用于获得上传的文件
 	 * 在同一次请求中，此方法只能被执行一次！
-	 * @return
+	 * @return MultipartFormData
 	 * @throws IOException
 	 */
 	public static MultipartFormData getMultipartFormData() throws IOException {
@@ -368,8 +367,7 @@ public class Request {
 	
 	/**
 	 * 设置Request的Attribute，用于在同一个会话中传递参数
-	 * @param name 名
-	 * @param value 值
+	 * @param values 键值对
 	 */
 	public static void setAttr(Map<String, Object> values) {
 		for (Entry<String, Object> entry : values.entrySet()) {

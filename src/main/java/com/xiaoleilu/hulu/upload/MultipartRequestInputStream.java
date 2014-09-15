@@ -18,10 +18,7 @@ public class MultipartRequestInputStream extends BufferedInputStream {
 
 	/**
 	 * 读取byte字节流，在末尾抛出异常
-	 */
-	/**
-	 * 
-	 * @return
+	 * @return byte
 	 * @throws IOException
 	 */
 	public byte readByte() throws IOException {

@@ -71,7 +71,6 @@ public class ActionMethod {
 	 * 此方法为递归调用，每次递归调用此方法，都会判断执行到了第几个拦截器，从而执行拦截器。<br>
 	 * 当拦截器数量执行完毕后，执行本体方法
 	 * 
-	 * @param urlParam URL参数
 	 * @throws ActionException
 	 */
 	public void invoke() throws ActionException {
@@ -125,7 +124,7 @@ public class ActionMethod {
 	// ------------------------------------------------------------- Private method start
 	/**
 	 * 生成请求路径<br>
-	 * @return
+	 * @return 请求路径
 	 */
 	private String genRequestPath() {
 		// 根据Annotation自定义请求路径

@@ -97,7 +97,7 @@ public class Request {
 	 * @return header值
 	 */
 	public final static String getHeader(String headerKey, String charset) {
-		String header = ActionContext.getRequest().getHeader(headerKey);
+		final String header = getHeader(headerKey);
 		if (null != header) {
 			try {
 				return new String(header.getBytes("ISO8859_1"), charset);

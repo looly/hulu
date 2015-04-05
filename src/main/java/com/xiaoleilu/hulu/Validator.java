@@ -190,8 +190,7 @@ public class Validator {
 	}
 
 	/**
-	 * 验证是否为身份证号码（18位中国）<br>
-	 * 出生日期只支持到到2999年
+	 * 验证验证是否为生日<br>
 	 * 
 	 * @param formValue 表单值
 	 * @param errorMsg 验证错误的信息
@@ -231,7 +230,7 @@ public class Validator {
 	}
 
 	/**
-	 * 验证是否为IPV4地址
+	 * 验证是否为URL
 	 * 
 	 * @param formValue 表单值
 	 * @param errorMsg 验证错误的信息

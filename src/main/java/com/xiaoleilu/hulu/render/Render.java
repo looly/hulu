@@ -15,10 +15,10 @@ import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.exception.RenderException;
 import com.xiaoleilu.hutool.FileUtil;
-import com.xiaoleilu.hutool.HttpUtil;
 import com.xiaoleilu.hutool.IoUtil;
 import com.xiaoleilu.hutool.StrUtil;
 import com.xiaoleilu.hutool.VelocityUtil;
+import com.xiaoleilu.hutool.http.HttpUtil;
 
 /**
  * 生成和处理Action返回结果的类

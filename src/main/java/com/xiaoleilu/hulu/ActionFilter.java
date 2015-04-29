@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 
 import com.xiaoleilu.hutool.DateUtil;
-import com.xiaoleilu.hutool.HttpUtil;
 import com.xiaoleilu.hutool.Log;
 import com.xiaoleilu.hutool.StrUtil;
+import com.xiaoleilu.hutool.http.HttpUtil;
 
 /**
  * Action过滤器<br>

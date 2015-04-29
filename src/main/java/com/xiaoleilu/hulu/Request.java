@@ -19,9 +19,9 @@ import com.xiaoleilu.hulu.upload.UploadSetting;
 import com.xiaoleilu.hutool.CharsetUtil;
 import com.xiaoleilu.hutool.Conver;
 import com.xiaoleilu.hutool.DateUtil;
-import com.xiaoleilu.hutool.HttpUtil;
 import com.xiaoleilu.hutool.InjectUtil;
 import com.xiaoleilu.hutool.StrUtil;
+import com.xiaoleilu.hutool.http.HttpUtil;
 
 /**
  * 请求静态类

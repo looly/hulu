@@ -93,7 +93,7 @@ public class ErrorRender {
 	
 	/**
 	 * 输出404信息
-	 * @param content 错误消息内容
+	 * @param pageContent 错误消息页面内容
 	 */
 	public static void render404Page(String pageContent) {
 		Response.setStatus(HttpServletResponse.SC_NOT_FOUND);

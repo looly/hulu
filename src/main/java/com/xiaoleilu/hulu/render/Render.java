@@ -51,6 +51,7 @@ public class Render {
 	 * @throws IOException
 	 */
 	public static final void redirect(String uri) {
+		uri = ActionContext.getContextPath() + uri;
 		try {
 			ActionContext.getResponse().sendRedirect(uri);
 		} catch (IOException e) {

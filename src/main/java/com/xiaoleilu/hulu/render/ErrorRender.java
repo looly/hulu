@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import com.xiaoleilu.hulu.ActionContext;
 import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hulu.Request;
+import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hutool.Log;
 import com.xiaoleilu.hutool.StrUtil;
 
@@ -80,5 +81,22 @@ public class ErrorRender {
 	 */
 	public static void render404() {
 		sendError(HttpServletResponse.SC_NOT_FOUND, "404 Not Found!");
+	}
+	
+	/**
+	 * 输出404信息
+	 * @param content 错误消息内容
+	 */
+	public static void render404(String content) {
+		sendError(HttpServletResponse.SC_NOT_FOUND, content);
+	}
+	
+	/**
+	 * 输出404信息
+	 * @param content 错误消息内容
+	 */
+	public static void render404Page(String pageContent) {
+		Response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		Render.renderHtml(pageContent);
 	}
 }

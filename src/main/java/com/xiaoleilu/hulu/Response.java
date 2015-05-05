@@ -39,6 +39,14 @@ public class Response {
 		}
 	}
 	
+	/**
+	 * 设置响应状态码
+	 * @param statusCode 状态码，见{@code javax.servlet.http.HttpServletResponse}
+	 */
+	public final static void setStatus(int statusCode) {
+		ActionContext.getResponse().setStatus(statusCode);
+	}
+	
 	// --------------------------------------------------------- Cookie start
 	/**
 	 * 设定返回给客户端的Cookie

@@ -376,6 +376,14 @@ public class Request {
 	}
 	
 	/**
+	 * 获得Request的Attribute，用于在同一个会话中传递参数
+	 * @param name 名
+	 */
+	public static Object getAttr(String name) {
+		return ActionContext.getRequest().getAttribute(name);
+	}
+	
+	/**
 	 * @return 客户浏览器是否为IE
 	 */
 	public static boolean isIE() {

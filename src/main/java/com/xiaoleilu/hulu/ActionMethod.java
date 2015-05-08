@@ -129,13 +129,9 @@ public class ActionMethod {
 	private String genRequestPath() {
 		// 根据Annotation自定义请求路径
 		String routePath = getRouteAnnotationPath(this.method);
-		if(routePath == null) {
-			//用户没有定义Annotation，使用标准请求路径
-			return genNormalRequestPath();
-		}
 
 		//提取HTTP方法名（如果路径是类似于get:/test/testMethod）
-		if(routePath.contains(":")) {
+		if(routePath != null && routePath.contains(":")) {
 			final List<String> methodAndPath = StrUtil.split(routePath, ':', 2);
 			this.httpMethod = methodAndPath.get(0).trim().toUpperCase();
 			routePath = methodAndPath.get(1).trim();
@@ -153,6 +149,11 @@ public class ActionMethod {
 	 * @return 修正后的请求路径
 	 */
 	private String fixRoutePath(String routePath) {
+		if(StrUtil.isBlank(routePath)) {
+			//用户没有定义Annotation，使用标准请求路径
+			return genNormalRequestPath();
+		}
+		
 		routePath = StrUtil.cleanBlank(routePath);							//去除空白符
 		routePath = StrUtil.removeSuffix(routePath, StrUtil.SLASH); // 去除尾部斜杠
 		if (routePath.startsWith(StrUtil.SLASH) == false) {

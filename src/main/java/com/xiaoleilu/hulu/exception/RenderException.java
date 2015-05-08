@@ -1,5 +1,7 @@
 package com.xiaoleilu.hulu.exception;
 
+import com.xiaoleilu.hutool.StrUtil;
+
 /**
  * Render异常
  * @author xiaoleilu
@@ -13,6 +15,10 @@ public class RenderException extends RuntimeException{
 	
 	public RenderException(String msg) {
 		super(msg);
+	}
+	
+	public RenderException(String messageTemplate, Object... params) {
+		super(StrUtil.format(messageTemplate, params));
 	}
 	
 	public RenderException(Throwable throwable) {

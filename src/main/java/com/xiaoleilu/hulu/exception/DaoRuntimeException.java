@@ -1,5 +1,7 @@
 package com.xiaoleilu.hulu.exception;
 
+import com.xiaoleilu.hutool.StrUtil;
+
 /**
  * Action Runtime 异常
  * @author xiaoleilu
@@ -13,6 +15,10 @@ public class DaoRuntimeException extends RuntimeException{
 	
 	public DaoRuntimeException(String msg) {
 		super(msg);
+	}
+	
+	public DaoRuntimeException(String messageTemplate, Object... params) {
+		super(StrUtil.format(messageTemplate, params));
 	}
 	
 	public DaoRuntimeException(Throwable throwable) {

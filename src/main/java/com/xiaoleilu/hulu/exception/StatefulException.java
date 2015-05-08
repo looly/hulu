@@ -1,5 +1,7 @@
 package com.xiaoleilu.hulu.exception;
 
+import com.xiaoleilu.hutool.StrUtil;
+
 /**
  * 带有状态码的异常
  * @author xiaoleilu
@@ -16,6 +18,10 @@ public class StatefulException extends Exception{
 	
 	public StatefulException(String msg) {
 		super(msg);
+	}
+	
+	public StatefulException(String messageTemplate, Object... params) {
+		super(StrUtil.format(messageTemplate, params));
 	}
 	
 	public StatefulException(Throwable throwable) {

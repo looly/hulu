@@ -1,5 +1,7 @@
 package com.xiaoleilu.hulu.exception;
 
+import com.xiaoleilu.hutool.StrUtil;
+
 /**
  * DAO异常
  * @author xiaoleilu
@@ -13,6 +15,10 @@ public class DaoException extends Exception{
 	
 	public DaoException(String msg) {
 		super(msg);
+	}
+	
+	public DaoException(String messageTemplate, Object... params) {
+		super(StrUtil.format(messageTemplate, params));
 	}
 	
 	public DaoException(Throwable throwable) {

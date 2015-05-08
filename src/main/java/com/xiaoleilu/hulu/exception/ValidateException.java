@@ -1,5 +1,7 @@
 package com.xiaoleilu.hulu.exception;
 
+import com.xiaoleilu.hutool.StrUtil;
+
 /**
  * 验证异常
  * 
@@ -13,6 +15,10 @@ public class ValidateException extends StatefulException {
 
 	public ValidateException(String msg) {
 		super(msg);
+	}
+	
+	public ValidateException(String messageTemplate, Object... params) {
+		super(StrUtil.format(messageTemplate, params));
 	}
 
 	public ValidateException(Throwable throwable) {

@@ -1,5 +1,7 @@
 package com.xiaoleilu.hulu.exception;
 
+import com.xiaoleilu.hutool.StrUtil;
+
 /**
  * 业务层异常
  * @author xiaoleilu
@@ -13,6 +15,10 @@ public class ServiceException extends Exception{
 	
 	public ServiceException(String msg) {
 		super(msg);
+	}
+	
+	public ServiceException(String messageTemplate, Object... params) {
+		super(StrUtil.format(messageTemplate, params));
 	}
 	
 	public ServiceException(Throwable throwable) {

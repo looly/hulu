@@ -14,3 +14,7 @@
 
 1.0.8
 1. 增加getAttr方法
+
+1.1.0
+1. 为Exception增加字符串模板
+2. 修复Route注解，使之支持单独定义Method而使用默认Path

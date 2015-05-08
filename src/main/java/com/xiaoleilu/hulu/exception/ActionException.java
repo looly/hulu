@@ -1,5 +1,7 @@
 package com.xiaoleilu.hulu.exception;
 
+import com.xiaoleilu.hutool.StrUtil;
+
 /**
  * Action异常
  * @author xiaoleilu
@@ -13,6 +15,10 @@ public class ActionException extends Exception{
 	
 	public ActionException(String msg) {
 		super(msg);
+	}
+
+	public ActionException(String messageTemplate, Object... params) {
+		super(StrUtil.format(messageTemplate, params));
 	}
 	
 	public ActionException(Throwable throwable) {

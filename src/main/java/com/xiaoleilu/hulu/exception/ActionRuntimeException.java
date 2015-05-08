@@ -1,5 +1,7 @@
 package com.xiaoleilu.hulu.exception;
 
+import com.xiaoleilu.hutool.StrUtil;
+
 /**
  * Action Runtime 异常
  * @author xiaoleilu
@@ -13,6 +15,10 @@ public class ActionRuntimeException extends RuntimeException{
 	
 	public ActionRuntimeException(String msg) {
 		super(msg);
+	}
+	
+	public ActionRuntimeException(String messageTemplate, Object... params) {
+		super(StrUtil.format(messageTemplate, params));
 	}
 	
 	public ActionRuntimeException(Throwable throwable) {

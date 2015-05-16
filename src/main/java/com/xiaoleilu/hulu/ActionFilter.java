@@ -14,10 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 
-import com.xiaoleilu.hutool.DateUtil;
 import com.xiaoleilu.hutool.Log;
 import com.xiaoleilu.hutool.StrUtil;
-import com.xiaoleilu.hutool.http.HttpUtil;
 
 /**
  * Action过滤器<br>
@@ -28,28 +26,11 @@ import com.xiaoleilu.hutool.http.HttpUtil;
 public class ActionFilter implements Filter{
 	private final static Logger log = Log.get();
 	
-	/** 项目路径的长度，用于请求时去掉项目路径 */
-	private int contextPathLength;
-	
-	/** 请求处理对象 */
-	private ActionHandler handler;
-
 	/**
 	 * 框架启动初始化
 	 */
 	@Override
 	public void  init(FilterConfig filterConfig) throws ServletException {
-		final long start = System.currentTimeMillis();
-		
-		ActionContext.setServletContext(filterConfig.getServletContext());
-		
-		final String contextPath = ActionContext.getContextPath();
-		this.contextPathLength = (null == contextPath || StrUtil.SLASH.equals(contextPath) ? 0 : contextPath.length());
-		log.debug("Web app ContextPath [{}]", contextPath);
-		
-		handler = new ActionHandler(HuluSetting.actionPackages);
-		
-		log.info("***** Hulu framwork init finished, spend {}ms *****", DateUtil.spendMs(start));
 	}
 
 	@Override
@@ -57,35 +38,35 @@ public class ActionFilter implements Filter{
 		HttpServletRequest request = (HttpServletRequest)req;
 		HttpServletResponse response = (HttpServletResponse)res;
 		
-		//-- 字符集的过滤
-		String charset = HuluSetting.charset;
-		try {
-			request.setCharacterEncoding(charset);
-			response.setCharacterEncoding(charset);
-		} catch (Exception e) {
-			log.warn("User [{}] use charset [{}] not support!", HttpUtil.getClientIP(request), charset);
-		}
-		
 		//-- 填充请求和响应对象到ActionContext本地线程
 		ActionContext.fillReqRes(request, response);
 		
-		//-- 处理Target
-		String target = request.getRequestURI();
-		//去掉项目名部分
-		target = target.substring(contextPathLength);
-		//如果以"/"结尾则去之
-		if(StrUtil.isNotEmpty(target) && false ==target.equals(StrUtil.SLASH)) {
-			target = StrUtil.removeSuffix(target, StrUtil.SLASH);
-		}
-		
 		//-- 处理请求
-		if(handler.handle(target)) {
+		if(ActionContext.handler.handle(getWellFormTarget(request.getRequestURI()))) {
 			chain.doFilter(request, response);
 		}
 	}
 
 	@Override
 	public void destroy() {
+		log.debug("***** ActionFilter over. *****");
 	}
-
+	
+	// ------------------------------------------------------------------------------------ Private method start
+	/**
+	 * 处理将请求路径标准化为框架目标路径
+	 * @param requestURI 请求URI
+	 * @return 框架目标路径
+	 */
+	private static String getWellFormTarget(String target) {
+		//去掉项目名部分
+		target = target.substring(ActionContext.contextPathLength);
+		//如果以"/"结尾则去之
+		if(StrUtil.isNotEmpty(target) && false ==target.equals(StrUtil.SLASH)) {
+			target = StrUtil.removeSuffix(target, StrUtil.SLASH);
+		}
+		
+		return target;
+	}
+	// ------------------------------------------------------------------------------------ Private method end
 }

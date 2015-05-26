@@ -25,3 +25,9 @@
 
 1.2.0
 1. 将初始化工作移交到ActionListener
+
+1.2.1
+1. 获取单个URL参数
+2. 升级Hutool至2.8.7
+3. 修复Render在不使用Velocity的情况下报错问题
+4. Request.getHeader中字符编码变为引用

@@ -17,7 +17,6 @@ import com.xiaoleilu.hulu.exception.RenderException;
 import com.xiaoleilu.hutool.FileUtil;
 import com.xiaoleilu.hutool.IoUtil;
 import com.xiaoleilu.hutool.StrUtil;
-import com.xiaoleilu.hutool.VelocityUtil;
 import com.xiaoleilu.hutool.http.HttpUtil;
 
 /**
@@ -177,7 +176,7 @@ public class Render {
 	public static void renderVelocity(String templateFileName, String contentType) {
 		HttpServletResponse response = ActionContext.getResponse();
 		response.setContentType(contentType);
-		VelocityUtil.toWriter(templateFileName, ActionContext.getRequest(), response);
+		com.xiaoleilu.hutool.VelocityUtil.toWriter(templateFileName, ActionContext.getRequest(), response);
 	}
 
 	/**

@@ -17,6 +17,7 @@ import com.xiaoleilu.hulu.exception.ActionRuntimeException;
 import com.xiaoleilu.hulu.upload.MultipartFormData;
 import com.xiaoleilu.hulu.upload.UploadSetting;
 import com.xiaoleilu.hutool.CharsetUtil;
+import com.xiaoleilu.hutool.CollectionUtil;
 import com.xiaoleilu.hutool.Conver;
 import com.xiaoleilu.hutool.DateUtil;
 import com.xiaoleilu.hutool.InjectUtil;
@@ -100,7 +101,7 @@ public class Request {
 		final String header = getHeader(headerKey);
 		if (null != header) {
 			try {
-				return new String(header.getBytes("ISO8859_1"), charset);
+				return new String(header.getBytes(CharsetUtil.ISO_8859_1), charset);
 			} catch (UnsupportedEncodingException e) {
 				throw new ActionRuntimeException(StrUtil.format("Error charset {} for http request header.", charset));
 			}
@@ -160,6 +161,19 @@ public class Request {
 	 */
 	public static String[] getUrlParams() {
 		return params.get();
+	}
+	
+	/**
+	 * 获得url中的单个参数，RestFull风格
+	 * 
+	 * @return url中的参数
+	 */
+	public static String getUrlParam(int index) {
+		String[] urlParams = getUrlParams();
+		if(CollectionUtil.isNotEmpty(urlParams)) {
+			return urlParams[index];
+		}
+		return null;
 	}
 
 	/**

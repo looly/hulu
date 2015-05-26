@@ -17,7 +17,6 @@ import com.xiaoleilu.hulu.exception.ActionRuntimeException;
 import com.xiaoleilu.hulu.upload.MultipartFormData;
 import com.xiaoleilu.hulu.upload.UploadSetting;
 import com.xiaoleilu.hutool.CharsetUtil;
-import com.xiaoleilu.hutool.CollectionUtil;
 import com.xiaoleilu.hutool.Conver;
 import com.xiaoleilu.hutool.DateUtil;
 import com.xiaoleilu.hutool.InjectUtil;
@@ -165,12 +164,12 @@ public class Request {
 	
 	/**
 	 * 获得url中的单个参数，RestFull风格
-	 * 
+	 * @param index 获得第几个URL参数的
 	 * @return url中的参数
 	 */
 	public static String getUrlParam(int index) {
 		String[] urlParams = getUrlParams();
-		if(CollectionUtil.isNotEmpty(urlParams)) {
+		if(null != urlParams && urlParams.length > index) {
 			return urlParams[index];
 		}
 		return null;

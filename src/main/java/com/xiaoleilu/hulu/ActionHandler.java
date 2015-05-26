@@ -114,7 +114,7 @@ public class ActionHandler {
 		final Map<String, ActionMethod> actionMethodMap = new HashMap<String, ActionMethod>();
 		
 		final Set<Class<?>> actionClasses = new HashSet<Class<?>>();
-		ClassFilter actionClassFilter = createActionClassFilter();	//Action类的过滤器，剔除不符合过滤条件的类
+		final ClassFilter actionClassFilter = createActionClassFilter();	//Action类的过滤器，剔除不符合过滤条件的类
 		for (String packageName : packageNames) {
 			if(StrUtil.isBlank(packageName) == false) {
 				actionClasses.addAll(ClassUtil.scanPackage(packageName.trim(), actionClassFilter));
@@ -128,7 +128,7 @@ public class ActionHandler {
 		}
 		
 		//Object里的那些方法不能被识别成Action方法
-		Set<String> forbiddenMethod = ClassUtil.getMethods(Object.class);
+		final Set<String> forbiddenMethods = ClassUtil.getMethods(Object.class);
 		
 		for (Class<?> actionClass : actionClasses) {
 			
@@ -143,29 +143,30 @@ public class ActionHandler {
 				continue;
 			}
 			
-			Interceptor[] actionInterceptors = InterceptorBuilder.build(actionClass);
+			final Interceptor[] actionInterceptors = InterceptorBuilder.build(actionClass);
 
 			for (Method method : methods) {
 				//过滤掉Object中的一些特殊方法(toString(), hash等等)，且只识别无参数方法，防止重载造成的语义混乱
-				if (forbiddenMethod.contains(method.getName()) || method.getParameterTypes().length > 0) {
+				if (forbiddenMethods.contains(method.getName()) || method.getParameterTypes().length > 0) {
 					continue;
 				}
 				
 				//设置方法的拦截器（Action对象和方法的拦截器都对此方法有效）
-				Interceptor[] interceptors = CollectionUtil.addAll(actionInterceptors, InterceptorBuilder.build(method));
+				final Interceptor[] interceptors = CollectionUtil.addAll(actionInterceptors, InterceptorBuilder.build(method));
 				
-				ActionMethod actionMethod = new ActionMethod(actionInstance, method, interceptors);
+				final ActionMethod actionMethod = new ActionMethod(actionInstance, method, interceptors);
 				
 				
-				String key = actionMethod.getRequestPath();
+				final String key = actionMethod.getRequestPath();
 				if(actionMethodMap.containsKey(key)) {
 					//当有同一个请求路径对应不同的ActionMethod时，给出Log ERROR， 并不阻断初始化
-					final String errorMsg = StrUtil.format("Duplicate request path [{}]", key);
-					log.error(errorMsg, new ActionException(errorMsg));
+					Log.error(log, new ActionException(StrUtil.format("Duplicate request path [{}]", key)));
 				}
 				
 				actionMethodMap.put(key, actionMethod);
-				log.debug("Added action mapping: [{}]", key);
+				if(HuluSetting.isDevMode) {
+					log.debug("Added action mapping: [{}]", key);
+				}
 			}
 		}
 		return actionMethodMap;
@@ -183,5 +184,6 @@ public class ActionHandler {
 			}
 		};
 	}
+	
 	//------------------------------------------------------------- Private method end
 }

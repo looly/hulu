@@ -31,3 +31,6 @@
 2. 升级Hutool至2.8.7
 3. 修复Render在不使用Velocity的情况下报错问题
 4. Request.getHeader中字符编码变为引用
+
+1.2.2
+1. 修复getUrlParam的数组越界问题

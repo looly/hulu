@@ -21,7 +21,7 @@ public abstract class AbsInterceptor implements Interceptor{
 	/**
 	 * 方法或者下一个过滤器执行前执行的方法
 	 * @param actionMethod Action方法
-	 * @return
+	 * @return 是否继续执行接下来的方法
 	 */
 	public abstract boolean before(ActionMethod actionMethod);
 	

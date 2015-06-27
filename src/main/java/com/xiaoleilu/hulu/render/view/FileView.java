@@ -9,7 +9,7 @@ import com.xiaoleilu.hulu.render.Render;
  * @author Looly
  *
  */
-public class FileView extends ContentTypeView{
+public class FileView implements View{
 	
 	private File file;
 	private String responseFileName;

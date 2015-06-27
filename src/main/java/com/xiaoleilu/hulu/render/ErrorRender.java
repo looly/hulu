@@ -44,12 +44,12 @@ public class ErrorRender {
 	}
 	
 	/**
-	 * 将错误发送到容器
+	 * 返回错误页面
 	 * @param errorCode 错误代码
 	 * @param errorContent 错误信息
 	 */
 	public static void render(int errorCode, String errorContent) {
-		HttpServletResponse response = ActionContext.getResponse();
+		final HttpServletResponse response = ActionContext.getResponse();
 		response.setStatus(errorCode);
 		Render.render(errorContent, Render.CONTENT_TYPE_HTML, response);
 	}
@@ -80,7 +80,7 @@ public class ErrorRender {
 	 * 输出404信息
 	 */
 	public static void render404() {
-		sendError(HttpServletResponse.SC_NOT_FOUND, "404 Not Found!");
+		render404("404 Not Found!");
 	}
 	
 	/**

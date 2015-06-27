@@ -32,6 +32,6 @@ public class VelocityView extends ContentTypeView{
 	
 	@Override
 	public void render() {
-		Render.renderVelocity(templateFileName, templateFileName);
+		Render.renderVelocity(templateFileName, contentType);
 	}
 }

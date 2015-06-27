@@ -3,6 +3,7 @@ package com.xiaoleilu.hulu.render;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 
 import javax.servlet.ServletException;
@@ -91,7 +92,7 @@ public class Render {
 	 * @throws IOException
 	 */
 	public static final void forward(String uri) throws ServletException, IOException {
-		HttpServletRequest request = ActionContext.getRequest();
+		final HttpServletRequest request = ActionContext.getRequest();
 		request.getRequestDispatcher(uri).forward(request, ActionContext.getResponse());
 	}
 
@@ -174,7 +175,7 @@ public class Render {
 	 * @param contentType 文件类型
 	 */
 	public static void renderVelocity(String templateFileName, String contentType) {
-		HttpServletResponse response = ActionContext.getResponse();
+		final HttpServletResponse response = ActionContext.getResponse();
 		response.setContentType(contentType);
 		com.xiaoleilu.hutool.VelocityUtil.toWriter(templateFileName, ActionContext.getRequest(), response);
 	}
@@ -187,6 +188,16 @@ public class Render {
 	 */
 	public static void render(String text, String contentType) {
 		render(text, contentType, ActionContext.getResponse());
+	}
+	
+	/**
+	 * 返回数据给客户端
+	 * 
+	 * @param in 返回的流
+	 * @param contentType 返回的内容类型
+	 */
+	public static void render(InputStream in, String contentType) {
+		render(in, contentType, ActionContext.getResponse());
 	}
 
 	/**
@@ -209,6 +220,28 @@ public class Render {
 			throw new RenderException("Error when output to client!", e);
 		} finally {
 			FileUtil.close(writer);
+		}
+	}
+	
+	/**
+	 * 返回数据给客户端
+	 * 
+	 * @param in 需要返回客户端的内容
+	 * @param contentType 返回的类型
+	 * @param response Response对象
+	 */
+	public static void render(InputStream in, String contentType, HttpServletResponse response) {
+		response.setContentType(contentType);
+
+		ServletOutputStream out = null;
+		try {
+			out = response.getOutputStream();
+			IoUtil.copy(in, out);
+		} catch (IOException e) {
+			throw new RenderException("Error when output to client!", e);
+		} finally {
+			FileUtil.close(out);
+			FileUtil.close(in);
 		}
 	}
 

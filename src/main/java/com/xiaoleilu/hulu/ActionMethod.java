@@ -7,6 +7,8 @@ import java.util.List;
 import com.xiaoleilu.hulu.annotation.Route;
 import com.xiaoleilu.hulu.exception.ActionException;
 import com.xiaoleilu.hulu.interceptor.Interceptor;
+import com.xiaoleilu.hulu.render.Render;
+import com.xiaoleilu.hulu.render.view.View;
 import com.xiaoleilu.hutool.Log;
 import com.xiaoleilu.hutool.StrUtil;
 
@@ -85,16 +87,34 @@ public class ActionMethod {
 			interceptors[position].invoke(this);
 		}else {
 			//过滤器执行完毕，执行本体方法
-			try {
-				this.method.invoke(this.action);
-			} catch(InvocationTargetException te) {
-				throw new ActionException(te.getCause());
-			} catch (Exception e) {
-				throw new ActionException("Invoke action method error!", e);
-			}
-			
+			invokeActionMethod();
 			// 执行了Action本体方法，说明过滤器使用完毕，清理游标防止重复执行
 			resetInterceptorPosition();
+		}
+	}
+	
+	/**
+	 * 执行本体方法
+	 * @throws ActionException 
+	 */
+	protected void invokeActionMethod() throws ActionException {
+		Object returnValue;
+		try {
+			returnValue = this.method.invoke(this.action);
+		} catch(InvocationTargetException te) {
+			throw new ActionException(te.getCause());
+		} catch (Exception e) {
+			throw new ActionException("Invoke action method error!", e);
+		}
+		
+		//对于带有返回值的Action方法，执行Render
+		if(null != returnValue) {
+			if(returnValue instanceof View) {
+				((View) returnValue).render();
+			}else {
+				//如果非View对象，直接返回内容做为HTML
+				Render.renderHtml(returnValue.toString());
+			}
 		}
 	}
 

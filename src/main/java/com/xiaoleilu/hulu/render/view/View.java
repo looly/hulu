@@ -8,6 +8,7 @@ package com.xiaoleilu.hulu.render.view;
  *
  */
 public interface View {
+	
 	/**
 	 * 写入数据到客户端
 	 */

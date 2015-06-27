@@ -8,6 +8,10 @@ import com.xiaoleilu.hulu.render.Render;
  *
  */
 public class JsonView extends ContentTypeView{
+	
+	public JsonView() {
+	}
+	
 	public JsonView(String text) {
 		this.text = text;
 	}

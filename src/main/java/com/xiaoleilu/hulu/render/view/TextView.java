@@ -8,7 +8,13 @@ import com.xiaoleilu.hulu.render.Render;
  *
  */
 public class TextView extends ContentTypeView{
+	
+	//---------------------------------------------------------- Constructor start
+	public TextView() {
+	}
+	
 	public TextView(String text) {
 		super(text, Render.CONTENT_TYPE_TEXT);
 	}
+	//---------------------------------------------------------- Constructor end
 }

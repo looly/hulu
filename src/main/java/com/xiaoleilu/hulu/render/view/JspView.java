@@ -6,6 +6,9 @@ package com.xiaoleilu.hulu.render.view;
  *
  */
 public class JspView extends ForwardView{
+	
+	public JspView() {
+	}
 
 	public JspView(String view) {
 		super(view);

@@ -11,9 +11,14 @@ public class RedirectView implements View{
 	
 	private String uri;
 	
+	//---------------------------------------------------------- Constructor start
+	public RedirectView() {
+	}
+	
 	public RedirectView(String url) {
 		this.uri = url;
 	}
+	//---------------------------------------------------------- Constructor end
 
 	@Override
 	public void render() {

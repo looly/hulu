@@ -12,6 +12,13 @@ public class JsView extends ContentTypeView{
 	
 	private String callbackParamName;
 	
+	//---------------------------------------------------------- Constructor start
+	/**
+	 * 构造，自定义参数
+	 */
+	public JsView() {
+	}
+	
 	/**
 	 * 构造，使用默认的回调参数名
 	 * @param text 内容
@@ -29,6 +36,23 @@ public class JsView extends ContentTypeView{
 		this.text = text;
 		this.callbackParamName = callbackParamName;
 	}
+	//---------------------------------------------------------- Constructor end
+	
+	//---------------------------------------------------------- Getters and Setters start
+	/**
+	 * @return 回调参数名
+	 */
+	public String getCallbackParamName() {
+		return callbackParamName;
+	}
+	/**
+	 * 设置回调参数名
+	 * @param callbackParamName 回调参数名
+	 */
+	public void setCallbackParamName(String callbackParamName) {
+		this.callbackParamName = callbackParamName;
+	}
+	//---------------------------------------------------------- Getters and Setters end
 	
 	@Override
 	public void render() {

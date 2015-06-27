@@ -7,9 +7,14 @@ import com.xiaoleilu.hulu.render.Render;
  * @author Looly
  *
  */
-public class VelocityView extends ContentTypeView{
+public class VelocityView implements View{
 	
 	private String templateFileName;
+	private String contentType;
+	
+	//---------------------------------------------------------- Constructor start
+	public VelocityView() {
+	}
 	
 	/**
 	 * 构造，默认返回HTML
@@ -29,6 +34,37 @@ public class VelocityView extends ContentTypeView{
 		this.templateFileName = templateFileName;
 		this.contentType = contentType;
 	}
+	//---------------------------------------------------------- Constructor start
+	
+	//---------------------------------------------------------- Getters and Setters start
+	/**
+	 * @return 模板文件名
+	 */
+	public String getTemplateFileName() {
+		return templateFileName;
+	}
+	/**
+	 * 设置模板文件名
+	 * @param templateFileName 模板文件名
+	 */
+	public void setTemplateFileName(String templateFileName) {
+		this.templateFileName = templateFileName;
+	}
+
+	/**
+	 * @return 内容类型
+	 */
+	public String getContentType() {
+		return contentType;
+	}
+	/**
+	 * 设置内容类型
+	 * @param contentType 内容类型
+	 */
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+	//---------------------------------------------------------- Getters and Setters start
 	
 	@Override
 	public void render() {

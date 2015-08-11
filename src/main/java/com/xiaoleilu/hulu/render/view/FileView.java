@@ -48,7 +48,6 @@ public class FileView implements View{
 	 * 构造，默认缓存大小
 	 * @param file 文件
 	 * @param responseFileName 响应给客户端的文件名
-	 * @param bufferSize 缓存大小
 	 */
 	public FileView(File file, String responseFileName) {
 		this(file, responseFileName, IoUtil.DEFAULT_BUFFER_SIZE);

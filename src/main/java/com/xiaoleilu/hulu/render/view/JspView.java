@@ -5,7 +5,7 @@ package com.xiaoleilu.hulu.render.view;
  * @author Looly
  *
  */
-public class JspView extends ForwardView{
+public class JspView extends PathView{
 	
 	public JspView() {
 	}

@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.slf4j.Logger;
-
 import com.xiaoleilu.hulu.exception.ActionException;
 import com.xiaoleilu.hulu.interceptor.Interceptor;
 import com.xiaoleilu.hulu.interceptor.InterceptorBuilder;
@@ -15,8 +13,9 @@ import com.xiaoleilu.hulu.render.ErrorRender;
 import com.xiaoleilu.hutool.ClassUtil;
 import com.xiaoleilu.hutool.ClassUtil.ClassFilter;
 import com.xiaoleilu.hutool.CollectionUtil;
-import com.xiaoleilu.hutool.Log;
 import com.xiaoleilu.hutool.StrUtil;
+import com.xiaoleilu.hutool.log.Log;
+import com.xiaoleilu.hutool.log.StaticLog;
 
 /**
  * Action处理类
@@ -24,7 +23,7 @@ import com.xiaoleilu.hutool.StrUtil;
  * @author xiaoleilu
  */
 public class ActionHandler {
-	private final static Logger log = Log.get();
+	private static Log log = StaticLog.get();
 
 	/** Action方法映射 */
 	private Map<String, ActionMethod> actionMethodMap = new HashMap<String, ActionMethod>();
@@ -160,7 +159,7 @@ public class ActionHandler {
 				final String key = actionMethod.getRequestPath();
 				if(actionMethodMap.containsKey(key)) {
 					//当有同一个请求路径对应不同的ActionMethod时，给出Log ERROR， 并不阻断初始化
-					Log.error(log, new ActionException(StrUtil.format("Duplicate request path [{}]", key)));
+					log.error(new ActionException(StrUtil.format("Duplicate request path [{}]", key)));
 				}
 				
 				actionMethodMap.put(key, actionMethod);

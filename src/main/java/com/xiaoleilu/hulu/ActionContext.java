@@ -4,11 +4,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-
-import com.xiaoleilu.hutool.Log;
 import com.xiaoleilu.hutool.StrUtil;
 import com.xiaoleilu.hutool.http.HttpUtil;
+import com.xiaoleilu.hutool.log.Log;
+import com.xiaoleilu.hutool.log.StaticLog;
 
 /**
  * Action上下文<br>
@@ -17,7 +16,7 @@ import com.xiaoleilu.hutool.http.HttpUtil;
  * @author xiaoleilu
  */
 public class ActionContext {
-	private final static Logger log = Log.get();
+	private static Log log = StaticLog.get();
 
 	/** Request */
 	private final static ThreadLocal<HttpServletRequest> requestThreadLocal = new ThreadLocal<HttpServletRequest>();

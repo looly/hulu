@@ -2,12 +2,11 @@ package com.xiaoleilu.hulu;
 
 import java.net.URL;
 
-import org.slf4j.Logger;
-
-import com.xiaoleilu.hutool.Log;
 import com.xiaoleilu.hutool.Setting;
 import com.xiaoleilu.hutool.StrUtil;
 import com.xiaoleilu.hutool.URLUtil;
+import com.xiaoleilu.hutool.log.Log;
+import com.xiaoleilu.hutool.log.StaticLog;
 
 /**
  * 全局设定文件
@@ -15,7 +14,7 @@ import com.xiaoleilu.hutool.URLUtil;
  *
  */
 public class HuluSetting {
-	private static Logger log = Log.get();
+	private static Log log = StaticLog.get();
 	
 	//-------------------------------------------------------- Default value start
 	/** 默认的字符集编码 */

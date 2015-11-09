@@ -4,9 +4,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-
-import com.xiaoleilu.hutool.Log;
+import com.xiaoleilu.hutool.log.Log;
+import com.xiaoleilu.hutool.log.StaticLog;
 
 /**
  * 拦截器实例构建器<br>
@@ -16,7 +15,7 @@ import com.xiaoleilu.hutool.Log;
  *
  */
 public class InterceptorBuilder{
-	private static Logger log = Log.get();
+	private static Log log = StaticLog.get();
 	
 	private static Map<Class<? extends Interceptor>, Interceptor> pool = new ConcurrentHashMap<Class<? extends Interceptor>, Interceptor>();
 	

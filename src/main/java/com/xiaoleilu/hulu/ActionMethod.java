@@ -9,8 +9,8 @@ import com.xiaoleilu.hulu.exception.ActionException;
 import com.xiaoleilu.hulu.interceptor.Interceptor;
 import com.xiaoleilu.hulu.render.Render;
 import com.xiaoleilu.hulu.render.view.View;
-import com.xiaoleilu.hutool.Log;
 import com.xiaoleilu.hutool.StrUtil;
+import com.xiaoleilu.hutool.log.StaticLog;
 
 /**
  * Action方法<br>
@@ -134,7 +134,7 @@ public class ActionMethod {
 	protected boolean isHttpMethodMatch() {
 		if(StrUtil.isNotBlank(httpMethod) && httpMethod.equalsIgnoreCase(Request.getServletRequest().getMethod()) == false) {
 			if(HuluSetting.isDevMode) {
-				Log.warn("Request [{}] method [{}] is not match [{}]", requestPath, Request.getServletRequest().getMethod(), httpMethod);
+				StaticLog.warn("Request [{}] method [{}] is not match [{}]", requestPath, Request.getServletRequest().getMethod(), httpMethod);
 			}
 			return false;
 		}

@@ -12,10 +12,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-
-import com.xiaoleilu.hutool.Log;
 import com.xiaoleilu.hutool.StrUtil;
+import com.xiaoleilu.hutool.log.Log;
+import com.xiaoleilu.hutool.log.StaticLog;
 
 /**
  * Action过滤器<br>
@@ -24,7 +23,7 @@ import com.xiaoleilu.hutool.StrUtil;
  */
 @WebFilter(urlPatterns={"/*"})
 public class ActionFilter implements Filter{
-	private final static Logger log = Log.get();
+	private static Log log = StaticLog.get();
 	
 	/**
 	 * 框架启动初始化

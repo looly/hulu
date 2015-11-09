@@ -6,14 +6,13 @@ import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-
 import com.xiaoleilu.hulu.ActionContext;
 import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.Response;
-import com.xiaoleilu.hutool.Log;
 import com.xiaoleilu.hutool.StrUtil;
+import com.xiaoleilu.hutool.log.Log;
+import com.xiaoleilu.hutool.log.StaticLog;
 
 /**
  * 生成和处理Action返回错误结果的类
@@ -21,7 +20,7 @@ import com.xiaoleilu.hutool.StrUtil;
  *
  */
 public class ErrorRender {
-	private static Logger log = Log.get();
+	private static Log log = StaticLog.get();
 	
 	private final static String TEMPLATE_ERROR = "<!DOCTYPE html><html><head><title>Hulu framework - Error report</title><style>h1,h3 {color:white; background-color: gray;}</style></head><body><h1>HTTP Status {} - {}</h1><hr size=\"1\" noshade=\"noshade\" /><p>{}</p><hr size=\"1\" noshade=\"noshade\" /><h3>Hulu framework</h3></body></html>";
 	

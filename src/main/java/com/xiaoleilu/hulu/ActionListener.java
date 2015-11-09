@@ -4,10 +4,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import org.slf4j.Logger;
-
 import com.xiaoleilu.hutool.DateUtil;
-import com.xiaoleilu.hutool.Log;
+import com.xiaoleilu.hutool.log.Log;
+import com.xiaoleilu.hutool.log.StaticLog;
 
 /**
  * 框架初始化监听
@@ -16,7 +15,7 @@ import com.xiaoleilu.hutool.Log;
  */
 @WebListener
 public class ActionListener implements ServletContextListener{
-	private final static Logger log = Log.get();
+	private static Log log = StaticLog.get();
 	
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {

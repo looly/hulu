@@ -2,12 +2,11 @@ package com.xiaoleilu.hulu.upload;
 
 import java.net.URL;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hutool.Setting;
 import com.xiaoleilu.hutool.URLUtil;
+import com.xiaoleilu.hutool.log.Log;
+import com.xiaoleilu.hutool.log.StaticLog;
 
 /**
  * 上传文件设定文件
@@ -15,7 +14,7 @@ import com.xiaoleilu.hutool.URLUtil;
  *
  */
 public class UploadSetting {
-	private static Logger log = LoggerFactory.getLogger(UploadSetting.class);
+	private static Log log = StaticLog.get();
 	
 	/** 默认的配置文件路径（相对ClassPath）*/
 	public final static String DEFAULT_SETTING_PATH = "config/upload.setting";

@@ -10,11 +10,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.xiaoleilu.hutool.FileUtil;
 import com.xiaoleilu.hutool.StrUtil;
+import com.xiaoleilu.hutool.log.Log;
+import com.xiaoleilu.hutool.log.StaticLog;
 
 /**
  * 上传的文件对象
@@ -23,7 +22,7 @@ import com.xiaoleilu.hutool.StrUtil;
  * 
  */
 public class UploadFile {
-	private static Logger log = LoggerFactory.getLogger(UploadFile.class);
+	private static Log log = StaticLog.get();
 
 	private static final String TMP_FILE_PREFIX = "hulu-";
 	private static final String TMP_FILE_SUFFIX = ".upload.tmp";

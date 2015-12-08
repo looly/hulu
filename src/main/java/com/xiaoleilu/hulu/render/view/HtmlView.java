@@ -10,6 +10,7 @@ import com.xiaoleilu.hulu.render.Render;
 public class HtmlView extends ContentTypeView{
 	
 	public HtmlView() {
+		this.contentType = Render.CONTENT_TYPE_HTML;
 	}
 	
 	public HtmlView(String text) {

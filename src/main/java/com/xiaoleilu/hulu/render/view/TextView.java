@@ -11,6 +11,7 @@ public class TextView extends ContentTypeView{
 	
 	//---------------------------------------------------------- Constructor start
 	public TextView() {
+		this.contentType = Render.CONTENT_TYPE_TEXT;
 	}
 	
 	public TextView(String text) {

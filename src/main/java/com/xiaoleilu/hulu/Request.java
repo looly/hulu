@@ -207,6 +207,20 @@ public class Request {
 	}
 	
 	/**
+	 * 获得String类型请求参数
+	 * 会根据浏览器类型自动识别GET请求的编码方式从而解码<br>
+	 * 考虑到Servlet容器中会首先解码，给定的charsetOfServlet就是Servlet设置的解码charset<br>
+	 * @param name 参数名
+	 * @param defaultValue 当客户端未传参的默认值
+	 * @param charsetOfServlet Servlet的字符集
+	 * @return 获得String类型请求参数
+	 */
+	public static String getStrParam(String name, String defaultValue, String charsetOfServlet) {
+		final String param = convertGetMethodParamValue(getParam(name), charsetOfServlet);
+		return StrUtil.isBlank(param) ? defaultValue : param;
+	}
+	
+	/**
 	 * @param name 参数名
 	 * @param defaultValue 当客户端未传参的默认值
 	 * @return 获得Integer类型请求参数

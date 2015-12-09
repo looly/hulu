@@ -3,8 +3,8 @@
 # author xiaoleilu
 #--------------------------------------
 
-# 字符集编码, default utf8
-charset = utf8
+# 字符集编码, default UTF-8
+charset = UTF-8
 
 # Action包，用于自动扫描Action方法
 # 框架会自动扫描包下所有的类下所有的public无参数方法做为Action，默认不扫描

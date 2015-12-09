@@ -2,7 +2,6 @@ package com.xiaoleilu.hulu;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -176,8 +175,9 @@ public class Request {
 	}
 
 	/**
+	 * 获得参数，只是简单调用Servlet的getParameter方法
 	 * @param name 参数名
-	 * @return 获得请求参数
+	 * @return 请求参数
 	 */
 	public static String getParam(String name) {
 		return ActionContext.getRequest().getParameter(name);
@@ -192,31 +192,17 @@ public class Request {
 	 * @param charsetOfServlet Servlet容器中的字符集
 	 * @return 获得请求参数
 	 */
-	public static String getParam(String name, Charset charsetOfServlet) {
-		if(null == charsetOfServlet) {
-			charsetOfServlet = Charset.forName(CharsetUtil.ISO_8859_1);
-		}
-		
-		String destCharset = CharsetUtil.UTF_8;
-		if(isIE()) {
-			//IE浏览器GET请求使用GBK编码
-			destCharset = CharsetUtil.GBK;
-		}
-		
-		String value = getParam(name);
-		if(METHOD_GET.equalsIgnoreCase(Request.getServletRequest().getMethod())) {
-			value = CharsetUtil.convert(value, charsetOfServlet.toString(), destCharset);
-		}
-		return value;
+	public static String getParam(String name, String charsetOfServlet) {
+		return convertGetMethodParamValue(getParam(name), charsetOfServlet);
 	}
 	
 	/**
 	 * @param name 参数名
 	 * @param defaultValue 当客户端未传参的默认值
-	 * @return 获得请求参数
+	 * @return 获得String类型请求参数
 	 */
-	public static String getParam(String name, String defaultValue) {
-		String param = getParam(name);
+	public static String getStrParam(String name, String defaultValue) {
+		final String param = convertGetMethodParamValue(getParam(name), null);
 		return StrUtil.isBlank(param) ? defaultValue : param;
 	}
 	
@@ -423,4 +409,39 @@ public class Request {
 		params.set(urlParams);
 	}
 	// ------------------------------------------------------------------------------------ Protected method end
+	
+	// ------------------------------------------------------------------------------------ Private method start
+	/**
+	 * @return 是否为Get请求
+	 */
+	private static boolean isGetMethod(){
+		return METHOD_GET.equalsIgnoreCase(ActionContext.getRequest().getMethod());
+	}
+	
+	/**
+	 * 转换值得编码
+	 * 会根据浏览器类型自动识别GET请求的编码方式从而解码<br>
+	 * 考虑到Servlet容器中会首先解码，给定的charsetOfServlet就是Servlet设置的解码charset<br>
+	 * charsetOfServlet为null则默认的ISO_8859_1
+	 * @param value 值
+	 * @param charsetOfServlet Servlet的编码
+	 * @return
+	 */
+	private static String convertGetMethodParamValue(String value, String charsetOfServlet){
+		if(isGetMethod()) {
+			if(null == charsetOfServlet) {
+				charsetOfServlet = CharsetUtil.ISO_8859_1;
+			}
+			
+			String destCharset = CharsetUtil.UTF_8;
+			if(isIE()) {
+				//IE浏览器GET请求使用GBK编码
+				destCharset = CharsetUtil.GBK;
+			}
+			
+			value = CharsetUtil.convert(value, charsetOfServlet, destCharset);
+		}
+		return value;
+	}
+	// ------------------------------------------------------------------------------------ Private method end
 }

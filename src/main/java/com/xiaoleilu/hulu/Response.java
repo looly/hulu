@@ -37,15 +37,16 @@ public class Response {
 	 * @param name 名
 	 * @param value 值，可以是String，Date， int
 	 */
-	public final static void setHeader(String name, Object value) {
+	public static void setHeader(String name, Object value) {
+		final HttpServletResponse response = getServletResponse();
 		if(value instanceof String) {
-			ActionContext.getResponse().setHeader(name, (String)value);
+			response.setHeader(name, (String)value);
 		}else if(Date.class.isAssignableFrom(value.getClass())) {
-			ActionContext.getResponse().setDateHeader(name, ((Date)value).getTime());
+			response.setDateHeader(name, ((Date)value).getTime());
 		}else if(value instanceof Integer || "int".equals(value.getClass().getSimpleName().toLowerCase())) {
-			ActionContext.getResponse().setIntHeader(name, (Integer)value);
+			response.setIntHeader(name, (Integer)value);
 		}else {
-			ActionContext.getResponse().setHeader(name, value.toString());
+			response.setHeader(name, value.toString());
 		}
 	}
 	
@@ -53,8 +54,17 @@ public class Response {
 	 * 设置响应状态码
 	 * @param statusCode 状态码，见{@code javax.servlet.http.HttpServletResponse}
 	 */
-	public final static void setStatus(int statusCode) {
-		ActionContext.getResponse().setStatus(statusCode);
+	public static void setStatus(int statusCode) {
+		getServletResponse().setStatus(statusCode);
+	}
+	
+	/**
+	 * 设置Content-Type<br>
+	 * 如果使用Render将被其返回类型覆盖
+	 * @param contentType Content-Type
+	 */
+	public static void setContentType(String contentType){
+		getServletResponse().setContentType(contentType);
 	}
 	
 	// --------------------------------------------------------- Cookie start

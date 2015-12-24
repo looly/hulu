@@ -1,7 +1,9 @@
 package com.xiaoleilu.hulu;
 
+import java.io.IOException;
 import java.util.Date;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,6 +22,14 @@ public class Response {
 	 */
 	public static HttpServletResponse getServletResponse() {
 		return ActionContext.getResponse();
+	}
+	
+	/**
+	 * @return 获得输出流
+	 * @throws IOException
+	 */
+	public static ServletOutputStream getOutputStream() throws IOException{
+		return getServletResponse().getOutputStream();
 	}
 	
 	/**

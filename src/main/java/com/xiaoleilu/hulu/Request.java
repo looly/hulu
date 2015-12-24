@@ -439,7 +439,7 @@ public class Request {
 	 * charsetOfServlet为null则默认的ISO_8859_1
 	 * @param value 值
 	 * @param charsetOfServlet Servlet的编码
-	 * @return
+	 * @return 转换后的字符串
 	 */
 	private static String convertGetMethodParamValue(String value, String charsetOfServlet){
 		if(isGetMethod()) {

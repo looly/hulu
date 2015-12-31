@@ -184,11 +184,13 @@ public class ActionMethod {
 	}
 	
 	/**
-	 * 生成标准的请求路径
+	 * 生成标准的请求路径<br>
+	 * 标准请求路径为：无后缀类名/方法名，类名首字母小写<br>
 	 * @return 标准请求路径
 	 */
 	private String genNormalRequestPath() {
-		final String actionName = StrUtil.removeSuffix(this.action.getClass().getSimpleName(), HuluSetting.actionSuffix).toLowerCase();
+//		final String actionName = StrUtil.removeSuffix(this.action.getClass().getSimpleName(), HuluSetting.actionSuffix).toLowerCase();
+		final String actionName = StrUtil.lowerFirst(StrUtil.removeSuffix(this.action.getClass().getSimpleName(), HuluSetting.actionSuffix));
 		return String.format("/%s/%s", actionName, this.method.getName());
 	}
 

@@ -2,11 +2,11 @@ package com.xiaoleilu.hulu;
 
 import java.net.URL;
 
-import com.xiaoleilu.hutool.Setting;
-import com.xiaoleilu.hutool.StrUtil;
-import com.xiaoleilu.hutool.URLUtil;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.StaticLog;
+import com.xiaoleilu.hutool.setting.Setting;
+import com.xiaoleilu.hutool.util.StrUtil;
+import com.xiaoleilu.hutool.util.URLUtil;
 
 /**
  * 全局设定文件

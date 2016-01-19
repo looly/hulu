@@ -1,7 +1,7 @@
 package com.xiaoleilu.hulu.upload;
 
-import com.xiaoleilu.hutool.FileUtil;
-import com.xiaoleilu.hutool.StrUtil;
+import com.xiaoleilu.hutool.util.FileUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * 上传的文件的头部信息

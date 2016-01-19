@@ -10,7 +10,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.xiaoleilu.hutool.CollectionUtil;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 
 /**
  * HttpRequest解析器

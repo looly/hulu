@@ -1,6 +1,6 @@
 package com.xiaoleilu.hulu.exception;
 
-import com.xiaoleilu.hutool.StrUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * Action异常

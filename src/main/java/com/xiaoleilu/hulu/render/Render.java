@@ -15,10 +15,10 @@ import com.xiaoleilu.hulu.ActionContext;
 import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.exception.RenderException;
-import com.xiaoleilu.hutool.FileUtil;
-import com.xiaoleilu.hutool.IoUtil;
-import com.xiaoleilu.hutool.StrUtil;
 import com.xiaoleilu.hutool.http.HttpUtil;
+import com.xiaoleilu.hutool.util.FileUtil;
+import com.xiaoleilu.hutool.util.IoUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * 生成和处理Action返回结果的类
@@ -177,7 +177,7 @@ public class Render {
 	public static void renderVelocity(String templateFileName, String contentType) {
 		final HttpServletResponse response = ActionContext.getResponse();
 		response.setContentType(contentType);
-		com.xiaoleilu.hutool.VelocityUtil.toWriter(templateFileName, ActionContext.getRequest(), response);
+		com.xiaoleilu.hutool.util.VelocityUtil.toWriter(templateFileName, ActionContext.getRequest(), response);
 	}
 
 	/**

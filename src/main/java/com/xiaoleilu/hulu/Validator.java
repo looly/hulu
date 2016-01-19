@@ -1,8 +1,8 @@
 package com.xiaoleilu.hulu;
 
 import com.xiaoleilu.hulu.exception.ValidateException;
-import com.xiaoleilu.hutool.ReUtil;
-import com.xiaoleilu.hutool.StrUtil;
+import com.xiaoleilu.hutool.util.ReUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * 字段验证器

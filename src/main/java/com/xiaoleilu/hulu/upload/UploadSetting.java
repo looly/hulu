@@ -3,10 +3,10 @@ package com.xiaoleilu.hulu.upload;
 import java.net.URL;
 
 import com.xiaoleilu.hulu.HuluSetting;
-import com.xiaoleilu.hutool.Setting;
-import com.xiaoleilu.hutool.URLUtil;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.StaticLog;
+import com.xiaoleilu.hutool.setting.Setting;
+import com.xiaoleilu.hutool.util.URLUtil;
 
 /**
  * 上传文件设定文件

@@ -1,7 +1,7 @@
 package com.xiaoleilu.hulu.render.view;
 
 import com.xiaoleilu.hulu.render.ErrorRender;
-import com.xiaoleilu.hutool.StrUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 
 /**

@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hulu.exception.ActionRuntimeException;
-import com.xiaoleilu.hutool.FileUtil;
+import com.xiaoleilu.hutool.util.FileUtil;
 
 /**
  * HTML文件，读取文件内容作为HTML返回

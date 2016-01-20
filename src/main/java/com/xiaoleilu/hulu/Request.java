@@ -20,6 +20,7 @@ import com.xiaoleilu.hutool.lang.Conver;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
 import com.xiaoleilu.hutool.util.CharsetUtil;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.DateUtil;
 import com.xiaoleilu.hutool.util.InjectUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
@@ -40,11 +41,12 @@ public class Request {
 	public static final String METHOD_PUT = "PUT";
 	public static final String METHOD_TRACE = "TRACE";
 
-	/** Request */
-	private final static ThreadLocal<HttpServletRequest> requestThreadLocal = new ThreadLocal<HttpServletRequest>();
-
+	/** Request ThreadLocal*/
+	private final static ThreadLocal<HttpServletRequest> servletRequestLocal = new ThreadLocal<>();
 	/** 存放每次请求的参数，由于ActionMethod为单例存在，故在此使用ThreadLocal */
-	private static ThreadLocal<String[]> params = new ThreadLocal<String[]>();
+	private static ThreadLocal<String[]> urlParamsLocal = new ThreadLocal<>();
+	/** 存放Multipart Form Data ThreadLocal*/
+	private static ThreadLocal<MultipartFormData> multipartFormDataLocal = new ThreadLocal<>();
 
 	private Request() {
 	}
@@ -53,7 +55,7 @@ public class Request {
 	 * @return 获得Servlet Request对象
 	 */
 	public static HttpServletRequest getServletRequest() {
-		return requestThreadLocal.get();
+		return servletRequestLocal.get();
 	}
 
 	/**
@@ -138,6 +140,53 @@ public class Request {
 	public final static String getHeader(String headerKey) {
 		return getServletRequest().getHeader(headerKey);
 	}
+	
+	/**
+	 * @return 是否为GET请求
+	 */
+	public static boolean isGetMethod() {
+		return METHOD_GET.equalsIgnoreCase(getMethod());
+	}
+	
+	/**
+	 * @return 是否为POST请求
+	 */
+	public static boolean isPostMethod() {
+		return METHOD_POST.equalsIgnoreCase(getMethod());
+	}
+	
+	/**
+	 * @return 客户浏览器是否为IE
+	 */
+	public static boolean isIE() {
+		String userAgent = Request.getHeaderIgnoreCase("User-Agent");
+		if (StrUtil.isNotBlank(userAgent)) {
+			userAgent = userAgent.toUpperCase();
+			if (userAgent.contains("MSIE") || userAgent.contains("TRIDENT")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * @return 是否为Multipart类型表单，此类型表单用于文件上传
+	 */
+	public static boolean isMultipart() {
+		if (false == isPostMethod()) {
+			return false;
+		}
+
+		String contentType = getServletRequest().getContentType();
+		if (StrUtil.isBlank(contentType)) {
+			return false;
+		}
+		if (contentType.toLowerCase().startsWith("multipart/")) {
+			return true;
+		}
+
+		return false;
+	}
 
 	// --------------------------------------------------------- Header end
 
@@ -174,12 +223,19 @@ public class Request {
 
 	// --------------------------------------------------------- Parameter start
 	/**
+	 * @return MultipartForm数据，如果非Multipart表单，返回<code>null</code>
+	 */
+	public static MultipartFormData getMultipart(){
+		return multipartFormDataLocal.get();
+	}
+	
+	/**
 	 * 获得url中的参数，RestFull风格
 	 * 
 	 * @return url中的参数
 	 */
 	public static String[] getUrlParams() {
-		return params.get();
+		return urlParamsLocal.get();
 	}
 
 	/**
@@ -203,7 +259,14 @@ public class Request {
 	 * @return 请求参数
 	 */
 	public static String getParam(String name) {
-		return getServletRequest().getParameter(name);
+		String param = getServletRequest().getParameter(name);
+		if(null == param){
+			MultipartFormData multipart = getMultipart();
+			if(null != multipart){
+				param = multipart.getParam(param);
+			}
+		}
+		return param;
 	}
 
 	/**
@@ -323,7 +386,14 @@ public class Request {
 	 * @return 数组
 	 */
 	public static String[] getArrayParam(String name) {
-		return getServletRequest().getParameterValues(name);
+		String[] values = getServletRequest().getParameterValues(name);
+		if(null == values){
+			final MultipartFormData multipart = getMultipart();
+			if(null != multipart){
+				values = multipart.getArrayParam(name);
+			}
+		}
+		return values;
 	}
 
 	/**
@@ -332,7 +402,14 @@ public class Request {
 	 * @return Map
 	 */
 	public static Map<String, String[]> getParams() {
-		return getServletRequest().getParameterMap();
+		Map<String, String[]> map = getServletRequest().getParameterMap();
+		if(CollectionUtil.isEmpty(map)){
+			final MultipartFormData multipart = getMultipart();
+			if(null != multipart){
+				map = multipart.getParamMap();
+			}
+		}
+		return map;
 	}
 
 	/**
@@ -354,6 +431,7 @@ public class Request {
 
 	/**
 	 * 填充 Value Object对象
+	 * TODO 未处理Multipart参数
 	 * 
 	 * @param vo Value Object对象
 	 * @param isWtihModeName 参数是否带Vo类名，i.e true: user.name, false: name
@@ -363,40 +441,9 @@ public class Request {
 		InjectUtil.injectFromRequest(vo, getServletRequest(), isWtihModeName);
 		return vo;
 	}
-
-	/**
-	 * 获得MultiPart表单内容，多用于获得上传的文件 在同一次请求中，此方法只能被执行一次！
-	 * 
-	 * @return MultipartFormData
-	 * @throws IOException
-	 */
-	public static MultipartFormData getMultipartFormData() throws IOException {
-		return getMultipartFormData(null);
-	}
-
-	/**
-	 * 获得MultiPart表单内容，多用于获得上传的文件
-	 * 
-	 * @param paramName 文件对应的参数名
-	 * @return 文件流
-	 * @throws IOException
-	 */
-	/**
-	 * 获得multipart/form-data 表单内容<br>
-	 * 包括文件和普通表单数据<br>
-	 * 在同一次请求中，此方法只能被执行一次！
-	 * 
-	 * @param uploadSetting 上传文件的设定，包括最大文件大小、保存在内存的边界大小、临时目录、扩展名限定等
-	 * @return MultiPart表单
-	 * @throws IOException
-	 */
-	public static MultipartFormData getMultipartFormData(UploadSetting uploadSetting) throws IOException {
-		MultipartFormData formData = new MultipartFormData(uploadSetting);
-		formData.parseRequest(getServletRequest());
-
-		return formData;
-	}
-
+	// --------------------------------------------------------- Parameter end
+	
+	// --------------------------------------------------------- Attribute start
 	/**
 	 * 设置Request的Attribute，用于在同一个会话中传递参数
 	 * 
@@ -426,22 +473,8 @@ public class Request {
 	public static Object getAttr(String name) {
 		return getServletRequest().getAttribute(name);
 	}
-
-	/**
-	 * @return 客户浏览器是否为IE
-	 */
-	public static boolean isIE() {
-		String userAgent = Request.getHeaderIgnoreCase("User-Agent");
-		if (StrUtil.isNotBlank(userAgent)) {
-			userAgent = userAgent.toUpperCase();
-			if (userAgent.contains("MSIE") || userAgent.contains("TRIDENT")) {
-				return true;
-			}
-		}
-		return false;
-	}
-	// --------------------------------------------------------- Parameter end
-
+	// --------------------------------------------------------- Attribute end
+	
 	// ------------------------------------------------------------------------------------ Protected method start
 	/**
 	 * 初始化Request对象
@@ -456,7 +489,15 @@ public class Request {
 		} catch (Exception e) {
 			log.warn("Charset [{}] not support!", charset);
 		}
-		requestThreadLocal.set(req);
+		servletRequestLocal.set(req);
+		
+		if(isMultipart()){
+			try {
+				multipartFormDataLocal.set(parseMultipart());
+			} catch (IOException e) {
+				throw new ActionRuntimeException(e);
+			}
+		}
 	}
 
 	/**
@@ -467,18 +508,11 @@ public class Request {
 	 */
 	protected static void splitAndSetParams(String urlParam) {
 		String[] urlParams = StrUtil.split(urlParam, HuluSetting.urlParamSeparator);
-		params.set(urlParams);
+		urlParamsLocal.set(urlParams);
 	}
 	// ------------------------------------------------------------------------------------ Protected method end
 
 	// ------------------------------------------------------------------------------------ Private method start
-	/**
-	 * @return 是否为Get请求
-	 */
-	private static boolean isGetMethod() {
-		return METHOD_GET.equalsIgnoreCase(getServletRequest().getMethod());
-	}
-
 	/**
 	 * 转换值得编码 会根据浏览器类型自动识别GET请求的编码方式从而解码<br>
 	 * 考虑到Servlet容器中会首先解码，给定的charsetOfServlet就是Servlet设置的解码charset<br>
@@ -503,6 +537,39 @@ public class Request {
 			value = CharsetUtil.convert(value, charsetOfServlet, destCharset);
 		}
 		return value;
+	}
+	
+	/**
+	 * 获得MultiPart表单内容，多用于获得上传的文件 在同一次请求中，此方法只能被执行一次！
+	 * 
+	 * @return MultipartFormData
+	 * @throws IOException
+	 */
+	private static MultipartFormData parseMultipart() throws IOException {
+		return parseMultipart(null);
+	}
+
+	/**
+	 * 获得MultiPart表单内容，多用于获得上传的文件
+	 * 
+	 * @param paramName 文件对应的参数名
+	 * @return 文件流
+	 * @throws IOException
+	 */
+	/**
+	 * 获得multipart/form-data 表单内容<br>
+	 * 包括文件和普通表单数据<br>
+	 * 在同一次请求中，此方法只能被执行一次！
+	 * 
+	 * @param uploadSetting 上传文件的设定，包括最大文件大小、保存在内存的边界大小、临时目录、扩展名限定等
+	 * @return MultiPart表单
+	 * @throws IOException
+	 */
+	private static MultipartFormData parseMultipart(UploadSetting uploadSetting) throws IOException {
+		MultipartFormData formData = new MultipartFormData(uploadSetting);
+		formData.parseRequest(getServletRequest());
+
+		return formData;
 	}
 	// ------------------------------------------------------------------------------------ Private method end
 }

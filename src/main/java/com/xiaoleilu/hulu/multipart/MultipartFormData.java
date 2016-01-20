@@ -119,7 +119,7 @@ public class MultipartFormData {
 	}
 
 	/**
-	 * Returns the names of the parameters contained in this request.
+	 * @return 获得参数名集合
 	 */
 	public Set<String> getParamNames() {
 		if (requestParameters == null) {
@@ -129,9 +129,11 @@ public class MultipartFormData {
 	}
 
 	/**
-	 * Returns all values all of the values the given request parameter has.
+	 * 获得数组表单值
+	 * @param paramName 参数名
+	 * @return 数组表单值
 	 */
-	public String[] getParamValues(String paramName) {
+	public String[] getArrayParam(String paramName) {
 		if (requestParameters == null) {
 			return null;
 		}

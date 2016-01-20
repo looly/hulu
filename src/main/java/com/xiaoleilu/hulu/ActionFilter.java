@@ -28,6 +28,7 @@ public class ActionFilter implements Filter{
 	
 	/**
 	 * 框架启动初始化
+	 * @param filterConfig FilterConfig
 	 */
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -36,6 +37,12 @@ public class ActionFilter implements Filter{
 		log.info("***** Hulu framwork init finished, spend {}ms *****", DateUtil.spendMs(start));
 	}
 
+	/**
+	 * 拦截请求
+	 * @param req ServletRequest
+	 * @param res ServletResponse
+	 * @param chain FilterChain
+	 */
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest)req;
@@ -51,6 +58,9 @@ public class ActionFilter implements Filter{
 		}
 	}
 
+	/**
+	 * 容器关闭
+	 */
 	@Override
 	public void destroy() {
 		log.info("***** Hulu framwork stoped. *****");

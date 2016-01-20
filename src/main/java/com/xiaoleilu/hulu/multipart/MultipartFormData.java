@@ -1,4 +1,4 @@
-package com.xiaoleilu.hulu.upload;
+package com.xiaoleilu.hulu.multipart;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

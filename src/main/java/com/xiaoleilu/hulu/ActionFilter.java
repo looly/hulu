@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.StaticLog;
+import com.xiaoleilu.hutool.util.DateUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -29,7 +30,10 @@ public class ActionFilter implements Filter{
 	 * 框架启动初始化
 	 */
 	@Override
-	public void  init(FilterConfig filterConfig) throws ServletException {
+	public void init(FilterConfig filterConfig) throws ServletException {
+		final long start = System.currentTimeMillis();
+		ActionContext.init(filterConfig.getServletContext());
+		log.info("***** Hulu framwork init finished, spend {}ms *****", DateUtil.spendMs(start));
 	}
 
 	@Override
@@ -48,7 +52,7 @@ public class ActionFilter implements Filter{
 
 	@Override
 	public void destroy() {
-		log.debug("***** ActionFilter over. *****");
+		log.info("***** Hulu framwork stoped. *****");
 	}
 	
 	// ------------------------------------------------------------------------------------ Private method start

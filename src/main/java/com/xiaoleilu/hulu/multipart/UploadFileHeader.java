@@ -1,4 +1,4 @@
-package com.xiaoleilu.hulu.upload;
+package com.xiaoleilu.hulu.multipart;
 
 import com.xiaoleilu.hutool.util.FileUtil;
 import com.xiaoleilu.hutool.util.StrUtil;

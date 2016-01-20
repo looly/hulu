@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.xiaoleilu.hulu.exception.ActionRuntimeException;
-import com.xiaoleilu.hulu.upload.MultipartFormData;
-import com.xiaoleilu.hulu.upload.UploadSetting;
+import com.xiaoleilu.hulu.multipart.MultipartFormData;
+import com.xiaoleilu.hulu.multipart.UploadSetting;
 import com.xiaoleilu.hutool.http.HttpUtil;
 import com.xiaoleilu.hutool.lang.Conver;
 import com.xiaoleilu.hutool.util.CharsetUtil;

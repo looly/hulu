@@ -112,7 +112,7 @@ public class MultipartFormData {
 			return null;
 		}
 		String[] values = requestParameters.get(paramName);
-		if ((values != null) && (values.length > 0)) {
+		if (CollectionUtil.isNotEmpty(values)) {
 			return values[0];
 		}
 		return null;

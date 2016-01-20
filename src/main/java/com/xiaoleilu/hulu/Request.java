@@ -14,15 +14,17 @@ import javax.servlet.http.HttpSession;
 
 import com.xiaoleilu.hulu.exception.ActionRuntimeException;
 import com.xiaoleilu.hulu.multipart.MultipartFormData;
+import com.xiaoleilu.hulu.multipart.UploadFile;
 import com.xiaoleilu.hulu.multipart.UploadSetting;
 import com.xiaoleilu.hutool.http.HttpUtil;
 import com.xiaoleilu.hutool.lang.Conver;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
+import com.xiaoleilu.hutool.util.BeanUtil;
+import com.xiaoleilu.hutool.util.BeanUtil.ValueProvider;
 import com.xiaoleilu.hutool.util.CharsetUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.DateUtil;
-import com.xiaoleilu.hutool.util.InjectUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -395,6 +397,19 @@ public class Request {
 		}
 		return values;
 	}
+	
+	/**
+	 * 获得上传的文件
+	 * @param name 参数名
+	 * @return 上传的文件
+	 */
+	public static UploadFile getFileParam(String name){
+		MultipartFormData multipart = getMultipart();
+		if(null != multipart){
+			return multipart.getFile(name);
+		}
+		return null;
+	}
 
 	/**
 	 * 获得所有请求参数
@@ -413,33 +428,36 @@ public class Request {
 	}
 
 	/**
-	 * 从Request中获得Vo对象
+	 * 从Request中获得Bean对象
 	 * 
-	 * @param clazz VO类，必须包含默认造方法
-	 * @param isWtihModeName 参数是否带Vo类名，i.e true: user.name, false: name
+	 * @param clazz Bean类，必须包含默认造方法
 	 * @return value Object
 	 */
-	public static <T> T getVo(Class<T> clazz, boolean isWtihModeName) {
-		T vo = null;
-		try {
-			vo = clazz.newInstance();
-		} catch (Exception e) {
-			throw new ActionRuntimeException(StrUtil.format("Can not instance value object [{}]", clazz.getName()), e);
+	public static <T> T getBean(Class<T> clazz) {
+		final T bean = BeanUtil.requestParamToBean(getServletRequest(), clazz);
+		
+		//注入MultipartFormData 中的参数
+		final MultipartFormData multipart = getMultipart();
+		if(null != multipart){
+			final String beanName = StrUtil.lowerFirst(bean.getClass().getSimpleName());
+			BeanUtil.fill(bean, new ValueProvider(){
+				@Override
+				public Object value(String name) {
+					String value = multipart.getParam(name);
+					if (StrUtil.isEmpty(value)) {
+						//使用类名前缀尝试查找值
+						value = multipart.getParam(beanName + StrUtil.DOT + name);
+						if(StrUtil.isEmpty(value)){
+							//此处取得的值为空时跳过，包括null和""
+							value = null;
+						}
+					}
+					return value;
+				}
+			});
 		}
-		return fillVo(vo, isWtihModeName);
-	}
-
-	/**
-	 * 填充 Value Object对象
-	 * TODO 未处理Multipart参数
-	 * 
-	 * @param vo Value Object对象
-	 * @param isWtihModeName 参数是否带Vo类名，i.e true: user.name, false: name
-	 * @return vo
-	 */
-	public static <T> T fillVo(T vo, boolean isWtihModeName) {
-		InjectUtil.injectFromRequest(vo, getServletRequest(), isWtihModeName);
-		return vo;
+		
+		return bean;
 	}
 	// --------------------------------------------------------- Parameter end
 	

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.xiaoleilu.hutool.log.Log;
-import com.xiaoleilu.hutool.log.StaticLog;
+import com.xiaoleilu.hutool.log.LogFactory;
 import com.xiaoleilu.hutool.util.FileUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
@@ -22,7 +22,7 @@ import com.xiaoleilu.hutool.util.StrUtil;
  * 
  */
 public class UploadFile {
-	private static Log log = StaticLog.get();
+	private static Log log = LogFactory.get();
 
 	private static final String TMP_FILE_PREFIX = "hulu-";
 	private static final String TMP_FILE_SUFFIX = ".upload.tmp";

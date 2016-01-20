@@ -7,12 +7,19 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xiaoleilu.hutool.log.Log;
+import com.xiaoleilu.hutool.log.LogFactory;
+
 /**
  * 响应静态类
  * @author xiaoleilu
  *
  */
 public class Response {
+	private static final Log log = LogFactory.get();
+	
+	/**Servlet Response */
+	private final static ThreadLocal<HttpServletResponse> responseThreadLocal = new ThreadLocal<HttpServletResponse>();
 	
 	private Response() {
 	}
@@ -21,7 +28,7 @@ public class Response {
 	 * @return 获得Servlet Response
 	 */
 	public static HttpServletResponse getServletResponse() {
-		return ActionContext.getResponse();
+		return responseThreadLocal.get();
 	}
 	
 	/**
@@ -74,7 +81,7 @@ public class Response {
 	 * @param cookie
 	 */
 	public final static void addCookie(Cookie cookie) {
-		ActionContext.getResponse().addCookie(cookie);
+		getServletResponse().addCookie(cookie);
 	}
 
 	/**
@@ -84,7 +91,7 @@ public class Response {
 	 * @param value Cookie值
 	 */
 	public final static void addCookie(String name, String value) {
-		ActionContext.getResponse().addCookie(new Cookie(name, value));
+		getServletResponse().addCookie(new Cookie(name, value));
 	}
 
 	/**
@@ -119,4 +126,22 @@ public class Response {
 		addCookie(name, value, maxAgeInSeconds, "/", null);
 	}
 	// --------------------------------------------------------- Cookie end
+	
+	// ------------------------------------------------------------------------------------ Protected method start
+	/**
+	 * 初始化Response对象
+	 * 
+	 * @param res 响应对象
+	 */
+	protected final static void init(HttpServletResponse res) {
+		// -- 字符集的过滤
+		String charset = HuluSetting.charset;
+		try {
+			res.setCharacterEncoding(charset);
+		} catch (Exception e) {
+			log.warn("Charset [{}] not support!", charset);
+		}
+		responseThreadLocal.set(res);
+	}
+	// ------------------------------------------------------------------------------------ Protected method end
 }

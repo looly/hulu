@@ -16,7 +16,7 @@ public class Session {
 	 * @return HttpSession
 	 */
 	public static HttpSession getHttpSession() {
-		return ActionContext.getRequest().getSession();
+		return Request.getSession();
 	}
 	
 	/**
@@ -24,7 +24,7 @@ public class Session {
 	 * @return HttpSession
 	 */
 	public static HttpSession getNullableHttpSession() {
-		return ActionContext.getRequest().getSession(false);
+		return Request.getSession(false);
 	}
 	
 	/**

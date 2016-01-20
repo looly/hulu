@@ -6,7 +6,6 @@ import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.xiaoleilu.hulu.ActionContext;
 import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.Response;
@@ -30,7 +29,7 @@ public class ErrorRender {
 	 * @param errorContent 错误信息
 	 */
 	public static void sendError(int errorCode, String errorContent) {
-		HttpServletResponse response = ActionContext.getResponse();
+		HttpServletResponse response = Response.getServletResponse();
 		try {
 			if(HuluSetting.isDevMode) {
 				response.sendError(errorCode);
@@ -48,9 +47,8 @@ public class ErrorRender {
 	 * @param errorContent 错误信息
 	 */
 	public static void render(int errorCode, String errorContent) {
-		final HttpServletResponse response = ActionContext.getResponse();
-		response.setStatus(errorCode);
-		Render.render(errorContent, Render.CONTENT_TYPE_HTML, response);
+		Response.setStatus(errorCode);
+		Render.render(errorContent, Render.CONTENT_TYPE_HTML);
 	}
 	
 	/**

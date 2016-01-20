@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.xiaoleilu.hulu.ActionContext;
 import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hulu.Request;
+import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hulu.exception.RenderException;
 import com.xiaoleilu.hutool.http.HttpUtil;
 import com.xiaoleilu.hutool.util.FileUtil;
@@ -53,7 +54,7 @@ public class Render {
 	public static final void redirect(String uri) {
 		uri = ActionContext.getContextPath() + uri;
 		try {
-			ActionContext.getResponse().sendRedirect(uri);
+			Response.getServletResponse().sendRedirect(uri);
 		} catch (IOException e) {
 			throw new RenderException("Redirect to [" + uri + "] error!");
 		}
@@ -74,14 +75,13 @@ public class Render {
 
 		if (isWithParamStr) {
 			// 加入请求参数
-			String paramStr = ActionContext.getRequest().getQueryString();
+			String paramStr = Request.getServletRequest().getQueryString();
 			if (paramStr != null) url = url + "?" + paramStr;
 		}
 
-		HttpServletResponse response = ActionContext.getResponse();
-		response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-		response.setHeader("Location", url);
-		response.setHeader("Connection", "close");
+		Response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+		Response.setHeader("Location", url);
+		Response.setHeader("Connection", "close");
 	}
 
 	/**
@@ -92,8 +92,8 @@ public class Render {
 	 * @throws IOException
 	 */
 	public static final void forward(String uri) throws ServletException, IOException {
-		final HttpServletRequest request = ActionContext.getRequest();
-		request.getRequestDispatcher(uri).forward(request, ActionContext.getResponse());
+		final HttpServletRequest request = Request.getServletRequest();
+		request.getRequestDispatcher(uri).forward(request, Response.getServletResponse());
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class Render {
 	 * @param text
 	 */
 	public static void renderText(String text) {
-		render(text, CONTENT_TYPE_TEXT, ActionContext.getResponse());
+		render(text, CONTENT_TYPE_TEXT);
 	}
 
 	/**
@@ -175,9 +175,9 @@ public class Render {
 	 * @param contentType 文件类型
 	 */
 	public static void renderVelocity(String templateFileName, String contentType) {
-		final HttpServletResponse response = ActionContext.getResponse();
+		final HttpServletResponse response = Response.getServletResponse();
 		response.setContentType(contentType);
-		com.xiaoleilu.hutool.util.VelocityUtil.toWriter(templateFileName, ActionContext.getRequest(), response);
+		com.xiaoleilu.hutool.util.VelocityUtil.toWriter(templateFileName, Request.getServletRequest(), response);
 	}
 
 	/**
@@ -187,19 +187,9 @@ public class Render {
 	 * @param contentType 返回的内容类型
 	 */
 	public static void render(String text, String contentType) {
-		render(text, contentType, ActionContext.getResponse());
+		render(text, contentType, Response.getServletResponse());
 	}
 	
-	/**
-	 * 返回数据给客户端
-	 * 
-	 * @param in 返回的流
-	 * @param contentType 返回的内容类型
-	 */
-	public static void render(InputStream in, String contentType) {
-		render(in, contentType, ActionContext.getResponse());
-	}
-
 	/**
 	 * 返回数据给客户端
 	 * 
@@ -221,6 +211,16 @@ public class Render {
 		} finally {
 			FileUtil.close(writer);
 		}
+	}
+	
+	/**
+	 * 返回数据给客户端
+	 * 
+	 * @param in 需要返回客户端的内容
+	 * @param contentType 返回的类型
+	 */
+	public static void render(InputStream in, String contentType) {
+		render(in, contentType, Response.getServletResponse());
 	}
 	
 	/**
@@ -264,7 +264,7 @@ public class Render {
 			HttpUtil.encode(responseFileName, HuluSetting.charset);
 		}
 		
-		HttpServletResponse response = ActionContext.getResponse();
+		HttpServletResponse response = Response.getServletResponse();
 		response.addHeader("Content-disposition", "attachment; filename=" + responseFileName);
 		response.setContentType("application/octet-stream");
 		response.setContentLength((int)fileLength);

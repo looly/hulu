@@ -29,7 +29,7 @@ public class ActionHandler {
 	 */
 	public final boolean handle(String target) {
 		if (HuluSetting.isDevMode) {
-			log.debug("Client [{}] {} [{}]", Request.getIp(), ActionContext.getRequest().getMethod(), target);
+			log.debug("Client [{}] {} [{}]", Request.getIp(), Request.getMethod(), target);
 		}
 
 		final ActionMethod actionMethod = actionMapping.getActionMethod(target);

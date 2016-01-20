@@ -1,12 +1,9 @@
 package com.xiaoleilu.hulu;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import com.xiaoleilu.hutool.http.HttpUtil;
 import com.xiaoleilu.hutool.log.Log;
-import com.xiaoleilu.hutool.log.StaticLog;
+import com.xiaoleilu.hutool.log.LogFactory;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -16,12 +13,7 @@ import com.xiaoleilu.hutool.util.StrUtil;
  * @author xiaoleilu
  */
 public class ActionContext {
-	private static Log log = StaticLog.get();
-
-	/** Request */
-	private final static ThreadLocal<HttpServletRequest> requestThreadLocal = new ThreadLocal<HttpServletRequest>();
-	/** Response */
-	private final static ThreadLocal<HttpServletResponse> responseThreadLocal = new ThreadLocal<HttpServletResponse>();
+	private static Log log = LogFactory.get();
 
 	/** Servlet context */
 	private static ServletContext servletContext;
@@ -31,20 +23,6 @@ public class ActionContext {
 
 	/** 请求处理对象 */
 	protected static ActionHandler handler;
-
-	/**
-	 * @return 获得当前线程的请求对象
-	 */
-	public final static HttpServletRequest getRequest() {
-		return requestThreadLocal.get();
-	}
-
-	/**
-	 * @return 获得当前线程的响应对象
-	 */
-	public final static HttpServletResponse getResponse() {
-		return responseThreadLocal.get();
-	}
 
 	/**
 	 * @return 获得Servlet上下文
@@ -61,26 +39,6 @@ public class ActionContext {
 	}
 
 	// ------------------------------------------------------------------------------------ Protected method start
-	/**
-	 * 填充Request对象和Response对象
-	 * 
-	 * @param req 请求对象
-	 * @param res 响应对象
-	 */
-	protected final static void fillReqRes(HttpServletRequest req, HttpServletResponse res) {
-		// -- 字符集的过滤
-		String charset = HuluSetting.charset;
-		try {
-			req.setCharacterEncoding(charset);
-			res.setCharacterEncoding(charset);
-		} catch (Exception e) {
-			log.warn("User [{}] use charset [{}] not support!", HttpUtil.getClientIP(req), charset);
-		}
-
-		requestThreadLocal.set(req);
-		responseThreadLocal.set(res);
-	}
-
 	/**
 	 * 初始化ActionContext
 	 * 

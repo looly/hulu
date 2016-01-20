@@ -42,7 +42,8 @@ public class ActionFilter implements Filter{
 		HttpServletResponse response = (HttpServletResponse)res;
 		
 		//-- 填充请求和响应对象到ActionContext本地线程
-		ActionContext.fillReqRes(request, response);
+		Request.init(request);
+		Response.init(response);
 		
 		//-- 处理请求
 		if(ActionContext.handler.handle(getWellFormTarget(request.getRequestURI()))) {

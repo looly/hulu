@@ -1,10 +1,13 @@
 package com.xiaoleilu.hulu;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
-import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * Action上下文<br>
@@ -17,13 +20,9 @@ public class ActionContext {
 
 	/** Servlet context */
 	private static ServletContext servletContext;
-
-	/** 项目路径的长度，用于请求时去掉项目路径 */
-	protected static int contextPathLength;
-
 	/** 请求处理对象 */
-	protected static ActionHandler handler;
-
+	private static ActionHandler handler;
+	
 	/**
 	 * @return 获得Servlet上下文
 	 */
@@ -35,7 +34,7 @@ public class ActionContext {
 	 * @return 获得项目的请求Path
 	 */
 	public static String getContextPath() {
-		return getServletContext().getContextPath();
+		return servletContext.getContextPath();
 	}
 
 	// ------------------------------------------------------------------------------------ Protected method start
@@ -45,8 +44,27 @@ public class ActionContext {
 	 * @param context ServletContext
 	 */
 	protected static void init(ServletContext context) {
-		initServletContext(context);
+		setServletContext(context);
 		createActionHandler();
+	}
+	
+	/**
+	 * 注入ServletRequst和ServletResponse
+	 * @param req ServletRequest
+	 * @param res ServletResponse
+	 */
+	protected static void fillReqAndRes(ServletRequest req, ServletResponse res){
+		//-- 填充请求和响应对象到ActionContext本地线程
+		Request.init((HttpServletRequest)req);
+		Response.init((HttpServletResponse)res);
+	}
+	
+	/**
+	 * 处理请求
+	 * @return 
+	 */
+	protected static boolean handle() {
+		return handler.handle();
 	}
 
 	// ------------------------------------------------------------------------------------ Protected method end
@@ -57,12 +75,9 @@ public class ActionContext {
 	 * 
 	 * @param context 上下文
 	 */
-	private static void initServletContext(ServletContext context) {
+	private static void setServletContext(ServletContext context) {
 		servletContext = context;
-
-		final String contextPath = servletContext.getContextPath();
-		contextPathLength = (null == contextPath || StrUtil.SLASH.equals(contextPath) ? 0 : contextPath.length());
-		log.debug("Web app ContextPath [{}]", contextPath);
+		log.debug("Web app ContextPath [{}]", servletContext.getContextPath());
 	}
 
 	/**

@@ -9,13 +9,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.xiaoleilu.hutool.log.Log;
-import com.xiaoleilu.hutool.log.StaticLog;
+import com.xiaoleilu.hutool.log.LogFactory;
 import com.xiaoleilu.hutool.util.DateUtil;
-import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * Action过滤器<br>
@@ -24,7 +21,7 @@ import com.xiaoleilu.hutool.util.StrUtil;
  */
 @WebFilter(urlPatterns={"/*"})
 public class ActionFilter implements Filter{
-	private static Log log = StaticLog.get();
+	private static Log log = LogFactory.get();
 	
 	/**
 	 * 框架启动初始化
@@ -45,16 +42,11 @@ public class ActionFilter implements Filter{
 	 */
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest)req;
-		HttpServletResponse response = (HttpServletResponse)res;
-		
-		//-- 填充请求和响应对象到ActionContext本地线程
-		Request.init(request);
-		Response.init(response);
+		ActionContext.fillReqAndRes(req, res);
 		
 		//-- 处理请求
-		if(ActionContext.handler.handle(getWellFormTarget(request.getRequestURI()))) {
-			chain.doFilter(request, response);
+		if(ActionContext.handle()) {
+			chain.doFilter(req, res);
 		}
 	}
 
@@ -65,22 +57,4 @@ public class ActionFilter implements Filter{
 	public void destroy() {
 		log.info("***** Hulu framwork stoped. *****");
 	}
-	
-	// ------------------------------------------------------------------------------------ Private method start
-	/**
-	 * 处理将请求路径标准化为框架目标路径
-	 * @param requestURI 请求URI
-	 * @return 框架目标路径
-	 */
-	private static String getWellFormTarget(String target) {
-		//去掉项目名部分
-		target = target.substring(ActionContext.contextPathLength);
-		//如果以"/"结尾则去之
-		if(StrUtil.isNotEmpty(target) && false ==target.equals(StrUtil.SLASH)) {
-			target = StrUtil.removeSuffix(target, StrUtil.SLASH);
-		}
-		
-		return target;
-	}
-	// ------------------------------------------------------------------------------------ Private method end
 }

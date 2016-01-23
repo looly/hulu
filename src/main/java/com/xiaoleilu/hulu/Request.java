@@ -2,6 +2,7 @@ package com.xiaoleilu.hulu;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import com.xiaoleilu.hutool.util.BeanUtil.ValueProvider;
 import com.xiaoleilu.hutool.util.CharsetUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.DateUtil;
+import com.xiaoleilu.hutool.util.IoUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -58,6 +60,22 @@ public class Request {
 	 */
 	public static HttpServletRequest getServletRequest() {
 		return servletRequestLocal.get();
+	}
+	
+	/**
+	 * @return 获得Path
+	 */
+	public static String getContextPath() {
+		return ActionContext.getContextPath();
+	}
+	
+	/**
+	 * 获得Path，获得的Path是去掉项目名的（contextPath）<br>
+	 * 返回结果永远以"/"开头，不以"/"结尾
+	 * @return 获得Path，获得的Path是去掉
+	 */
+	public static String getPath() {
+		return getWellFormPath(getServletRequest().getRequestURI());
 	}
 
 	/**
@@ -424,7 +442,20 @@ public class Request {
 				map = multipart.getParamMap();
 			}
 		}
-		return map;
+		return Collections.unmodifiableMap(map);
+	}
+	
+	/**
+	 * 获得所有请求参数
+	 * 
+	 * @return Map
+	 */
+	public static Map<String, String> getParamMap() {
+		Map<String,String> params = new HashMap<String,String>();
+		for (Map.Entry<String,String[]> entry : getParams().entrySet()) {
+			params.put( entry.getKey(), CollectionUtil.join(entry.getValue(), StrUtil.COMMA) );
+		}
+		return params;
 	}
 
 	/**
@@ -460,6 +491,19 @@ public class Request {
 		return bean;
 	}
 	// --------------------------------------------------------- Parameter end
+	
+	// --------------------------------------------------------- Body start
+	/**
+	 * @return 获得请求体
+	 */
+	public static String getBody(){
+		try {
+			return IoUtil.read(getServletRequest().getReader());
+		} catch (IOException e) {
+			throw new ActionRuntimeException(e);
+		}
+	}
+	// --------------------------------------------------------- Body end
 	
 	// --------------------------------------------------------- Attribute start
 	/**
@@ -588,6 +632,27 @@ public class Request {
 		formData.parseRequest(getServletRequest());
 
 		return formData;
+	}
+	
+	/**
+	 * 处理将请求路径标准化为框架目标路径
+	 * @param path 请求Path
+	 * @return 框架目标路径
+	 */
+	private static String getWellFormPath(String path) {
+		if(null != path){
+			//去掉项目名部分，不去开头的"/"
+			final String contextPath = getContextPath();
+			if(null != contextPath && false == StrUtil.SLASH.equals(contextPath)){
+				path = StrUtil.removePrefix(path, contextPath);
+			}
+			
+			//去掉尾部"/"，如果path为"/"不处理
+			if(path.length() > 1) {
+				path = StrUtil.removeSuffix(path, StrUtil.SLASH);
+			}
+		}
+		return path;
 	}
 	// ------------------------------------------------------------------------------------ Private method end
 }

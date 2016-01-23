@@ -20,6 +20,15 @@ public class ActionHandler {
 		actionMapping = new ActionMapping(packageNames);
 	}
 	// -------------------------------------------------------------------- Constructor end
+	
+	/**
+	 * 处理请求
+	 * 
+	 * @return 是否继续执行后续步骤
+	 */
+	public final boolean handle() {
+		return handle(Request.getPath());
+	}
 
 	/**
 	 * 处理请求
@@ -48,5 +57,4 @@ public class ActionHandler {
 
 		return false;
 	}
-
 }

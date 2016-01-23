@@ -61,7 +61,7 @@ public class ActionContext {
 	
 	/**
 	 * 处理请求
-	 * @return 
+	 * @return 是否继续执行后续步骤
 	 */
 	protected static boolean handle() {
 		return handler.handle();

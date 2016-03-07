@@ -17,7 +17,6 @@ import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hulu.exception.RenderException;
 import com.xiaoleilu.hutool.http.HttpUtil;
-import com.xiaoleilu.hutool.util.FileUtil;
 import com.xiaoleilu.hutool.util.IoUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
@@ -209,7 +208,7 @@ public class Render {
 		} catch (IOException e) {
 			throw new RenderException("Error when output to client!", e);
 		} finally {
-			FileUtil.close(writer);
+			IoUtil.close(writer);
 		}
 	}
 	
@@ -240,8 +239,8 @@ public class Render {
 		} catch (IOException e) {
 			throw new RenderException("Error when output to client!", e);
 		} finally {
-			FileUtil.close(out);
-			FileUtil.close(in);
+			IoUtil.close(out);
+			IoUtil.close(in);
 		}
 	}
 
@@ -278,8 +277,8 @@ public class Render {
 		} catch (Exception e) {
 			throw new RenderException("Render file error!", e);
 		}finally {
-			FileUtil.close(in);
-			FileUtil.close(out);
+			IoUtil.close(in);
+			IoUtil.close(out);
 		}
 	}
 	

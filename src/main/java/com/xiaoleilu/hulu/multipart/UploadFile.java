@@ -13,6 +13,7 @@ import java.io.InputStream;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
 import com.xiaoleilu.hutool.util.FileUtil;
+import com.xiaoleilu.hutool.util.IoUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -83,7 +84,7 @@ public class UploadFile {
 			destination = new File(destination, this.header.getFileName());
 		}
 		if (data != null) {
-			FileUtil.writeBytes(destination, data);
+			FileUtil.writeBytes(data, destination);
 			data = null;
 		} else {
 			if (tempFile != null) {
@@ -220,7 +221,7 @@ public class UploadFile {
 				return false;
 			}
 		} finally {
-			FileUtil.close(out);
+			IoUtil.close(out);
 		}
 		// if (getFileName().length() == 0 && size == 0) {
 		// size = -1;
@@ -240,7 +241,7 @@ public class UploadFile {
 			return isAllow;
 		}
 
-		String fileNameExt = FileUtil.getExtension(this.getFileName());
+		String fileNameExt = FileUtil.extName(this.getFileName());
 		for (String fileExtension : setting.fileExts) {
 			if (fileNameExt.equalsIgnoreCase(fileExtension)) {
 				return isAllow;

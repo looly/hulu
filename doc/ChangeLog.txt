@@ -64,3 +64,8 @@
 
 1.4.0
 1、升级Hutool至2.14.2
+
+1.5.1
+1、升级Hutool至2.15.1
+2、使用DefaultView处理非View对象响应值
+3、DefaultView中加入对JSON识别支持

@@ -7,7 +7,7 @@ import java.util.List;
 import com.xiaoleilu.hulu.annotation.Route;
 import com.xiaoleilu.hulu.exception.ActionException;
 import com.xiaoleilu.hulu.interceptor.Interceptor;
-import com.xiaoleilu.hulu.render.Render;
+import com.xiaoleilu.hulu.render.view.DefaultView;
 import com.xiaoleilu.hulu.render.view.View;
 import com.xiaoleilu.hutool.log.StaticLog;
 import com.xiaoleilu.hutool.util.StrUtil;
@@ -109,12 +109,11 @@ public class ActionMethod {
 		
 		//对于带有返回值的Action方法，执行Render
 		if(null != returnValue) {
-			if(returnValue instanceof View) {
-				((View) returnValue).render();
-			}else {
-				//如果非View对象，直接返回内容做为HTML
-				Render.renderHtml(returnValue.toString());
+			if(false == (returnValue instanceof View)) {
+				//将未识别响应对象包装为View
+				returnValue = DefaultView.wrap(returnValue);
 			}
+			((View) returnValue).render();
 		}
 	}
 

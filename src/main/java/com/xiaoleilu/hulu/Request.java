@@ -18,6 +18,9 @@ import com.xiaoleilu.hulu.multipart.MultipartFormData;
 import com.xiaoleilu.hulu.multipart.UploadFile;
 import com.xiaoleilu.hulu.multipart.UploadSetting;
 import com.xiaoleilu.hutool.http.HttpUtil;
+import com.xiaoleilu.hutool.json.JSONArray;
+import com.xiaoleilu.hutool.json.JSONObject;
+import com.xiaoleilu.hutool.json.JSONUtil;
 import com.xiaoleilu.hutool.lang.Conver;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
@@ -502,6 +505,20 @@ public class Request {
 		} catch (IOException e) {
 			throw new ActionRuntimeException(e);
 		}
+	}
+	
+	/**
+	 * @return 获得JSONObject请求体
+	 */
+	public static JSONObject getJSONBody(){
+		return JSONUtil.parse(getBody());
+	}
+	
+	/**
+	 * @return 获得JSONObject请求体
+	 */
+	public static JSONArray getJSONArrayBody(){
+		return JSONUtil.parseArray(getBody());
 	}
 	// --------------------------------------------------------- Body end
 	

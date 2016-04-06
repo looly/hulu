@@ -54,10 +54,9 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 		}
 		
 		//Object里的那些方法不能被识别成Action方法
-		final Set<String> forbiddenMethods = ClassUtil.getMethods(Object.class);
+		final Set<String> forbiddenMethods = ClassUtil.getMethodNames(Object.class);
 		
 		for (Class<?> actionClass : actionClasses) {
-			
 			Object actionInstance = null;
 			Method[] methods = null;
 			try {

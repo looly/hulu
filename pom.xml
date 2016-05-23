@@ -68,6 +68,12 @@
 			<version>1.7</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jodd</groupId>
+			<artifactId>jodd-upload</artifactId>
+			<version>3.7.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<profiles>

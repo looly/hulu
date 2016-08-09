@@ -2,6 +2,7 @@ package com.xiaoleilu.hulu.render.view;
 
 import com.xiaoleilu.hulu.exception.RenderException;
 import com.xiaoleilu.hulu.render.Render;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * 服务器端跳转
@@ -39,5 +40,8 @@ public class ForwardView implements View{
 		}
 	}
 	
-	
+	@Override
+	public String toString() {
+		return StrUtil.format("Forward to: {}", this.uri);
+	}
 }

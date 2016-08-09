@@ -1,5 +1,8 @@
 package com.xiaoleilu.hulu.render.view;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import com.xiaoleilu.hulu.render.ErrorRender;
 
 /**
@@ -32,5 +35,13 @@ public class Error500View implements View{
 	@Override
 	public void render() {
 		ErrorRender.render500(e);
+	}
+	
+	@Override
+	public String toString() {
+		final StringWriter writer = new StringWriter();
+		// 把错误堆栈储存到流中
+		this.e.printStackTrace(new PrintWriter(writer));
+		return writer.toString();
 	}
 }

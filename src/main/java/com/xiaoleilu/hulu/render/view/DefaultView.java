@@ -16,6 +16,7 @@ public class DefaultView implements View{
 	private Object obj;
 	
 	public DefaultView(Object obj) {
+		this.obj = obj;
 	}
 	
 	@Override
@@ -41,5 +42,10 @@ public class DefaultView implements View{
 	 */
 	public static DefaultView wrap(Object obj){
 		return new DefaultView(obj);
+	}
+	
+	@Override
+	public String toString() {
+		return obj.toString();
 	}
 }

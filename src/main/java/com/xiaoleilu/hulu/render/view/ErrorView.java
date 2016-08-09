@@ -1,6 +1,8 @@
 package com.xiaoleilu.hulu.render.view;
 
 import com.xiaoleilu.hulu.render.ErrorRender;
+import com.xiaoleilu.hutool.json.JSONObject;
+import com.xiaoleilu.hutool.json.JSONUtil;
 
 /**
  * 错误视图
@@ -65,4 +67,8 @@ public class ErrorView implements View{
 		ErrorRender.render(errorCode, errorContent);
 	}
 
+	@Override
+	public String toString() {
+		return JSONUtil.toJsonStr(new JSONObject(this));
+	}
 }

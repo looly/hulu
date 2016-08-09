@@ -1,6 +1,7 @@
 package com.xiaoleilu.hulu.render.view;
 
 import com.xiaoleilu.hulu.render.Render;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * Velocity内容<br>
@@ -69,5 +70,10 @@ public class VelocityView implements View{
 	@Override
 	public void render() {
 		Render.renderVelocity(templateFileName, contentType);
+	}
+	
+	@Override
+	public String toString() {
+		return StrUtil.format("[{}] {}", this.contentType, this.templateFileName);
 	}
 }

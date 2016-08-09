@@ -1,6 +1,7 @@
 package com.xiaoleilu.hulu.render.view;
 
 import com.xiaoleilu.hulu.render.Render;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * 重定向跳转
@@ -23,5 +24,10 @@ public class RedirectView implements View{
 	@Override
 	public void render() {
 		Render.redirect(uri);
+	}
+	
+	@Override
+	public String toString() {
+		return StrUtil.format("Redirect to: {}", this.uri);
 	}
 }

@@ -80,4 +80,9 @@ public class Error404View implements View{
 			ErrorRender.render404(text);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return this.text;
+	}
 }

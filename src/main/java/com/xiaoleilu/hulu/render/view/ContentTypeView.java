@@ -1,6 +1,7 @@
 package com.xiaoleilu.hulu.render.view;
 
 import com.xiaoleilu.hulu.render.Render;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * 自定义Content-Type的视图
@@ -55,5 +56,10 @@ public class ContentTypeView implements View{
 	@Override
 	public void render() {
 		Render.render(text, contentType);
+	}
+	
+	@Override
+	public String toString() {
+		return StrUtil.format("[{}] {}", this.contentType, this.text);
 	}
 }

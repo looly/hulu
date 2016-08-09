@@ -69,3 +69,7 @@
 1、升级Hutool至2.15.1
 2、使用DefaultView处理非View对象响应值
 3、DefaultView中加入对JSON识别支持
+
+1.5.2
+1、升级Hutool至2.15.5
+2、去掉upload测试

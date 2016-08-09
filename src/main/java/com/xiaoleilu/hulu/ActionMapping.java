@@ -71,8 +71,9 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 			final Interceptor[] actionInterceptors = InterceptorBuilder.build(actionClass);
 
 			for (Method method : methods) {
-				//过滤掉Object中的一些特殊方法(toString(), hash等等)，且只识别无参数方法，防止重载造成的语义混乱
-				if (forbiddenMethods.contains(method.getName()) || method.getParameterTypes().length > 0) {
+				
+				//过滤掉Object中的一些特殊方法(toString(), hash等等)
+				if (forbiddenMethods.contains(method.getName())) {
 					continue;
 				}
 				

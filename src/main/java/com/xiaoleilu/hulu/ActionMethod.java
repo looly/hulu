@@ -64,6 +64,14 @@ public class ActionMethod {
 	protected Method getMethod() {
 		return this.method;
 	}
+	
+	/**
+	 * 获得Http请求的方法，例如GET，POST等
+	 * @return HTTP方法
+	 */
+	protected String getHttpMethod() {
+		return this.httpMethod;
+	}
 
 	// ------------------------------------------------------------- Setters and Getters end
 
@@ -100,6 +108,7 @@ public class ActionMethod {
 	protected void invokeActionMethod() throws ActionException {
 		Object returnValue;
 		try {
+			//TODO 支持参数注入
 			returnValue = this.method.invoke(this.action);
 		} catch(InvocationTargetException te) {
 			throw new ActionException(te.getCause());

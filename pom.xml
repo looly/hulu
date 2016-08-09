@@ -6,7 +6,7 @@
 
 	<groupId>com.xiaoleilu</groupId>
 	<artifactId>hulu</artifactId>
-	<version>1.5.2</version>
+	<version>1.5.3</version>
 	<name>hulu</name>
 	<description>MVC框架</description>
 	<url>https://github.com/looly/hulu</url>

@@ -146,17 +146,20 @@ public class ActionMethod {
 	 * @return 请求路径
 	 */
 	private String genRequestPath() {
+		//Action路径
+		String actionPath = getPath(this.action);
+		
 		// 根据Annotation自定义请求路径
-		String routePath = getRouteAnnotationPath(this.method);
+		String methodPath = getPath(this.method);
 
 		//提取HTTP方法名（如果路径是类似于get:/test/testMethod）
-		if(routePath != null && routePath.contains(":")) {
-			final List<String> methodAndPath = StrUtil.split(routePath, ':', 2);
+		if(methodPath != null && methodPath.contains(":")) {
+			final List<String> methodAndPath = StrUtil.split(methodPath, ':', 2);
 			this.httpMethod = methodAndPath.get(0).trim().toUpperCase();
-			routePath = methodAndPath.get(1).trim();
+			methodPath = methodAndPath.get(1).trim();
 		}
 		
-		return fixRoutePath(routePath);
+		return StrUtil.format("{}{}", fixPath(actionPath), fixPath(methodPath));
 	}
 	
 	/**
@@ -164,52 +167,47 @@ public class ActionMethod {
 	 * 1、去除空白符
 	 * 2、去除尾部斜杠
 	 * 3、补全开头的斜杠
-	 * @param routePath 原请求路径
+	 * @param path 原请求路径
 	 * @return 修正后的请求路径
 	 */
-	private String fixRoutePath(String routePath) {
-		if(StrUtil.isBlank(routePath)) {
-			//用户没有定义Annotation，使用标准请求路径
-			return genNormalRequestPath();
+	private static String fixPath(String path) {
+		path = StrUtil.cleanBlank(path);							//去除空白符
+		path = StrUtil.removeSuffix(path, StrUtil.SLASH); // 去除尾部斜杠
+		if (path.startsWith(StrUtil.SLASH) == false) {
+			path = StrUtil.SLASH + path;							//在路径前补全“/”
 		}
 		
-		routePath = StrUtil.cleanBlank(routePath);							//去除空白符
-		routePath = StrUtil.removeSuffix(routePath, StrUtil.SLASH); // 去除尾部斜杠
-		if (routePath.startsWith(StrUtil.SLASH) == false) {
-			routePath = StrUtil.SLASH + routePath;							//在路径前补全“/”
-		}
-		
-		return routePath;
+		return path;
 	}
 	
 	/**
-	 * 生成标准的请求路径<br>
-	 * 标准请求路径为：无后缀类名/方法名，类名首字母小写<br>
-	 * @return 标准请求路径
-	 */
-	private String genNormalRequestPath() {
-//		final String actionName = StrUtil.removeSuffix(this.action.getClass().getSimpleName(), HuluSetting.actionSuffix).toLowerCase();
-		final String actionName = StrUtil.lowerFirst(StrUtil.removeSuffix(this.action.getClass().getSimpleName(), HuluSetting.actionSuffix));
-		return String.format("/%s/%s", actionName, this.method.getName());
-	}
-
-	/**
 	 * 获得Route注解的自定义请求路径<br>
-	 * @param method Action方法
+	 * @param obj Action对象或者Method对象
 	 * @return 处理后的请求路径，无定义为null
 	 */
-	private String getRouteAnnotationPath(Method method) {
-		final Route routeAnnotation = method.getAnnotation(Route.class);
-		if (null == routeAnnotation) {
+	private static String getPath(Object obj) {
+		if(null == obj){
 			return null;
 		}
 		
-		String routePath = routeAnnotation.value();
-		if (StrUtil.isBlank(routePath)) {
-			//index请求
-			return StrUtil.EMPTY;
+		String routePath;
+		Route routeAnnotation;
+		if(obj instanceof Method){
+			Method method = (Method)obj;
+			routeAnnotation = method.getAnnotation(Route.class);
+			if(null != routeAnnotation){
+				routePath = routeAnnotation.value();
+			}else{
+				routePath = method.getName();
+			}
+		}else{
+			routeAnnotation = obj.getClass().getAnnotation(Route.class);
+			if(null != routeAnnotation){
+				routePath = routeAnnotation.value();
+			}else{
+				routePath = StrUtil.lowerFirst(StrUtil.removeSuffix(obj.getClass().getSimpleName(), HuluSetting.actionSuffix));
+			}
 		}
-		
 		return routePath;
 	}
 	// ------------------------------------------------------------- Private method end

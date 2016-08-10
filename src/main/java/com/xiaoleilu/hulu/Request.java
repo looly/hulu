@@ -22,6 +22,7 @@ import com.xiaoleilu.hutool.json.JSONArray;
 import com.xiaoleilu.hutool.json.JSONObject;
 import com.xiaoleilu.hutool.json.JSONUtil;
 import com.xiaoleilu.hutool.lang.Conver;
+import com.xiaoleilu.hutool.lang.Dict;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
 import com.xiaoleilu.hutool.util.BeanUtil;
@@ -492,6 +493,16 @@ public class Request {
 		}
 		
 		return bean;
+	}
+	
+	/**
+	 * 将参数填充至Dict
+	 * @param t Dict对象
+	 * @return Dict
+	 */
+	public static <T extends Dict> T fill(T t){
+		t.putAll(getParams());
+		return t;
 	}
 	// --------------------------------------------------------- Parameter end
 	

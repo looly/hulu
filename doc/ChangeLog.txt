@@ -78,3 +78,4 @@
 1、更新路径逻辑，使之支持Action类上的注解
 2、修复DefaultRender丢失内容的错误
 3、View添加toString
+4、View增加File的返回值

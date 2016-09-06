@@ -501,7 +501,7 @@ public class Request {
 	 * @return Dict
 	 */
 	public static <T extends Dict> T fill(T t){
-		t.putAll(getParams());
+		t.putAll(getParamMap());
 		return t;
 	}
 	// --------------------------------------------------------- Parameter end
@@ -522,7 +522,7 @@ public class Request {
 	 * @return 获得JSONObject请求体
 	 */
 	public static JSONObject getJSONBody(){
-		return JSONUtil.parse(getBody());
+		return JSONUtil.parseObj(getBody());
 	}
 	
 	/**

@@ -243,6 +243,15 @@ public class Render {
 			IoUtil.close(in);
 		}
 	}
+	
+	/**
+	 * 响应文件<br>
+	 * 文件过大将下载失败
+	 * @param file 文件对象
+	 */
+	public static void renderFile(File file) {
+		renderFile(file, null, IoUtil.DEFAULT_BUFFER_SIZE);
+	}
 
 	/**
 	 * 响应文件<br>

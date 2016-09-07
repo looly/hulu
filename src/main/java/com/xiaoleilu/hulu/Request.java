@@ -18,6 +18,7 @@ import com.xiaoleilu.hulu.multipart.MultipartFormData;
 import com.xiaoleilu.hulu.multipart.UploadFile;
 import com.xiaoleilu.hulu.multipart.UploadSetting;
 import com.xiaoleilu.hutool.http.HttpUtil;
+import com.xiaoleilu.hutool.io.IoUtil;
 import com.xiaoleilu.hutool.json.JSONArray;
 import com.xiaoleilu.hutool.json.JSONObject;
 import com.xiaoleilu.hutool.json.JSONUtil;
@@ -30,7 +31,6 @@ import com.xiaoleilu.hutool.util.BeanUtil.ValueProvider;
 import com.xiaoleilu.hutool.util.CharsetUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.DateUtil;
-import com.xiaoleilu.hutool.util.IoUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**

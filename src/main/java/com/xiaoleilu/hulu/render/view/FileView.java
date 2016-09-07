@@ -3,7 +3,7 @@ package com.xiaoleilu.hulu.render.view;
 import java.io.File;
 
 import com.xiaoleilu.hulu.render.Render;
-import com.xiaoleilu.hutool.util.IoUtil;
+import com.xiaoleilu.hutool.io.IoUtil;
 
 /**
  * 返回文件

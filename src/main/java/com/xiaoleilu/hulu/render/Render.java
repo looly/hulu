@@ -17,7 +17,7 @@ import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hulu.exception.RenderException;
 import com.xiaoleilu.hutool.http.HttpUtil;
-import com.xiaoleilu.hutool.util.IoUtil;
+import com.xiaoleilu.hutool.io.IoUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**

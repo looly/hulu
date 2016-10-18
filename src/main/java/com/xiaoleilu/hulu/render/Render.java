@@ -18,6 +18,7 @@ import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hulu.exception.RenderException;
 import com.xiaoleilu.hutool.http.HttpUtil;
 import com.xiaoleilu.hutool.io.IoUtil;
+import com.xiaoleilu.hutool.json.JSON;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -125,10 +126,19 @@ public class Render {
 	/**
 	 * 返回JSON
 	 * 
-	 * @param json
+	 * @param jsonStr JSON字符串
 	 */
-	public static void renderJson(String json) {
-		render(json, Request.isIE() ? CONTENT_TYPE_JSON_IE : CONTENT_TYPE_JSON);
+	public static void renderJson(String jsonStr) {
+		render(jsonStr, Request.isIE() ? CONTENT_TYPE_JSON_IE : CONTENT_TYPE_JSON);
+	}
+	
+	/**
+	 * 返回JSON
+	 * 
+	 * @param json JSONObject or JSONArray
+	 */
+	public static void renderJson(JSON json) {
+		renderJson(json.toString());
 	}
 	
 	/**

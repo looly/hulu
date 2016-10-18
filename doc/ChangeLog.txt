@@ -79,3 +79,6 @@
 2、修复DefaultRender丢失内容的错误
 3、View添加toString
 4、View增加File的返回值
+5、升级依赖以及Maven插件
+6、Render增加JSON对象支持
+7、增加demo

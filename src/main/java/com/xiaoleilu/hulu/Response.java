@@ -135,7 +135,6 @@ public class Response {
 	 * 
 	 * @param text 返回的内容
 	 * @param contentType 返回的类型
-	 * @param response Response对象
 	 */
 	public static void write(String text, String contentType) {
 		setContentType(contentType);
@@ -156,7 +155,6 @@ public class Response {
 	 * 
 	 * @param in 需要返回客户端的内容
 	 * @param contentType 返回的类型
-	 * @param response Response对象
 	 */
 	public static void write(InputStream in, String contentType) {
 		setContentType(contentType);
@@ -167,8 +165,6 @@ public class Response {
 	 * 返回数据给客户端
 	 * 
 	 * @param in 需要返回客户端的内容
-	 * @param contentType 返回的类型
-	 * @param response Response对象
 	 */
 	public static void write(InputStream in) {
 		ServletOutputStream out = null;

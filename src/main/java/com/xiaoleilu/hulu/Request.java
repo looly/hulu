@@ -113,7 +113,7 @@ public class Request {
 	public final static String getMethod() {
 		return getServletRequest().getMethod();
 	}
-
+	
 	// --------------------------------------------------------- Header start
 
 	/**

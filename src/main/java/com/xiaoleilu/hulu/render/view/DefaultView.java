@@ -2,7 +2,6 @@ package com.xiaoleilu.hulu.render.view;
 
 import java.io.File;
 
-import com.xiaoleilu.hulu.render.Render;
 import com.xiaoleilu.hutool.json.JSON;
 import com.xiaoleilu.hutool.json.JSONSupport;
 
@@ -29,14 +28,13 @@ public class DefaultView implements View{
 		
 		//识别已知返回值类型
 		if(obj instanceof JSONSupport || obj instanceof JSON){
-			Render.renderJson(obj.toString());
-			return;
+			new JsonView(obj.toString()).render();;
 		}else if(obj instanceof File){
-			Render.renderFile((File)obj);
+			new FileView((File)obj).render();
+		}else{
+			//如果非View对象，直接返回内容做为HTML
+			new HtmlView(obj.toString()).render();
 		}
-		
-		//如果非View对象，直接返回内容做为HTML
-		Render.renderHtml(obj.toString());
 	}
 	
 	/**

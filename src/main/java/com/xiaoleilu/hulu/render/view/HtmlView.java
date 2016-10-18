@@ -1,6 +1,6 @@
 package com.xiaoleilu.hulu.render.view;
 
-import com.xiaoleilu.hulu.render.Render;
+import com.xiaoleilu.hulu.Response;
 
 /**
  * HTML内容
@@ -10,10 +10,10 @@ import com.xiaoleilu.hulu.render.Render;
 public class HtmlView extends ContentTypeView{
 	
 	public HtmlView() {
-		this.contentType = Render.CONTENT_TYPE_HTML;
+		this(null);
 	}
 	
 	public HtmlView(String text) {
-		super(text, Render.CONTENT_TYPE_HTML);
+		super(text, Response.CONTENT_TYPE_HTML);
 	}
 }

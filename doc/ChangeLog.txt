@@ -82,3 +82,4 @@
 5、升级依赖以及Maven插件
 6、Render增加JSON对象支持
 7、增加demo
+8、重构View部分和Render类

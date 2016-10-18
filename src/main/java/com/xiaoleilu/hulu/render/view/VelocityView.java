@@ -1,6 +1,9 @@
 package com.xiaoleilu.hulu.render.view;
 
-import com.xiaoleilu.hulu.render.Render;
+import javax.servlet.http.HttpServletResponse;
+
+import com.xiaoleilu.hulu.Request;
+import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -23,7 +26,7 @@ public class VelocityView implements View{
 	 */
 	public VelocityView(String templateFileName) {
 		this.templateFileName = templateFileName;
-		this.contentType = Render.CONTENT_TYPE_HTML;
+		this.contentType = Response.CONTENT_TYPE_HTML;
 	}
 	
 	/**
@@ -69,7 +72,9 @@ public class VelocityView implements View{
 	
 	@Override
 	public void render() {
-		Render.renderVelocity(templateFileName, contentType);
+		final HttpServletResponse response = Response.getServletResponse();
+		response.setContentType(contentType);
+		com.xiaoleilu.hutool.util.VelocityUtil.toWriter(templateFileName, Request.getServletRequest(), response);
 	}
 	
 	@Override

@@ -1,7 +1,7 @@
 package com.xiaoleilu.hulu;
 
 import com.xiaoleilu.hulu.exception.ActionException;
-import com.xiaoleilu.hulu.render.ErrorRender;
+import com.xiaoleilu.hulu.render.Render;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.StaticLog;
 
@@ -52,7 +52,7 @@ public class ActionHandler {
 		try {
 			actionMethod.invoke();
 		} catch (ActionException e) {
-			ErrorRender.render500(e.getCause());
+			Render.renderError500(e.getCause());
 		}
 
 		return false;

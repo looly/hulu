@@ -1,25 +1,28 @@
 package com.xiaoleilu.hulu.render;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.xiaoleilu.hulu.ActionContext;
-import com.xiaoleilu.hulu.HuluSetting;
-import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.Response;
-import com.xiaoleilu.hulu.exception.RenderException;
-import com.xiaoleilu.hutool.http.HttpUtil;
+import com.xiaoleilu.hulu.render.view.Error404View;
+import com.xiaoleilu.hulu.render.view.Error500View;
+import com.xiaoleilu.hulu.render.view.ErrorView;
+import com.xiaoleilu.hulu.render.view.FileView;
+import com.xiaoleilu.hulu.render.view.ForwardView;
+import com.xiaoleilu.hulu.render.view.HtmlView;
+import com.xiaoleilu.hulu.render.view.JsView;
+import com.xiaoleilu.hulu.render.view.JsonView;
+import com.xiaoleilu.hulu.render.view.JspView;
+import com.xiaoleilu.hulu.render.view.Redirect301View;
+import com.xiaoleilu.hulu.render.view.RedirectView;
+import com.xiaoleilu.hulu.render.view.TextView;
+import com.xiaoleilu.hulu.render.view.VelocityView;
+import com.xiaoleilu.hulu.render.view.XmlView;
 import com.xiaoleilu.hutool.io.IoUtil;
 import com.xiaoleilu.hutool.json.JSON;
-import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * 生成和处理Action返回结果的类
@@ -28,22 +31,7 @@ import com.xiaoleilu.hutool.util.StrUtil;
  * 
  */
 public class Render {
-
-	/** Callback 函数名，用于JS跨域请求 */
-	public final static String DEFAULT_CALLBACK_NAME = "callback";
-
-	/** 返回内容类型：普通文本 */
-	public final static String CONTENT_TYPE_TEXT = "text/plain";
-	/** 返回内容类型：HTML */
-	public final static String CONTENT_TYPE_HTML = "text/html";
-	/** 返回内容类型：XML */
-	public final static String CONTENT_TYPE_XML = "text/xml";
-	/** 返回内容类型：JAVASCRIPT */
-	public final static String CONTENT_TYPE_JAVASCRIPT = "application/javascript";
-	/** 返回内容类型：JSON */
-	public final static String CONTENT_TYPE_JSON = "application/json";
-	public final static String CONTENT_TYPE_JSON_IE = "text/json";
-
+	
 	/**
 	 * 重定向到一个新地址<br>
 	 * status 302
@@ -52,36 +40,17 @@ public class Render {
 	 * @throws IOException
 	 */
 	public static final void redirect(String uri) {
-		uri = ActionContext.getContextPath() + uri;
-		try {
-			Response.getServletResponse().sendRedirect(uri);
-		} catch (IOException e) {
-			throw new RenderException("Redirect to [" + uri + "] error!");
-		}
+		new RedirectView(uri).render();
 	}
 
 	/**
 	 * 301跳转
 	 * 
-	 * @param url
-	 * @param isWithParamStr
+	 * @param url 跳转的URL
+	 * @param isWithParamStr 是否包含URL参数
 	 */
 	public static void redirect301(String url, boolean isWithParamStr) {
-
-		String contextPath = ActionContext.getContextPath();
-		if (contextPath != null && url.indexOf("://") == -1) {
-			url = contextPath + url;
-		}
-
-		if (isWithParamStr) {
-			// 加入请求参数
-			String paramStr = Request.getServletRequest().getQueryString();
-			if (paramStr != null) url = url + "?" + paramStr;
-		}
-
-		Response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-		Response.setHeader("Location", url);
-		Response.setHeader("Connection", "close");
+		new Redirect301View(url).render();
 	}
 
 	/**
@@ -91,36 +60,35 @@ public class Render {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public static final void forward(String uri) throws ServletException, IOException {
-		final HttpServletRequest request = Request.getServletRequest();
-		request.getRequestDispatcher(uri).forward(request, Response.getServletResponse());
+	public static final void forward(String uri) {
+		new ForwardView(uri).render();
 	}
 
 	/**
 	 * 返回普通文本
 	 * 
-	 * @param text
+	 * @param text 文本
 	 */
 	public static void renderText(String text) {
-		render(text, CONTENT_TYPE_TEXT);
+		new TextView(text).render();
 	}
 
 	/**
 	 * 返回HTML
 	 * 
-	 * @param html
+	 * @param html HTML
 	 */
 	public static void renderHtml(String html) {
-		render(html, CONTENT_TYPE_HTML);
+		new HtmlView(html).render();
 	}
 
 	/**
 	 * 返回XML
 	 * 
-	 * @param xml
+	 * @param xml XML
 	 */
 	public static void renderXml(String xml) {
-		render(xml, CONTENT_TYPE_XML);
+		new XmlView(xml).render();
 	}
 	
 	/**
@@ -129,7 +97,7 @@ public class Render {
 	 * @param jsonStr JSON字符串
 	 */
 	public static void renderJson(String jsonStr) {
-		render(jsonStr, Request.isIE() ? CONTENT_TYPE_JSON_IE : CONTENT_TYPE_JSON);
+		new JsonView(jsonStr).render();
 	}
 	
 	/**
@@ -157,15 +125,7 @@ public class Render {
 	 * @param callbackParamName 回调函数的参数名称
 	 */
 	public static void renderJs(String data, String callbackParamName) {
-		if (callbackParamName == null) {
-			callbackParamName = DEFAULT_CALLBACK_NAME;
-		}
-		if(data == null) {
-			data = StrUtil.EMPTY;
-		}
-		
-		final String callback = Request.getParam(callbackParamName, DEFAULT_CALLBACK_NAME);
-		render(StrUtil.format("{}({})", callback, data), CONTENT_TYPE_JAVASCRIPT);
+		new JsView(data, callbackParamName).render();
 	}
 
 	/**
@@ -174,7 +134,7 @@ public class Render {
 	 * @param templateFileName 模板文件
 	 */
 	public static void renderVelocityHtml(String templateFileName) {
-		renderVelocity(templateFileName, CONTENT_TYPE_HTML);
+		renderVelocity(templateFileName, Response.CONTENT_TYPE_HTML);
 	}
 
 	/**
@@ -184,76 +144,9 @@ public class Render {
 	 * @param contentType 文件类型
 	 */
 	public static void renderVelocity(String templateFileName, String contentType) {
-		final HttpServletResponse response = Response.getServletResponse();
-		response.setContentType(contentType);
-		com.xiaoleilu.hutool.util.VelocityUtil.toWriter(templateFileName, Request.getServletRequest(), response);
+		new VelocityView().render();
 	}
 
-	/**
-	 * 返回数据给客户端
-	 * 
-	 * @param text 返回的内容
-	 * @param contentType 返回的内容类型
-	 */
-	public static void render(String text, String contentType) {
-		render(text, contentType, Response.getServletResponse());
-	}
-	
-	/**
-	 * 返回数据给客户端
-	 * 
-	 * @param text 返回的内容
-	 * @param contentType 返回的类型
-	 * @param response Response对象
-	 */
-	public static void render(String text, String contentType, HttpServletResponse response) {
-		// response.setCharacterEncoding(CHARSET); //在Filter中提供
-		response.setContentType(contentType);
-
-		Writer writer = null;
-		try {
-			writer = response.getWriter();
-			writer.write(text);
-			writer.flush();
-		} catch (IOException e) {
-			throw new RenderException("Error when output to client!", e);
-		} finally {
-			IoUtil.close(writer);
-		}
-	}
-	
-	/**
-	 * 返回数据给客户端
-	 * 
-	 * @param in 需要返回客户端的内容
-	 * @param contentType 返回的类型
-	 */
-	public static void render(InputStream in, String contentType) {
-		render(in, contentType, Response.getServletResponse());
-	}
-	
-	/**
-	 * 返回数据给客户端
-	 * 
-	 * @param in 需要返回客户端的内容
-	 * @param contentType 返回的类型
-	 * @param response Response对象
-	 */
-	public static void render(InputStream in, String contentType, HttpServletResponse response) {
-		response.setContentType(contentType);
-
-		ServletOutputStream out = null;
-		try {
-			out = response.getOutputStream();
-			IoUtil.copy(in, out);
-		} catch (IOException e) {
-			throw new RenderException("Error when output to client!", e);
-		} finally {
-			IoUtil.close(out);
-			IoUtil.close(in);
-		}
-	}
-	
 	/**
 	 * 响应文件<br>
 	 * 文件过大将下载失败
@@ -271,34 +164,8 @@ public class Render {
 	 * @param bufferSize 缓存大小
 	 */
 	public static void renderFile(File file, String responseFileName, int bufferSize) {
-		long fileLength = file.length();
-		if(fileLength > Integer.MAX_VALUE) {
-			throw new RenderException("File [" + file.getName() + "] is too large, file size: [" + fileLength + "]");
-		}
-		
-		if (StrUtil.isBlank(responseFileName)) {
-			// 如果未指定文件名，使用原文件名
-			responseFileName = file.getName();
-			HttpUtil.encode(responseFileName, HuluSetting.charset);
-		}
-		
-		HttpServletResponse response = Response.getServletResponse();
-		response.addHeader("Content-disposition", "attachment; filename=" + responseFileName);
-		response.setContentType("application/octet-stream");
-		response.setContentLength((int)fileLength);
-		
-		FileInputStream in = null;
-		ServletOutputStream out = null;
-		try {
-			in = new FileInputStream(file);
-			out = response.getOutputStream();
-			IoUtil.copy(in, out);
-		} catch (Exception e) {
-			throw new RenderException("Render file error!", e);
-		}finally {
-			IoUtil.close(in);
-			IoUtil.close(out);
-		}
+		new FileView(file, responseFileName, bufferSize).render();
+	
 	}
 	
 	/**
@@ -306,10 +173,48 @@ public class Render {
 	 * @param view jsp的url
 	 */
 	public static void renderJsp(String view) {
-		try {
-			forward(view);
-		} catch (Exception e) {
-			throw new RenderException(e.getMessage(), e);
-		}
+		new JspView(view).render();
+	}
+	
+	//----------------------------------------------------------------------------------- Error Render
+	/**
+	 * 返回错误页面
+	 * @param errorCode 错误代码
+	 * @param errorContent 错误信息
+	 */
+	public static void renderError(int errorCode, String errorContent) {
+		new ErrorView(errorCode, errorContent).render();
+	}
+	
+	/**
+	 * 在页面打印堆栈信息<br>
+	 * @param e 异常
+	 */
+	public static void renderError500(Throwable e) {
+		new Error500View(e).render();
+	}
+	
+	/**
+	 * 输出404信息
+	 */
+	public static void renderError404() {
+		new Error404View().render();
+	}
+	
+	/**
+	 * 输出404信息
+	 * @param pageContent 错误消息页面内容
+	 */
+	public static void render404Page(String pageContent) {
+		Response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		render404(pageContent);
+	}
+	
+	/**
+	 * 输出404信息
+	 * @param content 错误消息内容
+	 */
+	public static void render404(String content) {
+		new Error404View(content).render();
 	}
 }

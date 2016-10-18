@@ -1,9 +1,17 @@
 package com.xiaoleilu.hulu.render.view;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
-import com.xiaoleilu.hulu.render.Render;
+import javax.servlet.http.HttpServletResponse;
+
+import com.xiaoleilu.hulu.HuluSetting;
+import com.xiaoleilu.hulu.Response;
+import com.xiaoleilu.hulu.exception.RenderException;
+import com.xiaoleilu.hutool.http.HttpUtil;
 import com.xiaoleilu.hutool.io.IoUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * 返回文件
@@ -24,24 +32,11 @@ public class FileView implements View{
 	}
 	
 	/**
-	 * 构造
+	 * 构造，默认文件名和缓存大小
 	 * @param file 文件
-	 * @param responseFileName 响应给客户端的文件名
-	 * @param bufferSize 缓存大小
 	 */
-	public FileView(File file, String responseFileName, int bufferSize) {
-		this.file = file;
-		this.responseFileName = responseFileName;
-		this.bufferSize = bufferSize;
-	}
-	
-	/**
-	 * 构造，默认文件名
-	 * @param file 文件
-	 * @param bufferSize 缓存大小
-	 */
-	public FileView(File file, int bufferSize) {
-		this(file, null, bufferSize);
+	public FileView(File file) {
+		this(file, null, IoUtil.DEFAULT_BUFFER_SIZE);
 	}
 	
 	/**
@@ -54,11 +49,24 @@ public class FileView implements View{
 	}
 	
 	/**
-	 * 构造，默认文件名和缓存大小
+	 * 构造，默认文件名
 	 * @param file 文件
+	 * @param bufferSize 缓存大小
 	 */
-	public FileView(File file) {
-		this(file, null, IoUtil.DEFAULT_BUFFER_SIZE);
+	public FileView(File file, int bufferSize) {
+		this(file, null, bufferSize);
+	}
+	
+	/**
+	 * 构造
+	 * @param file 文件
+	 * @param responseFileName 响应给客户端的文件名
+	 * @param bufferSize 缓存大小
+	 */
+	public FileView(File file, String responseFileName, int bufferSize) {
+		this.file = file;
+		this.responseFileName = responseFileName;
+		this.bufferSize = bufferSize;
 	}
 	//---------------------------------------------------------- Constructor end
 	
@@ -108,6 +116,35 @@ public class FileView implements View{
 	
 	@Override
 	public void render() {
-		Render.renderFile(file, responseFileName, bufferSize);
+		if(null == this.file){
+			throw new RenderException("File param is null !");
+		}
+		if(false == file.exists()){
+			throw new RenderException(StrUtil.format("File [{}] not exist !", file));
+		}
+		if(false == file.isFile()){
+			throw new RenderException(StrUtil.format("File [{}] not a file !", file));
+		}
+		long fileLength = file.length();
+		if(fileLength > Integer.MAX_VALUE) {
+			throw new RenderException("File [" + file.getName() + "] is too large, file size: [" + fileLength + "]");
+		}
+		
+		if (StrUtil.isBlank(responseFileName)) {
+			// 如果未指定文件名，使用原文件名
+			responseFileName = file.getName();
+			HttpUtil.encode(responseFileName, HuluSetting.charset);
+		}
+		
+		final HttpServletResponse response = Response.getServletResponse();
+		response.addHeader("Content-disposition", "attachment; filename=" + responseFileName);
+		response.setContentType("application/octet-stream");
+		response.setContentLength((int)fileLength);
+		
+		try {
+			Response.write(new FileInputStream(file));
+		} catch (FileNotFoundException e) {
+			throw new RenderException(StrUtil.format("File [{}] not exist !", file), e);
+		}
 	}
 }

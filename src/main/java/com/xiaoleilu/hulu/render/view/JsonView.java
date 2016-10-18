@@ -1,6 +1,8 @@
 package com.xiaoleilu.hulu.render.view;
 
-import com.xiaoleilu.hulu.render.Render;
+import com.xiaoleilu.hulu.Request;
+import com.xiaoleilu.hulu.Response;
+import com.xiaoleilu.hutool.json.JSON;
 
 /**
  * JSON内容
@@ -9,15 +11,13 @@ import com.xiaoleilu.hulu.render.Render;
  */
 public class JsonView extends ContentTypeView{
 	
-	public JsonView() {
+	public JsonView(JSON json) {
+		this(json.toString());
 	}
 	
 	public JsonView(String text) {
 		this.text = text;
+		this.contentType = Request.isIE() ? Response.CONTENT_TYPE_JSON_IE : Response.CONTENT_TYPE_JSON;
 	}
 	
-	@Override
-	public void render() {
-		Render.renderJson(text);
-	}
 }

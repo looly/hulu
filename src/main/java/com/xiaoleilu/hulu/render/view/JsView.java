@@ -1,6 +1,8 @@
 package com.xiaoleilu.hulu.render.view;
 
-import com.xiaoleilu.hulu.render.Render;
+import com.xiaoleilu.hulu.Request;
+import com.xiaoleilu.hulu.Response;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * Javascript内容<br>
@@ -17,6 +19,7 @@ public class JsView extends ContentTypeView{
 	 * 构造，自定义参数
 	 */
 	public JsView() {
+		this(null);
 	}
 	
 	/**
@@ -24,7 +27,7 @@ public class JsView extends ContentTypeView{
 	 * @param text 内容
 	 */
 	public JsView(String text) {
-		this.text = text;
+		this(text, null);
 	}
 	
 	/**
@@ -34,7 +37,8 @@ public class JsView extends ContentTypeView{
 	 */
 	public JsView(String text, String callbackParamName) {
 		this.text = text;
-		this.callbackParamName = callbackParamName;
+		this.callbackParamName = null == callbackParamName ? Response.DEFAULT_CALLBACK_NAME : callbackParamName;
+		this.contentType = Response.CONTENT_TYPE_JAVASCRIPT;
 	}
 	//---------------------------------------------------------- Constructor end
 	
@@ -56,6 +60,8 @@ public class JsView extends ContentTypeView{
 	
 	@Override
 	public void render() {
-		Render.renderJs(text, callbackParamName);
+		final String callback = Request.getParam(callbackParamName, Response.DEFAULT_CALLBACK_NAME);
+		this.text = StrUtil.format("{}({})", callback, this.text);
+		super.render();
 	}
 }

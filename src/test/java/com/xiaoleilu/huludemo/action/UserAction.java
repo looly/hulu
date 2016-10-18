@@ -6,7 +6,6 @@ import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.annotation.Route;
 import com.xiaoleilu.hulu.exception.DaoException;
 import com.xiaoleilu.hulu.interceptor.Intercept;
-import com.xiaoleilu.hulu.render.ErrorRender;
 import com.xiaoleilu.hulu.render.Render;
 import com.xiaoleilu.huludemo.dao.VirtualDao;
 import com.xiaoleilu.huludemo.interceptor.Log1Interceptor;
@@ -46,7 +45,7 @@ public class UserAction {
 		} catch (DaoException e) {
 			//ErrorRender这个类用于返回给客户端（浏览器）一个错误信息，例如render500是返回一个500页面。内容是堆栈信息。
 			//其实这个try catch不是必须的，可以在create方法上抛出其，当hulu.setting中的DevMode打开（为true）的时候，会自动返回一个带堆栈信息的500页面。
-			ErrorRender.render500(e);
+			Render.renderError500(e);
 			return;
 		}
 		

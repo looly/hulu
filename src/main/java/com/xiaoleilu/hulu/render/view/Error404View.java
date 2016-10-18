@@ -1,7 +1,8 @@
 package com.xiaoleilu.hulu.render.view;
 
-import com.xiaoleilu.hulu.render.ErrorRender;
-import com.xiaoleilu.hutool.util.StrUtil;
+import javax.servlet.http.HttpServletResponse;
+
+import com.xiaoleilu.hulu.Response;
 
 
 /**
@@ -9,9 +10,10 @@ import com.xiaoleilu.hutool.util.StrUtil;
  * @author Looly
  *
  */
-public class Error404View implements View{
+public class Error404View extends ErrorView{
 	
-	private String text;
+	public static final String TEXT_DEFAULT = "404 Not Found!";
+	
 	private boolean isHtml;
 	
 	//---------------------------------------------------------- Constructor start
@@ -19,16 +21,7 @@ public class Error404View implements View{
 	 * 构造，默认404页面
 	 */
 	public Error404View() {
-	}
-	
-	/**
-	 * 构造
-	 * @param text 404页面显示的内容
-	 * @param isHtml 是否为HTML页面，如果是，返回一个自定义的HTML页面，内容为text
-	 */
-	public Error404View(String text, boolean isHtml) {
-		this.text = text;
-		this.isHtml = isHtml;
+		this(TEXT_DEFAULT);
 	}
 	
 	/**
@@ -38,23 +31,20 @@ public class Error404View implements View{
 	public Error404View(String text) {
 		this(text, false);
 	}
+	
+	/**
+	 * 构造
+	 * @param errorContent 404页面显示的内容
+	 * @param isHtml 是否为HTML页面，如果是，返回一个自定义的HTML页面，内容为text
+	 */
+	public Error404View(String errorContent, boolean isHtml) {
+		super(HttpServletResponse.SC_NOT_FOUND, errorContent);
+		this.isHtml = isHtml;
+	}
+	
 	//---------------------------------------------------------- Constructor end
 	
 	//---------------------------------------------------------- Getters and Setters start
-	/**
-	 * @return 内容
-	 */
-	public String getText() {
-		return text;
-	}
-	/**
-	 * 设置内容
-	 * @param text 内容
-	 */
-	public void setText(String text) {
-		this.text = text;
-	}
-
 	/**
 	 * @return 是否为HTML页面
 	 */
@@ -72,17 +62,17 @@ public class Error404View implements View{
 	
 	@Override
 	public void render() {
-		if(StrUtil.isBlank(text)) {
-			ErrorRender.render404();
-		}else if(isHtml){
-			ErrorRender.render404Page(text);
-		}else {
-			ErrorRender.render404(text);
+		String text = this.getErrorContent();
+		if(isHtml){
+			Response.setStatus(getErrorCode());
+			new HtmlView(text).render();
+		}else{
+			super.render();
 		}
 	}
 	
 	@Override
 	public String toString() {
-		return this.text;
+		return getErrorContent();
 	}
 }

@@ -1,6 +1,6 @@
 package com.xiaoleilu.hulu.render.view;
 
-import com.xiaoleilu.hulu.render.ErrorRender;
+import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hutool.json.JSONObject;
 import com.xiaoleilu.hutool.json.JSONUtil;
 
@@ -64,7 +64,8 @@ public class ErrorView implements View{
 
 	@Override
 	public void render() {
-		ErrorRender.render(errorCode, errorContent);
+		Response.setStatus(errorCode);
+		Response.write(errorContent, Response.CONTENT_TYPE_HTML);
 	}
 
 	@Override

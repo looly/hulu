@@ -1,6 +1,6 @@
 package com.xiaoleilu.hulu.render.view;
 
-import com.xiaoleilu.hulu.render.Render;
+import com.xiaoleilu.hulu.Response;
 
 /**
  * 普通文本内容
@@ -11,11 +11,11 @@ public class TextView extends ContentTypeView{
 	
 	//---------------------------------------------------------- Constructor start
 	public TextView() {
-		this.contentType = Render.CONTENT_TYPE_TEXT;
+		this.contentType = Response.CONTENT_TYPE_TEXT;
 	}
 	
 	public TextView(String text) {
-		super(text, Render.CONTENT_TYPE_TEXT);
+		super(text, Response.CONTENT_TYPE_TEXT);
 	}
 	//---------------------------------------------------------- Constructor end
 }

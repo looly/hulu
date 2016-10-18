@@ -1,7 +1,10 @@
 package com.xiaoleilu.hulu.render.view;
 
+import javax.servlet.http.HttpServletRequest;
+
+import com.xiaoleilu.hulu.Request;
+import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hulu.exception.RenderException;
-import com.xiaoleilu.hulu.render.Render;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -34,7 +37,8 @@ public class ForwardView implements View{
 	@Override
 	public void render() {
 		try {
-			Render.forward(uri);
+			final HttpServletRequest request = Request.getServletRequest();
+			request.getRequestDispatcher(uri).forward(request, Response.getServletResponse());
 		} catch (Exception e) {
 			throw new RenderException("Forward to " + uri + " error!", e);
 		}

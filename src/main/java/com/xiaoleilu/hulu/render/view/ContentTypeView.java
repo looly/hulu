@@ -1,6 +1,6 @@
 package com.xiaoleilu.hulu.render.view;
 
-import com.xiaoleilu.hulu.render.Render;
+import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -55,7 +55,7 @@ public class ContentTypeView implements View{
 	
 	@Override
 	public void render() {
-		Render.render(text, contentType);
+		Response.write(text, contentType);
 	}
 	
 	@Override

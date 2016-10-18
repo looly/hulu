@@ -1,12 +1,18 @@
 package com.xiaoleilu.hulu;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Date;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xiaoleilu.hulu.exception.RenderException;
+import com.xiaoleilu.hulu.render.view.View;
+import com.xiaoleilu.hutool.io.IoUtil;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
 
@@ -17,6 +23,21 @@ import com.xiaoleilu.hutool.log.LogFactory;
  */
 public class Response {
 	private static final Log log = LogFactory.get();
+	
+	/** Callback 函数名，用于JS跨域请求 */
+	public final static String DEFAULT_CALLBACK_NAME = "callback";
+
+	/** 返回内容类型：普通文本 */
+	public final static String CONTENT_TYPE_TEXT = "text/plain";
+	/** 返回内容类型：HTML */
+	public final static String CONTENT_TYPE_HTML = "text/html";
+	/** 返回内容类型：XML */
+	public final static String CONTENT_TYPE_XML = "text/xml";
+	/** 返回内容类型：JAVASCRIPT */
+	public final static String CONTENT_TYPE_JAVASCRIPT = "application/javascript";
+	/** 返回内容类型：JSON */
+	public final static String CONTENT_TYPE_JSON = "application/json";
+	public final static String CONTENT_TYPE_JSON_IE = "text/json";
 	
 	/**Servlet Response */
 	private final static ThreadLocal<HttpServletResponse> responseThreadLocal = new ThreadLocal<HttpServletResponse>();
@@ -37,6 +58,14 @@ public class Response {
 	 */
 	public static ServletOutputStream getOutputStream() throws IOException{
 		return getServletResponse().getOutputStream();
+	}
+	
+	/**
+	 * @return 获得PrintWriter
+	 * @throws IOException
+	 */
+	public static PrintWriter getWriter() throws IOException{
+		return getServletResponse().getWriter();
 	}
 	
 	/**
@@ -73,6 +102,87 @@ public class Response {
 	public static void setContentType(String contentType){
 		getServletResponse().setContentType(contentType);
 	}
+	
+	/**
+	 * 写入View到客户端
+	 * @param view View
+	 */
+	public static void render(View view){
+		view.render();
+	}
+	
+	/**
+	 * 将错误发送到容器
+	 * @param errorCode 错误代码
+	 * @param errorContent 错误信息
+	 */
+	public static void sendError(int errorCode, String errorContent) {
+		HttpServletResponse response = Response.getServletResponse();
+		try {
+			if(HuluSetting.isDevMode) {
+				response.sendError(errorCode);
+			}else {
+				response.sendError(errorCode, errorContent);
+			}
+		} catch (IOException e) {
+			log.error("Error when sendError!", e);
+		}
+	}
+	
+	// --------------------------------------------------------- Write start
+	/**
+	 * 返回数据给客户端
+	 * 
+	 * @param text 返回的内容
+	 * @param contentType 返回的类型
+	 * @param response Response对象
+	 */
+	public static void write(String text, String contentType) {
+		setContentType(contentType);
+		Writer writer = null;
+		try {
+			writer = getWriter();
+			writer.write(text);
+			writer.flush();
+		} catch (IOException e) {
+			throw new RenderException("Error when output to client!", e);
+		} finally {
+			IoUtil.close(writer);
+		}
+	}
+	
+	/**
+	 * 返回数据给客户端
+	 * 
+	 * @param in 需要返回客户端的内容
+	 * @param contentType 返回的类型
+	 * @param response Response对象
+	 */
+	public static void write(InputStream in, String contentType) {
+		setContentType(contentType);
+		write(in);
+	}
+	
+	/**
+	 * 返回数据给客户端
+	 * 
+	 * @param in 需要返回客户端的内容
+	 * @param contentType 返回的类型
+	 * @param response Response对象
+	 */
+	public static void write(InputStream in) {
+		ServletOutputStream out = null;
+		try {
+			out = getOutputStream();
+			IoUtil.copy(in, out);
+		} catch (IOException e) {
+			throw new RenderException("Error when output to client!", e);
+		} finally {
+			IoUtil.close(out);
+			IoUtil.close(in);
+		}
+	}
+	// --------------------------------------------------------- Write end
 	
 	// --------------------------------------------------------- Cookie start
 	/**

@@ -1,4 +1,4 @@
-package com.xiaoleilu.hulu.render.view;
+package com.xiaoleilu.hulu.view;
 
 /**
  * 视图接口，此接口用于在Action方法中做为返回对象而使用的接口<br>

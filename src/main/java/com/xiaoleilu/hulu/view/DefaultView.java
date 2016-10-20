@@ -1,4 +1,4 @@
-package com.xiaoleilu.hulu.render.view;
+package com.xiaoleilu.hulu.view;
 
 import java.io.File;
 

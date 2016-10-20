@@ -1,4 +1,4 @@
-package com.xiaoleilu.hulu.render.view;
+package com.xiaoleilu.hulu.view;
 
 /**
  * 重定向到页面

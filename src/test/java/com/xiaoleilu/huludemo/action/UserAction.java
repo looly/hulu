@@ -2,11 +2,11 @@ package com.xiaoleilu.huludemo.action;
 
 import java.util.Collection;
 
+import com.xiaoleilu.hulu.Render;
 import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.annotation.Route;
 import com.xiaoleilu.hulu.exception.DaoException;
 import com.xiaoleilu.hulu.interceptor.Intercept;
-import com.xiaoleilu.hulu.render.Render;
 import com.xiaoleilu.huludemo.dao.VirtualDao;
 import com.xiaoleilu.huludemo.interceptor.Log1Interceptor;
 import com.xiaoleilu.huludemo.interceptor.Log2Interceptor;

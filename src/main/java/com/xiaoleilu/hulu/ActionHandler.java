@@ -1,7 +1,6 @@
 package com.xiaoleilu.hulu;
 
 import com.xiaoleilu.hulu.exception.ActionException;
-import com.xiaoleilu.hulu.render.Render;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.StaticLog;
 
@@ -10,7 +9,7 @@ import com.xiaoleilu.hutool.log.StaticLog;
  * 
  * @author xiaoleilu
  */
-public class ActionHandler {
+public class ActionHandler{
 	private static Log log = StaticLog.get();
 	
 	private ActionMapping actionMapping;

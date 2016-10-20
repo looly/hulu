@@ -1,26 +1,25 @@
-package com.xiaoleilu.hulu.render;
+package com.xiaoleilu.hulu;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
 
-import com.xiaoleilu.hulu.Response;
-import com.xiaoleilu.hulu.render.view.Error404View;
-import com.xiaoleilu.hulu.render.view.Error500View;
-import com.xiaoleilu.hulu.render.view.ErrorView;
-import com.xiaoleilu.hulu.render.view.FileView;
-import com.xiaoleilu.hulu.render.view.ForwardView;
-import com.xiaoleilu.hulu.render.view.HtmlView;
-import com.xiaoleilu.hulu.render.view.JsView;
-import com.xiaoleilu.hulu.render.view.JsonView;
-import com.xiaoleilu.hulu.render.view.JspView;
-import com.xiaoleilu.hulu.render.view.Redirect301View;
-import com.xiaoleilu.hulu.render.view.RedirectView;
-import com.xiaoleilu.hulu.render.view.TextView;
-import com.xiaoleilu.hulu.render.view.VelocityView;
-import com.xiaoleilu.hulu.render.view.XmlView;
+import com.xiaoleilu.hulu.view.Error404View;
+import com.xiaoleilu.hulu.view.Error500View;
+import com.xiaoleilu.hulu.view.ErrorView;
+import com.xiaoleilu.hulu.view.FileView;
+import com.xiaoleilu.hulu.view.ForwardView;
+import com.xiaoleilu.hulu.view.HtmlView;
+import com.xiaoleilu.hulu.view.JsView;
+import com.xiaoleilu.hulu.view.JsonView;
+import com.xiaoleilu.hulu.view.JspView;
+import com.xiaoleilu.hulu.view.Redirect301View;
+import com.xiaoleilu.hulu.view.RedirectView;
+import com.xiaoleilu.hulu.view.TextView;
+import com.xiaoleilu.hulu.view.VelocityView;
+import com.xiaoleilu.hulu.view.View;
+import com.xiaoleilu.hulu.view.XmlView;
 import com.xiaoleilu.hutool.io.IoUtil;
 import com.xiaoleilu.hutool.json.JSON;
 
@@ -42,6 +41,15 @@ public class Render {
 	public static final void redirect(String uri) {
 		new RedirectView(uri).render();
 	}
+	
+	/**
+	 * 301跳转，默认附带参数
+	 * 
+	 * @param url 跳转的URL
+	 */
+	public static void redirect301(String url) {
+		new Redirect301View(url, true).render();
+	}
 
 	/**
 	 * 301跳转
@@ -50,7 +58,7 @@ public class Render {
 	 * @param isWithParamStr 是否包含URL参数
 	 */
 	public static void redirect301(String url, boolean isWithParamStr) {
-		new Redirect301View(url).render();
+		new Redirect301View(url, isWithParamStr).render();
 	}
 
 	/**
@@ -144,7 +152,7 @@ public class Render {
 	 * @param contentType 文件类型
 	 */
 	public static void renderVelocity(String templateFileName, String contentType) {
-		new VelocityView().render();
+		new VelocityView(templateFileName, contentType).render();
 	}
 
 	/**
@@ -195,6 +203,14 @@ public class Render {
 	}
 	
 	/**
+	 * 在页面打印堆栈信息<br>
+	 * @param errorMsg 异常消息
+	 */
+	public static void renderError500(String errorMsg) {
+		new Error500View(errorMsg).render();
+	}
+	
+	/**
 	 * 输出404信息
 	 */
 	public static void renderError404() {
@@ -206,8 +222,7 @@ public class Render {
 	 * @param pageContent 错误消息页面内容
 	 */
 	public static void render404Page(String pageContent) {
-		Response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		render404(pageContent);
+		new Error404View(pageContent, true).render();
 	}
 	
 	/**
@@ -216,5 +231,13 @@ public class Render {
 	 */
 	public static void render404(String content) {
 		new Error404View(content).render();
+	}
+	
+	/**
+	 * 写入View到客户端
+	 * @param view View
+	 */
+	public static void render(View view){
+		view.render();
 	}
 }

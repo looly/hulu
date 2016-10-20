@@ -11,7 +11,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import com.xiaoleilu.hulu.exception.RenderException;
-import com.xiaoleilu.hulu.render.view.View;
+import com.xiaoleilu.hulu.view.View;
 import com.xiaoleilu.hutool.io.IoUtil;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;

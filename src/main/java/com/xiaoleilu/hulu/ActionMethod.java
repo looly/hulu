@@ -7,8 +7,8 @@ import java.util.List;
 import com.xiaoleilu.hulu.annotation.Route;
 import com.xiaoleilu.hulu.exception.ActionException;
 import com.xiaoleilu.hulu.interceptor.Interceptor;
-import com.xiaoleilu.hulu.render.view.DefaultView;
-import com.xiaoleilu.hulu.render.view.View;
+import com.xiaoleilu.hulu.view.DefaultView;
+import com.xiaoleilu.hulu.view.View;
 import com.xiaoleilu.hutool.log.StaticLog;
 import com.xiaoleilu.hutool.util.StrUtil;
 

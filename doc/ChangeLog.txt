@@ -83,3 +83,4 @@
 6、Render增加JSON对象支持
 7、增加demo
 8、重构View部分和Render类
+9、Action方法增加参数注入支持

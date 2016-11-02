@@ -54,7 +54,7 @@
 		<dependency>
 			<groupId>com.xiaoleilu</groupId>
 			<artifactId>hutool</artifactId>
-			<version>2.15.17</version>
+			<version>2.15.18</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>

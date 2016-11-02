@@ -19,6 +19,7 @@ import com.xiaoleilu.hulu.multipart.UploadFile;
 import com.xiaoleilu.hulu.multipart.UploadSetting;
 import com.xiaoleilu.hutool.http.HttpUtil;
 import com.xiaoleilu.hutool.io.IoUtil;
+import com.xiaoleilu.hutool.json.JSON;
 import com.xiaoleilu.hutool.json.JSONArray;
 import com.xiaoleilu.hutool.json.JSONObject;
 import com.xiaoleilu.hutool.json.JSONUtil;
@@ -330,6 +331,15 @@ public class Request {
 		final String param = convertGetMethodParamValue(getParam(name), charsetOfServlet);
 		return StrUtil.isBlank(param) ? defaultValue : param;
 	}
+	
+	/**
+	 * @param name 参数名
+	 * @param defaultValue 当客户端未传参的默认值
+	 * @return 获得Number类型请求参数
+	 */
+	public static Number getNumberParam(String name, Number defaultValue) {
+		return Conver.toNumber(getParam(name), defaultValue);
+	}
 
 	/**
 	 * @param name 参数名
@@ -497,12 +507,12 @@ public class Request {
 	
 	/**
 	 * 将参数填充至Dict
-	 * @param t Dict对象
+	 * @param dict Dict对象
 	 * @return Dict
 	 */
-	public static <T extends Dict> T fill(T t){
-		t.putAll(getParamMap());
-		return t;
+	public static <T extends Dict> T fill(T dict){
+		dict.putAll(getParamMap());
+		return dict;
 	}
 	// --------------------------------------------------------- Parameter end
 	
@@ -519,14 +529,21 @@ public class Request {
 	}
 	
 	/**
-	 * @return 获得JSONObject请求体
+	 * @return 获得JSON请求体
 	 */
-	public static JSONObject getJSONBody(){
-		return JSONUtil.parseObj(getBody());
+	public static JSON getJSONBody(){
+		return JSONUtil.parse(getBody());
 	}
 	
 	/**
 	 * @return 获得JSONObject请求体
+	 */
+	public static JSONObject getJSONObjectBody(){
+		return JSONUtil.parseObj(getBody());
+	}
+	
+	/**
+	 * @return 获得JSONArray请求体
 	 */
 	public static JSONArray getJSONArrayBody(){
 		return JSONUtil.parseArray(getBody());

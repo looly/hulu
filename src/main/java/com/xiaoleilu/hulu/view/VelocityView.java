@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hutool.util.StrUtil;
+import com.xiaoleilu.hutool.util.VelocityUtil;
 
 /**
  * Velocity内容<br>
@@ -74,7 +75,7 @@ public class VelocityView implements View{
 	public void render() {
 		final HttpServletResponse response = Response.getServletResponse();
 		response.setContentType(contentType);
-		com.xiaoleilu.hutool.util.VelocityUtil.toWriter(templateFileName, Request.getServletRequest(), response);
+		VelocityUtil.toWriter(templateFileName, Request.getServletRequest(), response);
 	}
 	
 	@Override

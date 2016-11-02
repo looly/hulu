@@ -42,7 +42,7 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 		final Set<Class<?>> actionClasses = new HashSet<Class<?>>();
 		final ClassFilter actionClassFilter = createActionClassFilter();	//Action类的过滤器，剔除不符合过滤条件的类
 		for (String packageName : packageNames) {
-			if(StrUtil.isBlank(packageName) == false) {
+			if(StrUtil.isNotBlank(packageName)) {
 				actionClasses.addAll(ClassUtil.scanPackage(packageName.trim(), actionClassFilter));
 			}
 		}
@@ -69,7 +69,6 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 			}
 			
 			final Interceptor[] actionInterceptors = InterceptorBuilder.build(actionClass);
-
 			for (Method method : methods) {
 				
 				//过滤掉Object中的一些特殊方法(toString(), hash等等)
@@ -82,16 +81,15 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 				
 				final ActionMethod actionMethod = new ActionMethod(actionInstance, method, interceptors);
 				
-				
 				final String key = actionMethod.getRequestPath();
 				if(this.containsKey(key)) {
 					//当有同一个请求路径对应不同的ActionMethod时，给出Log ERROR， 并不阻断初始化
-					log.error(new ActionException(StrUtil.format("Duplicate request path [{}]", key)));
-				}
-				
-				this.put(key, actionMethod);
-				if(HuluSetting.isDevMode) {
-					log.debug("Added action mapping: [{}]", key);
+					log.warn(new ActionException(StrUtil.format("Duplicate request path [{}]", key)));
+				}else{
+					this.put(key, actionMethod);
+					if(HuluSetting.isDevMode) {
+						log.debug("Added action mapping: [{}]", key);
+					}
 				}
 			}
 		}

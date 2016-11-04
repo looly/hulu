@@ -10,10 +10,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-import com.xiaoleilu.hutool.log.Log;
-import com.xiaoleilu.hutool.log.LogFactory;
-import com.xiaoleilu.hutool.util.DateUtil;
-
 /**
  * Action过滤器<br>
  * 引入了Servlet3.0的WebFilter注解，这样一旦引入Jar包，框架即可生效<br>
@@ -21,7 +17,6 @@ import com.xiaoleilu.hutool.util.DateUtil;
  */
 @WebFilter(urlPatterns={"/*"})
 public class ActionFilter implements Filter{
-	private static Log log = LogFactory.get();
 	
 	/**
 	 * 框架启动初始化
@@ -29,9 +24,7 @@ public class ActionFilter implements Filter{
 	 */
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		final long start = System.currentTimeMillis();
 		ActionContext.init(filterConfig.getServletContext());
-		log.info("***** Hulu framwork init finished, spend {}ms *****", DateUtil.spendMs(start));
 	}
 
 	/**
@@ -42,10 +35,8 @@ public class ActionFilter implements Filter{
 	 */
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-		ActionContext.fillReqAndRes(req, res);
-		
-		//-- 处理请求
-		if(ActionContext.handle()) {
+		//-- 处理请求，如果处理失败（无对应的Action），继续后续步骤
+		if(false == ActionContext.handle(req, res)) {
 			chain.doFilter(req, res);
 		}
 	}
@@ -55,6 +46,6 @@ public class ActionFilter implements Filter{
 	 */
 	@Override
 	public void destroy() {
-		log.info("***** Hulu framwork stoped. *****");
+		ActionContext.destroy();
 	}
 }

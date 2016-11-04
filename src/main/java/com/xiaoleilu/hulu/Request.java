@@ -80,7 +80,18 @@ public class Request {
 	 * @return 获得Path，获得的Path是去掉
 	 */
 	public static String getPath() {
-		return getWellFormPath(getServletRequest().getRequestURI());
+		return getPath(getServletRequest());
+	}
+	
+	/**
+	 * 获得Path，获得的Path是去掉项目名的（contextPath）<br>
+	 * 返回结果永远以"/"开头，不以"/"结尾
+	 * 
+	 * @param req HttpServletRequest
+	 * @return 获得Path，获得的Path是去掉
+	 */
+	public static String getPath(HttpServletRequest req) {
+		return getWellFormPath(req.getRequestURI());
 	}
 
 	/**
@@ -680,14 +691,17 @@ public class Request {
 	}
 	
 	/**
-	 * 处理将请求路径标准化为框架目标路径
+	 * 处理将请求路径标准化为框架目标路径<br>
+	 * 1、去除容器的contextPath<br>
+	 * 2、去除尾部 "/"<br>
+	 * 
 	 * @param path 请求Path
 	 * @return 框架目标路径
 	 */
 	private static String getWellFormPath(String path) {
 		if(null != path){
 			//去掉项目名部分，不去开头的"/"
-			final String contextPath = getContextPath();
+			final String contextPath = ActionContext.getContextPath();
 			if(null != contextPath && false == StrUtil.SLASH.equals(contextPath)){
 				path = StrUtil.removePrefix(path, contextPath);
 			}

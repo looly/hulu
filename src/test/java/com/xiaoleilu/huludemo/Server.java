@@ -12,6 +12,5 @@ public class Server {
 	public static void main(String[] args) throws ServerException {
 		EmbedJettyServer server = new EmbedJettyServer();
 		server.start();
-//		server.join();
 	}
 }

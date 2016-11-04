@@ -1,6 +1,12 @@
 package com.xiaoleilu.hulu;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.xiaoleilu.hulu.exception.ActionException;
+import com.xiaoleilu.hutool.http.HttpUtil;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.StaticLog;
 
@@ -23,28 +29,36 @@ public class ActionHandler{
 	/**
 	 * 处理请求
 	 * 
-	 * @return 是否继续执行后续步骤
+	 * @param req ServletRequest
+	 * @param res ServletResponse
+	 * @return 是否处理成功
 	 */
-	public final boolean handle() {
-		return handle(Request.getPath());
+	public final boolean handle(HttpServletRequest req, HttpServletResponse res) {
+		return handle(req, res, Request.getPath(req));
 	}
 
 	/**
 	 * 处理请求
 	 * 
+	 * @param req ServletRequest
+	 * @param res ServletResponse
 	 * @param target 请求目标（请求路径）
-	 * @return 是否继续执行后续步骤
+	 * @return 是否处理成功
 	 */
-	public final boolean handle(String target) {
+	public final boolean handle(HttpServletRequest req, HttpServletResponse res, String target) {
 		if (HuluSetting.isDevMode) {
-			log.debug("Client [{}] {} [{}]", Request.getIp(), Request.getMethod(), target);
+			log.debug("Client [{}] {} [{}]", HttpUtil.getClientIP(req), req.getMethod(), target);
 		}
 
 		final ActionMethod actionMethod = actionMapping.getActionMethod(target);
 		if (actionMethod == null || actionMethod.isHttpMethodMatch() == false) {
 			//无对应的Action或者Http方法不匹配，跳过执行后续过程
-			return true;
+			return false;
 		}
+		
+		//找到对应的ActionMethod后注入ServletRequst和ServletResponse
+		//在此阶段注入的目的是提升性能，避免没有匹配的ActionMethod依旧注入的问题
+		fillReqAndRes(req, res);
 
 		//重置过滤器执行游标，从第一个过滤器开始执行
 		actionMethod.resetInterceptorPosition();
@@ -54,6 +68,17 @@ public class ActionHandler{
 			Render.renderError500(e.getCause());
 		}
 
-		return false;
+		return true;
+	}
+	
+	/**
+	 * 注入ServletRequst和ServletResponse
+	 * @param req ServletRequest
+	 * @param res ServletResponse
+	 */
+	private static void fillReqAndRes(ServletRequest req, ServletResponse res){
+		//-- 填充请求和响应对象到ActionContext本地线程
+		Request.init((HttpServletRequest)req);
+		Response.init((HttpServletResponse)res);
 	}
 }

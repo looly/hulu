@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
+import com.xiaoleilu.hutool.util.DateUtil;
 
 /**
  * Action上下文<br>
@@ -22,6 +23,7 @@ public class ActionContext {
 	private static ServletContext servletContext;
 	/** 请求处理对象 */
 	private static ActionHandler handler;
+	private static String contextPath;
 	
 	/**
 	 * @return 获得Servlet上下文
@@ -34,7 +36,7 @@ public class ActionContext {
 	 * @return 获得项目的请求Path
 	 */
 	public static String getContextPath() {
-		return servletContext.getContextPath();
+		return contextPath;
 	}
 
 	// ------------------------------------------------------------------------------------ Protected method start
@@ -44,47 +46,33 @@ public class ActionContext {
 	 * @param context ServletContext
 	 */
 	protected static void init(ServletContext context) {
-		setServletContext(context);
-		createActionHandler();
+		final long start = System.currentTimeMillis();
+		
+		servletContext = context;
+		contextPath = context.getContextPath();
+		handler = new ActionHandler(HuluSetting.actionPackages);
+		
+		log.info("***** Hulu framwork init finished, context path: {}, spend {}ms *****", contextPath, DateUtil.spendMs(start));
 	}
 	
 	/**
-	 * 注入ServletRequst和ServletResponse
+	 * 注入ServletRequest 和 ServletResponse并处理请求
 	 * @param req ServletRequest
 	 * @param res ServletResponse
+	 * @return 是否处理成功
 	 */
-	protected static void fillReqAndRes(ServletRequest req, ServletResponse res){
-		//-- 填充请求和响应对象到ActionContext本地线程
-		Request.init((HttpServletRequest)req);
-		Response.init((HttpServletResponse)res);
-	}
-	
-	/**
-	 * 处理请求
-	 * @return 是否继续执行后续步骤
-	 */
-	protected static boolean handle() {
-		return handler.handle();
+	protected static boolean handle(ServletRequest req, ServletResponse res) {
+		return handler.handle((HttpServletRequest)req, (HttpServletResponse)res);
 	}
 
+	/**
+	 * 销毁ActionContext
+	 */
+	protected static void destroy() {
+		log.info("***** Hulu framwork stoped. *****");
+	}
 	// ------------------------------------------------------------------------------------ Protected method end
 
 	// ------------------------------------------------------------------------------------ Private method start
-	/**
-	 * 初始化Servlet上下文<br>
-	 * 
-	 * @param context 上下文
-	 */
-	private static void setServletContext(ServletContext context) {
-		servletContext = context;
-		log.debug("Web app ContextPath [{}]", servletContext.getContextPath());
-	}
-
-	/**
-	 * 创建Action映射
-	 */
-	private static void createActionHandler() {
-		handler = new ActionHandler(HuluSetting.actionPackages);
-	}
 	// ------------------------------------------------------------------------------------ Private method end
 }

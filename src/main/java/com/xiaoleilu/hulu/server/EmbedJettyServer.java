@@ -56,10 +56,17 @@ public class EmbedJettyServer {
 
 		//初始化WebAppContext
 		webAppContext = JettySetting.createWebAppContext();
+		
+		//方式1：Servlet级别拦截
 		ServletHolder servletHolder = new ServletHolder(ActionServlet.class);
 		servletHolder.setAsyncSupported(false);
 		servletHolder.setInitOrder(1);
-		webAppContext.addServlet(servletHolder, "/");
+		webAppContext.addServlet(servletHolder, "/*");
+		
+		//方式2：Filter级别拦截
+//		FilterHolder filterHolder = new FilterHolder(ActionFilter.class);
+//		filterHolder.setAsyncSupported(false);
+//		webAppContext.addFilter(ActionFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 
 		//初始化Handler
 		HandlerList handlers = new HandlerList();

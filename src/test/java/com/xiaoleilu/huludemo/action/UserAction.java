@@ -7,6 +7,8 @@ import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.annotation.Route;
 import com.xiaoleilu.hulu.exception.DaoException;
 import com.xiaoleilu.hulu.interceptor.Intercept;
+import com.xiaoleilu.hulu.view.HtmlView;
+import com.xiaoleilu.hulu.view.View;
 import com.xiaoleilu.huludemo.dao.VirtualDao;
 import com.xiaoleilu.huludemo.interceptor.Log1Interceptor;
 import com.xiaoleilu.huludemo.interceptor.Log2Interceptor;
@@ -28,6 +30,11 @@ import com.xiaoleilu.hutool.util.StrUtil;
 public class UserAction {
 	/** 这是我自己封装的Log，直接get，不需要传递类名了，很省事儿*/
 	private final static Log log = LogFactory.get();
+	
+	@Route("/")
+	public View home(){
+		return new HtmlView("Hello Hulu Framework Demo !");
+	}
 	
 	/**
 	 * 创建用户Action

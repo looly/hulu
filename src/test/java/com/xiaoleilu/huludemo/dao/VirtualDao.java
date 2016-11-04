@@ -1,10 +1,12 @@
 package com.xiaoleilu.huludemo.dao;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.xiaoleilu.hulu.exception.DaoException;
 import com.xiaoleilu.huludemo.po.User;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * 虚拟数据库，为了演示，直接存HashMap里了
@@ -21,7 +23,7 @@ public class VirtualDao {
 	//---------------------------------------------------------
 	
 	/** 好吧，这是个非常简陋的KV数据库，我在这里只是为了演示，所以没有引入数据库 */
-	private ConcurrentHashMap<String, User> userDb = new ConcurrentHashMap<String, User>();
+	private Map<String, User> userDb = new ConcurrentHashMap<String, User>();
 	
 	/**
 	 * 保存用户
@@ -34,8 +36,11 @@ public class VirtualDao {
 		}
 		
 		final String name = user.getName();
+		if(StrUtil.isBlank(name)){
+			throw new DaoException("[name] is blank!");
+		}
 		
-		if(userDb.contains(name)) {
+		if(userDb.containsKey(name)) {
 			throw new DaoException("User is exist!");
 		}
 		

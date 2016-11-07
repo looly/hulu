@@ -1,6 +1,8 @@
 package com.xiaoleilu.hulu.interceptor;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -55,7 +57,7 @@ public class InterceptorBuilder{
 			return null;
 		}
 
-		Interceptor[] interceptors = new Interceptor[count];
+		final List<Interceptor> interceptorList = new ArrayList<>(interceptorClasses.length);
 		for (int i = 0; i < count; i++) {
 			Interceptor interceptor = pool.get(interceptorClasses[i]);
 			if (interceptor == null) {
@@ -64,11 +66,14 @@ public class InterceptorBuilder{
 					log.debug("New Interceptor: [{}]", interceptor.getClass().getName());
 					pool.put(interceptorClasses[i], interceptor);
 				} catch (Exception e) {
-					log.error("Init interceptor error!", e);
+					log.error(e, "Init interceptor error!");
+					continue;
 				}
 			}
-			interceptors[i] = interceptor;
+			if(null != interceptor){
+				interceptorList.add(interceptor);
+			}
 		}
-		return interceptors;
+		return interceptorList.toArray(new Interceptor[interceptorList.size()]);
 	}
 }

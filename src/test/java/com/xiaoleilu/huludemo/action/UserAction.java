@@ -2,6 +2,8 @@ package com.xiaoleilu.huludemo.action;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.xiaoleilu.hulu.Render;
 import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.annotation.Route;
@@ -10,6 +12,7 @@ import com.xiaoleilu.hulu.interceptor.Intercept;
 import com.xiaoleilu.hulu.view.HtmlView;
 import com.xiaoleilu.hulu.view.View;
 import com.xiaoleilu.huludemo.dao.VirtualDao;
+import com.xiaoleilu.huludemo.interceptor.IpInterceptor;
 import com.xiaoleilu.huludemo.interceptor.Log1Interceptor;
 import com.xiaoleilu.huludemo.interceptor.Log2Interceptor;
 import com.xiaoleilu.huludemo.po.User;
@@ -66,6 +69,18 @@ public class UserAction {
 	@Route("/listUser")		//这个注解用于指定Action请求路径
 	@Intercept({Log1Interceptor.class, Log2Interceptor.class})	//两个过滤器
 	public void list() {
+		final Collection<User> users = VirtualDao.getInstance().listUsers();
+		Render.renderJson(JSONUtil.toJsonPrettyStr(users));
+	}
+	
+	/**
+	 * 列出所有用户<br>
+	 * 注入HttpServletRequest对象
+	 */
+	@Route("/listUser2")		//这个注解用于指定Action请求路径
+	@Intercept({IpInterceptor.class})
+	public void list(HttpServletRequest request) {
+		log.debug("Request: {}", request);
 		final Collection<User> users = VirtualDao.getInstance().listUsers();
 		Render.renderJson(JSONUtil.toJsonPrettyStr(users));
 	}

@@ -10,6 +10,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.xiaoleilu.hulu.ActionServlet;
 import com.xiaoleilu.hulu.exception.ServerException;
+import com.xiaoleilu.hulu.exception.ServerRuntimeException;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
 
@@ -23,6 +24,18 @@ public class EmbedJettyServer {
 
 	private Server server;
 	private WebAppContext webAppContext;
+	
+	/**
+	 * 启动Jetty服务器
+	 * @param join 是否同步阻断
+	 */
+	public static void startup(boolean join){
+		try {
+			new EmbedJettyServer().start(join);
+		} catch (ServerException e) {
+			throw new ServerRuntimeException(e);
+		}
+	}
 
 	/**
 	 * 构造
@@ -94,5 +107,9 @@ public class EmbedJettyServer {
 		} catch (Exception e) {
 			throw new ServerException(e);
 		}
+	}
+	
+	public static void main(String[] args) {
+		startup(true);
 	}
 }

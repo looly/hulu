@@ -1,14 +1,20 @@
 package com.xiaoleilu.hulu;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xiaoleilu.hutool.lang.Dict;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
 import com.xiaoleilu.hutool.util.DateUtil;
+import com.xiaoleilu.hutool.util.FileUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * Action上下文<br>
@@ -52,7 +58,23 @@ public class ActionContext {
 		contextPath = context.getContextPath();
 		handler = new ActionHandler(HuluSetting.actionPackages);
 		
-		log.info("***** Hulu framwork init finished, context path: {}, spend {}ms *****", contextPath, DateUtil.spendMs(start));
+		String startMsg = null;
+		try {
+			startMsg = FileUtil.readUtf8String("startup.txt");
+		} catch (IOException e) {
+			if(e instanceof FileNotFoundException){
+				log.debug("No file [startup.txt] in classpath, use default start messsage.");
+			}else{
+				log.warn("Read [startup.txt] error, cause by: {}", e.getMessage());
+			}
+		}
+		
+		if(StrUtil.isNotBlank(startMsg)){
+			Dict param = Dict.create().set("spend", DateUtil.spendMs(start)).set("contextPath", contextPath);
+			log.info(StrUtil.format("\n" + startMsg, param));
+		}else{
+			log.info("\n***** Hulu framwork init finished, context path: [{}], spend {}ms *****", contextPath, DateUtil.spendMs(start));
+		}
 	}
 	
 	/**

@@ -206,9 +206,6 @@ public class ActionMethod {
 				if(Dict.class.isAssignableFrom(paramType)){
 					//Dict对象参数
 					params[i] = Request.fill((Dict)paramType.newInstance());
-				}else if(BeanUtil.isBean(paramType)){
-					//JavaBean对象参数
-					params[i] = Request.getBean(paramType);
 				}else if(ServletRequest.class.isAssignableFrom(paramType)){
 					//ServletRequest
 					params[i] = Request.getServletRequest();
@@ -227,6 +224,9 @@ public class ActionMethod {
 				}else if(Writer.class.isAssignableFrom(paramType)){
 					//Writer
 					params[i] = Response.getWriter();
+				}else if(BeanUtil.isBean(paramType)){
+					//JavaBean对象参数
+					params[i] = Request.getBean(paramType);
 				}
 			}
 		}

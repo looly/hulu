@@ -6,6 +6,7 @@ import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.StaticLog;
 import com.xiaoleilu.hutool.setting.Setting;
+import com.xiaoleilu.hutool.util.CharsetUtil;
 import com.xiaoleilu.hutool.util.URLUtil;
 
 /**
@@ -127,7 +128,7 @@ public class UploadSetting {
 			log.info("Can not find Upload setting file [{}], use default setting.", settingPath);
 			return;
 		}
-		Setting setting = new Setting(url, HuluSetting.charset, true);
+		Setting setting = new Setting(url, CharsetUtil.charset(HuluSetting.charset), true);
 		
 		maxFileSize = setting.getInt("file.size.max");
 		memoryThreshold = setting.getInt("memory.threshold");

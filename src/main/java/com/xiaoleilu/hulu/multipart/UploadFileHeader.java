@@ -1,6 +1,6 @@
 package com.xiaoleilu.hulu.multipart;
 
-import com.xiaoleilu.hutool.util.FileUtil;
+import com.xiaoleilu.hutool.io.FileUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**

@@ -23,7 +23,7 @@ import com.xiaoleilu.hutool.json.JSON;
 import com.xiaoleilu.hutool.json.JSONArray;
 import com.xiaoleilu.hutool.json.JSONObject;
 import com.xiaoleilu.hutool.json.JSONUtil;
-import com.xiaoleilu.hutool.lang.Conver;
+import com.xiaoleilu.hutool.lang.Convert;
 import com.xiaoleilu.hutool.lang.Dict;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
@@ -349,7 +349,7 @@ public class Request {
 	 * @return 获得Number类型请求参数
 	 */
 	public static Number getNumberParam(String name, Number defaultValue) {
-		return Conver.toNumber(getParam(name), defaultValue);
+		return Convert.toNumber(getParam(name), defaultValue);
 	}
 
 	/**
@@ -358,7 +358,7 @@ public class Request {
 	 * @return 获得Integer类型请求参数
 	 */
 	public static Integer getIntParam(String name, Integer defaultValue) {
-		return Conver.toInt(getParam(name), defaultValue);
+		return Convert.toInt(getParam(name), defaultValue);
 	}
 
 	/**
@@ -367,7 +367,7 @@ public class Request {
 	 * @return 获得long类型请求参数
 	 */
 	public static Long getLongParam(String name, Long defaultValue) {
-		return Conver.toLong(getParam(name), defaultValue);
+		return Convert.toLong(getParam(name), defaultValue);
 	}
 
 	/**
@@ -376,7 +376,7 @@ public class Request {
 	 * @return 获得Double类型请求参数
 	 */
 	public static Double getDoubleParam(String name, Double defaultValue) {
-		return Conver.toDouble(getParam(name), defaultValue);
+		return Convert.toDouble(getParam(name), defaultValue);
 	}
 
 	/**
@@ -385,7 +385,7 @@ public class Request {
 	 * @return 获得Float类型请求参数
 	 */
 	public static Float getFloatParam(String name, Float defaultValue) {
-		return Conver.toFloat(getParam(name), defaultValue);
+		return Convert.toFloat(getParam(name), defaultValue);
 	}
 
 	/**
@@ -394,7 +394,7 @@ public class Request {
 	 * @return 获得Boolean类型请求参数
 	 */
 	public static Boolean getBoolParam(String name, Boolean defaultValue) {
-		return Conver.toBool(getParam(name), defaultValue);
+		return Convert.toBool(getParam(name), defaultValue);
 	}
 
 	/**
@@ -496,7 +496,7 @@ public class Request {
 		final MultipartFormData multipart = getMultipart();
 		if(null != multipart){
 			final String beanName = StrUtil.lowerFirst(bean.getClass().getSimpleName());
-			BeanUtil.fill(bean, new ValueProvider(){
+			BeanUtil.fillBean(bean, new ValueProvider(){
 				@Override
 				public Object value(String name) {
 					String value = multipart.getParam(name);

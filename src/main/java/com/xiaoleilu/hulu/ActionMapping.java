@@ -54,7 +54,7 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 		}
 		
 		//Object里的那些方法不能被识别成Action方法
-		final Set<String> forbiddenMethods = ClassUtil.getMethodNames(Object.class);
+		final Set<String> forbiddenMethods = ClassUtil.getPublicMethodNames(Object.class);
 		
 		Object actionInstance = null;
 		Method[] methods = null;
@@ -64,7 +64,7 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 				actionInstance = actionClass.newInstance();
 				methods = actionClass.getMethods();
 			} catch (Exception e) {
-				log.error(String.format("Init Action [%s] error!", actionClass.getName()), e);
+				log.error(e, String.format("Init Action [%s] error!", actionClass.getName()));
 				continue;
 			}
 			

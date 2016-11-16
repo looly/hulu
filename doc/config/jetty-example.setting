@@ -3,18 +3,27 @@
 # author xiaoleilu
 #--------------------------------------
 
+
 contextPath = /
 webRoot = ./webapp
 
 [threads]
+#最小线程数
 min = 100
+#最大线程数
 max = 500
 
 [http]
+#绑定域名，可选
 host = localhost
+#监听请求端口
 port = 8090
+#HTTPS监听端口
 secure-port = 8443
 output-buffersize = 32768
+#请求头大小
 request-headersize = 8192
+#响应头大小
 response-headersize = 8192
+#空闲连接最大超时时间
 idle-timeout = 30000

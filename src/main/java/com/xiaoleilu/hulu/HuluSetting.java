@@ -5,6 +5,7 @@ import java.net.URL;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.StaticLog;
 import com.xiaoleilu.hutool.setting.Setting;
+import com.xiaoleilu.hutool.util.CharsetUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import com.xiaoleilu.hutool.util.URLUtil;
 
@@ -59,7 +60,7 @@ public class HuluSetting {
 			log.warn("Can not find Hulu setting file [{}], use default setting.", settingPath);
 			return;
 		}
-		Setting setting = new Setting(url, DEFAULT_CHARSET, true);
+		Setting setting = new Setting(url, CharsetUtil.charset(DEFAULT_CHARSET), true);
 		
 		charset = setting.getStringWithDefault("charset", DEFAULT_CHARSET);
 		urlParamSeparator = setting.getStringWithDefault("url.param.separator", DEFAULT_URL_PARAM_SEPERATOR);

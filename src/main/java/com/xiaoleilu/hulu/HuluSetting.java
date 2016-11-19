@@ -62,10 +62,10 @@ public class HuluSetting {
 		}
 		Setting setting = new Setting(url, CharsetUtil.charset(DEFAULT_CHARSET), true);
 		
-		charset = setting.getStringWithDefault("charset", DEFAULT_CHARSET);
-		urlParamSeparator = setting.getStringWithDefault("url.param.separator", DEFAULT_URL_PARAM_SEPERATOR);
+		charset = setting.getStr("charset", DEFAULT_CHARSET);
+		urlParamSeparator = setting.getStr("url.param.separator", DEFAULT_URL_PARAM_SEPERATOR);
 		actionPackages = setting.getStringsWithDefault("action.package", new String[]{""});
-		actionSuffix = setting.getStringWithDefault("action.suffix", DEFAULT_ACTION_SUFFIX);
+		actionSuffix = setting.getStr("action.suffix", DEFAULT_ACTION_SUFFIX);
 		
 		isDevMode = setting.getBool("mode.dev");
 	}

@@ -125,7 +125,7 @@ public class Response {
 				response.sendError(errorCode, errorContent);
 			}
 		} catch (IOException e) {
-			log.error("Error when sendError!", e);
+			log.error(e, "Error when sendError!");
 		}
 	}
 	

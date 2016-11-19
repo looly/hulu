@@ -132,7 +132,7 @@ public class UploadSetting {
 		
 		maxFileSize = setting.getInt("file.size.max");
 		memoryThreshold = setting.getInt("memory.threshold");
-		tmpUploadPath = setting.getString("tmp.upload.path");
+		tmpUploadPath = setting.getStr("tmp.upload.path");
 		fileExts = setting.getStrings("file.exts");
 		isAllowFileExts = setting.getBool("file.exts.allow");
 	}

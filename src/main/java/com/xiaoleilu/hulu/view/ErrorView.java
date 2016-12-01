@@ -15,7 +15,7 @@ import com.xiaoleilu.hutool.util.StrUtil;
  *
  */
 public class ErrorView implements View {
-	private final static String TEMPLATE_ERROR = "<!DOCTYPE html><html><head><title>Hulu framework - Error report</title><style>h1,h3 {color:white; background-color: gray;}</style></head><body><h1>HTTP Status {} - {}</h1><hr size=\"1\" noshade=\"noshade\" /><p>{}</p><hr size=\"1\" noshade=\"noshade\" /><h3>Hulu framework</h3></body></html>";
+	private final static String TEMPLATE_ERROR = "<!DOCTYPE html><html><head><title>Hulu framework - Error report</title><style>h1,h3 {color:white; background-color: gray;}</style></head><body><h1>HTTP Status {} - {}</h1>{}<hr size=\"1\" noshade=\"noshade\" /><p>{}</p><hr size=\"1\" noshade=\"noshade\" /><h3>Hulu framework</h3></body></html>";
 
 	private int errorCode;
 	private String errorContent;
@@ -126,8 +126,7 @@ public class ErrorView implements View {
 			String stacktraceContent = ExceptionUtil.stacktraceToString(e)
 					.replace("\tat", "&nbsp;&nbsp;&nbsp;&nbsp;\tat")
 					.replace("\n", "<br/>\n");
-			stacktraceContent = StrUtil.format(TEMPLATE_ERROR, this.getErrorCode(), Request.getServletRequest().getRequestURI(), stacktraceContent);
-			this.errorContent = StrUtil.format("{}<br>\n{}", errorContent, stacktraceContent);
+			this.errorContent = StrUtil.format(TEMPLATE_ERROR, this.getErrorCode(), Request.getServletRequest().getRequestURI(), this.errorContent, stacktraceContent);
 		}
 		
 		Response.setStatus(errorCode);

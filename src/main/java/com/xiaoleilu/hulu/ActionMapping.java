@@ -8,10 +8,10 @@ import java.util.Set;
 import com.xiaoleilu.hulu.exception.ActionException;
 import com.xiaoleilu.hulu.interceptor.Interceptor;
 import com.xiaoleilu.hulu.interceptor.InterceptorBuilder;
+import com.xiaoleilu.hutool.lang.Filter;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.StaticLog;
 import com.xiaoleilu.hutool.util.ClassUtil;
-import com.xiaoleilu.hutool.util.ClassUtil.ClassFilter;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
@@ -40,7 +40,7 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 	 */
 	public final void init(String[] packageNames) {
 		final Set<Class<?>> actionClasses = new HashSet<Class<?>>();
-		final ClassFilter actionClassFilter = createActionClassFilter();	//Action类的过滤器，剔除不符合过滤条件的类
+		final Filter<Class<?>> actionClassFilter = createActionClassFilter();	//Action类的过滤器，剔除不符合过滤条件的类
 		for (String packageName : packageNames) {
 			if(StrUtil.isNotBlank(packageName)) {
 				actionClasses.addAll(ClassUtil.scanPackage(packageName.trim(), actionClassFilter));
@@ -125,8 +125,8 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 	/**
 	 * @return 创建Action类扫描过滤器
 	 */
-	private ClassFilter createActionClassFilter() {
-		return new ClassFilter(){
+	private Filter<Class<?>> createActionClassFilter() {
+		return new Filter<Class<?>>(){
 			@Override
 			public boolean accept(Class<?> clazz) {
 				//过滤条件是必须为给定后缀

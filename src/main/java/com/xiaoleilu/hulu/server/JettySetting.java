@@ -147,7 +147,7 @@ public class JettySetting {
 				return resourceBase;
 			}
 		}
-		return ".";// 当前目录，用于部署环境
+		return resourceBase;// 当前目录，用于部署环境
 	}
 	
 	private static ServletHolder createHuluServletHolder(){

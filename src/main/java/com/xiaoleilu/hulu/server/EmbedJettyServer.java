@@ -5,10 +5,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.webapp.WebAppContext;
 
-import com.xiaoleilu.hulu.ActionServlet;
 import com.xiaoleilu.hulu.exception.ServerException;
 import com.xiaoleilu.hulu.exception.ServerRuntimeException;
 import com.xiaoleilu.hutool.log.Log;
@@ -23,7 +20,6 @@ public class EmbedJettyServer {
 	private static final Log log = LogFactory.get();
 
 	private Server server;
-	private WebAppContext webAppContext;
 	
 	/**
 	 * 启动Jetty服务器
@@ -67,25 +63,15 @@ public class EmbedJettyServer {
 		//初始化Connector
 		ServerConnector serverConnector = JettySetting.createServerConnectorAndAddToServer(server);
 
-		//初始化WebAppContext
-		webAppContext = JettySetting.createWebAppContext();
-		
-		//方式1：Servlet级别拦截
-		ServletHolder servletHolder = new ServletHolder(ActionServlet.class);
-		servletHolder.setAsyncSupported(false);
-		servletHolder.setInitOrder(1);
-		webAppContext.addServlet(servletHolder, "/*");
-		
-		//方式2：Filter级别拦截
-//		FilterHolder filterHolder = new FilterHolder(ActionFilter.class);
-//		filterHolder.setAsyncSupported(false);
-//		webAppContext.addFilter(ActionFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
-
 		//初始化Handler
 		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[] { webAppContext, new DefaultHandler() });
+		handlers.setHandlers(new Handler[] {
+				JettySetting.createResourceHandler(),	//静态资源处理
+				JettySetting.createWebAppContext(), 	//Servlet处理
+				new DefaultHandler() 							//	默认处理
+		});
 		server.setHandler(handlers);
-
+		
 		try {
 			server.start();
 			log.info("Jetty Server for Hulu Listen on {}: {}", serverConnector.getHost(), serverConnector.getPort());

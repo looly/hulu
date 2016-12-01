@@ -3,9 +3,12 @@
 # author xiaoleilu
 #--------------------------------------
 
-
+#应用的上下文路径，假如此值为 /test ，则访问应用使用 http://host:port/test，默认根路径
 contextPath = /
-webRoot = ./webapp
+
+#WEB项目所在目录，此目录下包含 WEB-INF等目录，也包括index.html等入口页
+#默认值为动态方式，先找 ./src/main/webapp目录，不存在则使用 .
+webRoot = ./src/main/webapp
 
 [threads]
 #最小线程数

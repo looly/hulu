@@ -13,6 +13,8 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.xiaoleilu.hulu.ActionServlet;
+import com.xiaoleilu.hutool.log.Log;
+import com.xiaoleilu.hutool.log.LogFactory;
 import com.xiaoleilu.hutool.setting.Setting;
 import com.xiaoleilu.hutool.util.StrUtil;
 
@@ -23,7 +25,10 @@ import com.xiaoleilu.hutool.util.StrUtil;
  *
  */
 public class JettySetting {
+	private static final Log log = LogFactory.get();
 	private static Setting setting = new Setting("config/jetty.setting");
+	
+	private static String resourceBase = getResourceBase();
 
 	/**
 	 * 创建QueuedThreadPool
@@ -75,7 +80,7 @@ public class JettySetting {
 		WebAppContext webAppContext = new WebAppContext();
 
 		webAppContext.setContextPath(setting.getStr("contextPath", "/"));
-		webAppContext.setResourceBase(getResourceBase());
+		webAppContext.setResourceBase(resourceBase);
 
 		// 方式1：Servlet级别拦截
 		webAppContext.addServlet(createHuluServletHolder(), "/*");
@@ -105,7 +110,7 @@ public class JettySetting {
 	 */
 	public static ResourceHandler createResourceHandler() {
 		ResourceHandler resourceHandler = new ResourceHandler();
-		resourceHandler.setResourceBase(getResourceBase());
+		resourceHandler.setResourceBase(resourceBase);
 		return resourceHandler;
 	}
 
@@ -133,6 +138,7 @@ public class JettySetting {
 		return setting;
 	}
 
+	//----------------------------------------------------------------------------- Private method start
 	/**
 	 * 读取resourceBase
 	 * 
@@ -143,17 +149,23 @@ public class JettySetting {
 		if (StrUtil.isEmpty(resourceBase)) {
 			resourceBase = "./src/main/webapp";// 用于Maven测试
 			File file = new File(resourceBase);
-			if (file.exists() && file.isDirectory()) {
-				return resourceBase;
+			if (false == file.exists() || false == file.isDirectory()) {
+				resourceBase = ".";
 			}
 		}
+		log.debug("Jetty resource base: [{}]", resourceBase);
 		return resourceBase;// 当前目录，用于部署环境
 	}
 	
+	/**
+	 * 创建Hulu的ServletHolder
+	 * @return Hulu的ServletHolder
+	 */
 	private static ServletHolder createHuluServletHolder(){
 		ServletHolder servletHolder = new ServletHolder(ActionServlet.class);
 		servletHolder.setAsyncSupported(false);
 		servletHolder.setInitOrder(1);
 		return servletHolder;
 	}
+	//----------------------------------------------------------------------------- Private method end
 }

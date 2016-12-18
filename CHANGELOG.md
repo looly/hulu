@@ -13,6 +13,7 @@
 * 重构View部分和Render类
 * Action方法增加参数注入支持
 * 自定义启动提示消息
+* 添加Action类返回值String前缀支持
 
 ### Bug修复
 

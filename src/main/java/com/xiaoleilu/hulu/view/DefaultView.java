@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.xiaoleilu.hutool.json.JSON;
 import com.xiaoleilu.hutool.json.JSONSupport;
+import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
  * 默认的视图<br>
@@ -28,9 +29,25 @@ public class DefaultView implements View{
 		
 		//识别已知返回值类型
 		if(obj instanceof JSONSupport || obj instanceof JSON){
-			new JsonView(obj.toString()).render();;
+			new JsonView(obj.toString()).render();
 		}else if(obj instanceof File){
 			new FileView((File)obj).render();
+		}else if(obj instanceof CharSequence){
+			String objStr = ((CharSequence)obj).toString();
+			if(null != objStr){
+				objStr = objStr.trim();
+				if(StrUtil.startWithIgnoreCase(objStr, "jsp:")){
+					new JspView(objStr).render();
+				}else if(StrUtil.startWithIgnoreCase(objStr, "velocity:")){
+					new VelocityView(objStr).render();
+				}else if(StrUtil.startWithIgnoreCase(objStr, "redirect:")){
+					new RedirectView(objStr).render();
+				}else if(StrUtil.startWithIgnoreCase(objStr, "forward:")){
+					new ForwardView(objStr).render();
+				}else{
+					new TextView(objStr).render();
+				}
+			}
 		}else{
 			//如果非View对象，直接返回内容做为HTML
 			new HtmlView(obj.toString()).render();
@@ -50,4 +67,5 @@ public class DefaultView implements View{
 	public String toString() {
 		return obj.toString();
 	}
+
 }

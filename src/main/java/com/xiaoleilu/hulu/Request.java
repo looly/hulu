@@ -64,7 +64,8 @@ public class Request {
 	 * @return 获得Servlet Request对象
 	 */
 	public static HttpServletRequest getServletRequest() {
-		return servletRequestLocal.get();
+		HttpServletRequest httpServletRequest = servletRequestLocal.get();
+		return httpServletRequest;
 	}
 	
 	/**
@@ -529,6 +530,8 @@ public class Request {
 	
 	// --------------------------------------------------------- Body start
 	/**
+	 * 获取请求体<br>
+	 * 调用该方法后，{@link Request#getParam(String)} 方法将失效
 	 * @return 获得请求体
 	 */
 	public static String getBody(){

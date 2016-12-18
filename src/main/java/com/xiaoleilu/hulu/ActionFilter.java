@@ -15,7 +15,7 @@ import javax.servlet.annotation.WebFilter;
  * 引入了Servlet3.0的WebFilter注解，这样一旦引入Jar包，框架即可生效<br>
  * @author xiaoleilu
  */
-@WebFilter(urlPatterns={"/*"})
+@WebFilter("/*")
 public class ActionFilter implements Filter{
 	
 	/**

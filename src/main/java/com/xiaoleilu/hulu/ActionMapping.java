@@ -11,8 +11,8 @@ import com.xiaoleilu.hulu.interceptor.InterceptorBuilder;
 import com.xiaoleilu.hutool.lang.Filter;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.StaticLog;
+import com.xiaoleilu.hutool.util.ArrayUtil;
 import com.xiaoleilu.hutool.util.ClassUtil;
-import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -77,7 +77,7 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 				}
 				
 				//设置方法的拦截器（Action对象和方法的拦截器都对此方法有效）
-				final Interceptor[] interceptors = CollectionUtil.addAll(actionInterceptors, InterceptorBuilder.build(method));
+				final Interceptor[] interceptors = ArrayUtil.addAll(actionInterceptors, InterceptorBuilder.build(method));
 				final ActionMethod actionMethod = new ActionMethod(actionInstance, method, interceptors);
 				
 				final String key = actionMethod.getRequestPath();

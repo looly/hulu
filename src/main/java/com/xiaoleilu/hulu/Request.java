@@ -28,6 +28,7 @@ import com.xiaoleilu.hutool.json.JSONUtil;
 import com.xiaoleilu.hutool.lang.Dict;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
+import com.xiaoleilu.hutool.util.ArrayUtil;
 import com.xiaoleilu.hutool.util.BeanUtil;
 import com.xiaoleilu.hutool.util.BeanUtil.ValueProvider;
 import com.xiaoleilu.hutool.util.CharsetUtil;
@@ -479,7 +480,7 @@ public class Request {
 	public static Map<String, String> getParamMap() {
 		Map<String,String> params = new HashMap<String,String>();
 		for (Map.Entry<String,String[]> entry : getParams().entrySet()) {
-			params.put( entry.getKey(), CollectionUtil.join(entry.getValue(), StrUtil.COMMA) );
+			params.put( entry.getKey(), ArrayUtil.join(entry.getValue(), StrUtil.COMMA) );
 		}
 		return params;
 	}

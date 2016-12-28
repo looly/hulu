@@ -10,7 +10,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.xiaoleilu.hutool.util.CollectionUtil;
+import com.xiaoleilu.hutool.util.ArrayUtil;
 
 /**
  * HttpRequest解析器
@@ -112,7 +112,7 @@ public class MultipartFormData {
 			return null;
 		}
 		String[] values = requestParameters.get(paramName);
-		if (CollectionUtil.isNotEmpty(values)) {
+		if (ArrayUtil.isNotEmpty(values)) {
 			return values[0];
 		}
 		return null;
@@ -201,13 +201,13 @@ public class MultipartFormData {
 	// ---------------------------------------------------------------- Private method start
 	private void putFile(String name, UploadFile value) {
 		UploadFile[] fileUploads = requestFiles.get(name);
-		fileUploads = fileUploads == null ? new UploadFile[] { value } : CollectionUtil.append(fileUploads, value);
+		fileUploads = fileUploads == null ? new UploadFile[] { value } : ArrayUtil.append(fileUploads, value);
 		requestFiles.put(name, fileUploads);
 	}
 
 	private void putParameter(String name, String value) {
 		String[] params = requestParameters.get(name);
-		params  = params == null ? new String[] { value } : CollectionUtil.append(params, value);
+		params  = params == null ? new String[] { value } : ArrayUtil.append(params, value);
 		requestParameters.put(name, params);
 	}
 

@@ -21,8 +21,8 @@ import com.xiaoleilu.hulu.view.View;
 import com.xiaoleilu.hutool.json.JSON;
 import com.xiaoleilu.hutool.lang.Dict;
 import com.xiaoleilu.hutool.log.StaticLog;
+import com.xiaoleilu.hutool.util.ArrayUtil;
 import com.xiaoleilu.hutool.util.BeanUtil;
-import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -171,7 +171,7 @@ public class ActionMethod {
 	 * @throws Exception
 	 */
 	private Object[] paramTypesToObj(Class<?>[] paramTypes) throws Exception{
-		if(CollectionUtil.isEmpty(paramTypes)){
+		if(ArrayUtil.isEmpty(paramTypes)){
 			return new Object[]{};
 		}
 		

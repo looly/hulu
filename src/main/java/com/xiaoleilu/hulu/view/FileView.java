@@ -133,8 +133,8 @@ public class FileView implements View{
 		if (StrUtil.isBlank(responseFileName)) {
 			// 如果未指定文件名，使用原文件名
 			responseFileName = file.getName();
-			HttpUtil.encode(responseFileName, HuluSetting.charset);
 		}
+		responseFileName = HttpUtil.encode(responseFileName, HuluSetting.charset);
 		
 		final HttpServletResponse response = Response.getServletResponse();
 		response.addHeader("Content-disposition", "attachment; filename=" + responseFileName);

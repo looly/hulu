@@ -9,7 +9,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.xiaoleilu.hutool.date.DateUtil;
+import com.xiaoleilu.hutool.date.TimeInterval;
 import com.xiaoleilu.hutool.io.FileUtil;
 import com.xiaoleilu.hutool.lang.Dict;
 import com.xiaoleilu.hutool.log.Log;
@@ -52,7 +52,7 @@ public class ActionContext {
 	 * @param context ServletContext
 	 */
 	protected static void init(ServletContext context) {
-		final long start = System.currentTimeMillis();
+		TimeInterval interval = new TimeInterval();
 		
 		servletContext = context;
 		contextPath = context.getContextPath();
@@ -70,10 +70,10 @@ public class ActionContext {
 		}
 		
 		if(StrUtil.isNotBlank(startMsg)){
-			Dict param = Dict.create().set("spend", DateUtil.spendMs(start)).set("contextPath", contextPath);
+			Dict param = Dict.create().set("spend", interval.intervalMs()).set("contextPath", contextPath);
 			log.info(StrUtil.format("\n" + startMsg, param));
 		}else{
-			log.info("\n***** Hulu framwork init finished, context path: [{}], spend {}ms *****", contextPath, DateUtil.spendMs(start));
+			log.info("\n***** Hulu framwork init finished, context path: [{}], spend {}ms *****", contextPath, interval.intervalMs());
 		}
 	}
 	

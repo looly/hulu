@@ -66,6 +66,8 @@ public class ActionHandler{
 			actionMethod.invoke();
 		} catch (ActionException e) {
 			Render.renderError500(e.getCause());
+		}finally{
+			clearReqAndRes();
 		}
 
 		return true;
@@ -80,5 +82,13 @@ public class ActionHandler{
 		//-- 填充请求和响应对象到ActionContext本地线程
 		Request.init((HttpServletRequest)req);
 		Response.init((HttpServletResponse)res);
+	}
+	
+	/**
+	 * 清理线程Requst和Response
+	 */
+	private static void clearReqAndRes(){
+		Request.clear();
+		Response.clear();
 	}
 }

@@ -484,15 +484,26 @@ public class Request {
 		}
 		return params;
 	}
-
+	
 	/**
-	 * 从Request中获得Bean对象
+	 * 从Request中获得Bean对象，不会忽略注入错误
 	 * 
 	 * @param clazz Bean类，必须包含默认造方法
 	 * @return value Object
 	 */
 	public static <T> T getBean(Class<T> clazz) {
-		final T bean = BeanUtil.requestParamToBean(getServletRequest(), clazz);
+		return getBean(clazz, false);
+	}
+
+	/**
+	 * 从Request中获得Bean对象
+	 * 
+	 * @param clazz Bean类，必须包含默认造方法
+	 * @param isIgnoreError 是否忽略注入错误
+	 * @return value Object
+	 */
+	public static <T> T getBean(Class<T> clazz, final boolean isIgnoreError) {
+		final T bean = BeanUtil.requestParamToBean(getServletRequest(), clazz, isIgnoreError);
 		
 		//注入MultipartFormData 中的参数
 		final MultipartFormData multipart = getMultipart();
@@ -511,6 +522,11 @@ public class Request {
 						}
 					}
 					return value;
+				}
+				
+				@Override
+				public boolean isIgnoreError() {
+					return isIgnoreError;
 				}
 			});
 		}
@@ -631,6 +647,15 @@ public class Request {
 	protected static void splitAndSetParams(String urlParam) {
 		String[] urlParams = StrUtil.split(urlParam, HuluSetting.urlParamSeparator);
 		urlParamsLocal.set(urlParams);
+	}
+	
+	/**
+	 * 清除当前线程持有的请求相关对象
+	 */
+	protected static void clear() {
+		servletRequestLocal.remove();
+		urlParamsLocal.remove();
+		multipartFormDataLocal.remove();
 	}
 	// ------------------------------------------------------------------------------------ Protected method end
 

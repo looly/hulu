@@ -167,10 +167,19 @@ public class Response {
 	 * @param in 需要返回客户端的内容
 	 */
 	public static void write(InputStream in) {
+		write(in, IoUtil.DEFAULT_BUFFER_SIZE);
+	}
+	
+	/**
+	 * 返回数据给客户端
+	 * 
+	 * @param in 需要返回客户端的内容
+	 */
+	public static void write(InputStream in, int bufferSize) {
 		ServletOutputStream out = null;
 		try {
 			out = getOutputStream();
-			IoUtil.copy(in, out);
+			IoUtil.copy(in, out, bufferSize);
 		} catch (IOException e) {
 			throw new RenderException("Error when output to client!", e);
 		} finally {
@@ -248,6 +257,13 @@ public class Response {
 			log.warn("Charset [{}] not support!", charset);
 		}
 		responseThreadLocal.set(res);
+	}
+	
+	/**
+	 * 清除当前线程持有的响应相关对象
+	 */
+	protected static void clear() {
+		responseThreadLocal.remove();
 	}
 	// ------------------------------------------------------------------------------------ Protected method end
 }

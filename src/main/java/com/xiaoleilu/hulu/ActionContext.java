@@ -1,7 +1,6 @@
 package com.xiaoleilu.hulu;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.xiaoleilu.hutool.date.TimeInterval;
 import com.xiaoleilu.hutool.io.FileUtil;
+import com.xiaoleilu.hutool.io.IORuntimeException;
 import com.xiaoleilu.hutool.lang.Dict;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
@@ -61,9 +61,14 @@ public class ActionContext {
 		String startMsg = null;
 		try {
 			startMsg = FileUtil.readUtf8String("startup.txt");
-		} catch (IOException e) {
-			if(e instanceof FileNotFoundException){
-				log.debug("No file [startup.txt] in classpath, use default start messsage.");
+		} catch (IORuntimeException e) {
+			Throwable cause = e.getCause();
+			if(null != cause){
+				if(cause instanceof FileNotFoundException){
+					log.debug("No file [startup.txt] in classpath, use default start messsage.");
+				}else{
+					log.warn("Read [startup.txt] error, cause by: {}", cause.getMessage());
+				}
 			}else{
 				log.warn("Read [startup.txt] error, cause by: {}", e.getMessage());
 			}

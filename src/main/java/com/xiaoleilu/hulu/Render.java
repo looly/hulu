@@ -17,9 +17,9 @@ import com.xiaoleilu.hulu.view.JspView;
 import com.xiaoleilu.hulu.view.Redirect301View;
 import com.xiaoleilu.hulu.view.RedirectView;
 import com.xiaoleilu.hulu.view.TextView;
-import com.xiaoleilu.hulu.view.VelocityView;
 import com.xiaoleilu.hulu.view.View;
 import com.xiaoleilu.hulu.view.XmlView;
+import com.xiaoleilu.hulu.view.extra.VelocityView;
 import com.xiaoleilu.hutool.io.IoUtil;
 import com.xiaoleilu.hutool.json.JSON;
 

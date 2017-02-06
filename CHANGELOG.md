@@ -15,6 +15,7 @@
 * 自定义启动提示消息
 * 添加Action类返回值String前缀支持
 * HttpRequest注入添加是否忽略注入错误选项
+* VelocityView放入extra包中，之后第三方的View将被放入此包
 
 ### Bug修复
 

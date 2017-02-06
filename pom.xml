@@ -57,8 +57,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.xiaoleilu</groupId>
-			<artifactId>hutool</artifactId>
-			<version>2.16.2</version>
+			<artifactId>hutool-all</artifactId>
+			<version>3.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

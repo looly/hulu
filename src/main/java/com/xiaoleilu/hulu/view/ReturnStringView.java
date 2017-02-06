@@ -1,5 +1,6 @@
 package com.xiaoleilu.hulu.view;
 
+import com.xiaoleilu.hulu.view.extra.VelocityView;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**

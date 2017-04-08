@@ -30,6 +30,7 @@ import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
 import com.xiaoleilu.hutool.util.ArrayUtil;
 import com.xiaoleilu.hutool.util.BeanUtil;
+import com.xiaoleilu.hutool.util.BeanUtil.CopyOptions;
 import com.xiaoleilu.hutool.util.BeanUtil.ValueProvider;
 import com.xiaoleilu.hutool.util.CharsetUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
@@ -509,13 +510,13 @@ public class Request {
 		final MultipartFormData multipart = getMultipart();
 		if(null != multipart){
 			final String beanName = StrUtil.lowerFirst(bean.getClass().getSimpleName());
-			BeanUtil.fillBean(bean, new ValueProvider(){
+			BeanUtil.fillBean(bean, new ValueProvider<String>(){
 				@Override
-				public Object value(String name) {
-					String value = multipart.getParam(name);
+				public Object value(String key, Class<?> valueType) {
+					String value = multipart.getParam(key);
 					if (StrUtil.isEmpty(value)) {
 						//使用类名前缀尝试查找值
-						value = multipart.getParam(beanName + StrUtil.DOT + name);
+						value = multipart.getParam(beanName + StrUtil.DOT + key);
 						if(StrUtil.isEmpty(value)){
 							//此处取得的值为空时跳过，包括null和""
 							value = null;
@@ -523,12 +524,12 @@ public class Request {
 					}
 					return value;
 				}
-				
+
 				@Override
-				public boolean isIgnoreError() {
-					return isIgnoreError;
+				public boolean containsKey(String key) {
+					return null != multipart.getParam(key);
 				}
-			});
+			}, CopyOptions.create().setIgnoreError(isIgnoreError));
 		}
 		
 		return bean;

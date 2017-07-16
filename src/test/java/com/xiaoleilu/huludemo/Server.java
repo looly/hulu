@@ -1,7 +1,7 @@
 package com.xiaoleilu.huludemo;
 
 import com.xiaoleilu.hulu.exception.ServerException;
-import com.xiaoleilu.hulu.server.EmbedJettyServer;
+import com.xiaoleilu.hulu.server.jetty.EmbedJettyServer;
 
 /**
  * 内嵌的Jetty服务器

@@ -38,6 +38,7 @@
 		<!-- 9.2.X最低支持JDK到1.7 -->
 		<jetty.version>9.2.19.v20160908</jetty.version>
 		<tomcat.version>8.5.2</tomcat.version>
+		<undertow.version>1.4.14.Final</undertow.version>
 	</properties>
 
 	<build>
@@ -58,7 +59,7 @@
 		<dependency>
 			<groupId>com.xiaoleilu</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>3.0.3</version>
+			<version>3.0.9</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -128,6 +129,19 @@
 			<artifactId>tomcat-jsp-api</artifactId>
 			<version>${tomcat.version}</version>
 			<optional>true</optional>
+		</dependency>
+		<!-- undertow -->
+		<dependency>
+			<groupId>io.undertow</groupId>
+			<artifactId>undertow-core</artifactId>
+			<optional>true</optional>
+			<version>${undertow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.undertow</groupId>
+			<artifactId>undertow-servlet</artifactId>
+			<optional>true</optional>
+			<version>${undertow.version}</version>
 		</dependency>
 	</dependencies>
 

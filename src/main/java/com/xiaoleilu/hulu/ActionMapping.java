@@ -39,6 +39,10 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 	 * @throws Exception
 	 */
 	public final void init(String[] packageNames) {
+		if(ArrayUtil.isEmpty(packageNames)){
+			return;
+		}
+		
 		final Set<Class<?>> actionClasses = new HashSet<Class<?>>();
 		final Filter<Class<?>> actionClassFilter = createActionClassFilter();	//Action类的过滤器，剔除不符合过滤条件的类
 		for (String packageName : packageNames) {

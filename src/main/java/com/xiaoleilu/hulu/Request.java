@@ -2,6 +2,7 @@ package com.xiaoleilu.hulu;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
@@ -512,7 +513,7 @@ public class Request {
 			final String beanName = StrUtil.lowerFirst(bean.getClass().getSimpleName());
 			BeanUtil.fillBean(bean, new ValueProvider<String>(){
 				@Override
-				public Object value(String key, Class<?> valueType) {
+				public Object value(String key, Type valueType) {
 					String value = multipart.getParam(key);
 					if (StrUtil.isEmpty(value)) {
 						//使用类名前缀尝试查找值

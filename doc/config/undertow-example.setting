@@ -1,0 +1,13 @@
+#--------------------------------------
+# Hulu Undertow Setting
+# author xiaoleilu
+#--------------------------------------
+
+#绑定域名，可选
+host = localhost
+#监听请求端口
+port = 8090
+# 部署的包名
+deploymentName = hulu.jar
+# 上下文路径
+contextPath = /

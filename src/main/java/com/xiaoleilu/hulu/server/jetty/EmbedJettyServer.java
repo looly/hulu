@@ -1,4 +1,4 @@
-package com.xiaoleilu.hulu.server;
+package com.xiaoleilu.hulu.server.jetty;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;

@@ -1,4 +1,4 @@
-package com.xiaoleilu.hulu.server;
+package com.xiaoleilu.hulu.server.jetty;
 
 import java.io.File;
 

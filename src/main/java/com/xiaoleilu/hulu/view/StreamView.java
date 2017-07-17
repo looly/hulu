@@ -25,7 +25,7 @@ public class StreamView implements View{
 	
 	/**
 	 * 构造，默认文件名和缓存大小
-	 * @param file 文件
+	 * @param in 输入流
 	 */
 	public StreamView(InputStream in) {
 		this(in, "application/octet-stream");

@@ -167,7 +167,7 @@ public class UploadFileHeader {
 				path = StrUtil.EMPTY;
 				fileName = StrUtil.EMPTY;
 			}
-			int ls = FileUtil.indexOfLastSeparator(formFileName);
+			int ls = FileUtil.lastIndexOfSeparator(formFileName);
 			if (ls == -1) {
 				path = StrUtil.EMPTY;
 				fileName = formFileName;

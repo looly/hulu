@@ -18,8 +18,12 @@ import com.xiaoleilu.hulu.exception.ActionRuntimeException;
 import com.xiaoleilu.hulu.multipart.MultipartFormData;
 import com.xiaoleilu.hulu.multipart.UploadFile;
 import com.xiaoleilu.hulu.multipart.UploadSetting;
+import com.xiaoleilu.hutool.bean.BeanUtil;
+import com.xiaoleilu.hutool.bean.BeanUtil.CopyOptions;
+import com.xiaoleilu.hutool.bean.BeanUtil.ValueProvider;
 import com.xiaoleilu.hutool.convert.Convert;
 import com.xiaoleilu.hutool.date.DateUtil;
+import com.xiaoleilu.hutool.extra.servlet.ServletUtil;
 import com.xiaoleilu.hutool.http.HttpUtil;
 import com.xiaoleilu.hutool.io.IoUtil;
 import com.xiaoleilu.hutool.json.JSON;
@@ -30,9 +34,6 @@ import com.xiaoleilu.hutool.lang.Dict;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
 import com.xiaoleilu.hutool.util.ArrayUtil;
-import com.xiaoleilu.hutool.bean.BeanUtil;
-import com.xiaoleilu.hutool.bean.BeanUtil.CopyOptions;
-import com.xiaoleilu.hutool.bean.BeanUtil.ValueProvider;
 import com.xiaoleilu.hutool.util.CharsetUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
@@ -144,7 +145,7 @@ public class Request {
 		while (headerNames.hasMoreElements()) {
 			name = headerNames.nextElement();
 			if (name != null && name.equalsIgnoreCase(headerKey)) {
-				return getHeader(headerKey);
+				return getHeader(name);
 			}
 		}
 
@@ -505,7 +506,7 @@ public class Request {
 	 * @return value Object
 	 */
 	public static <T> T getBean(Class<T> clazz, final boolean isIgnoreError) {
-		final T bean = BeanUtil.requestParamToBean(getServletRequest(), clazz, isIgnoreError);
+		final T bean = ServletUtil.toBean(getServletRequest(), clazz, isIgnoreError);
 		
 		//注入MultipartFormData 中的参数
 		final MultipartFormData multipart = getMultipart();

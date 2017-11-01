@@ -18,11 +18,11 @@ import com.xiaoleilu.hulu.multipart.MultipartFormData;
 import com.xiaoleilu.hulu.multipart.UploadFile;
 import com.xiaoleilu.hulu.view.DefaultView;
 import com.xiaoleilu.hulu.view.View;
+import com.xiaoleilu.hutool.bean.BeanUtil;
 import com.xiaoleilu.hutool.json.JSON;
 import com.xiaoleilu.hutool.lang.Dict;
 import com.xiaoleilu.hutool.log.StaticLog;
 import com.xiaoleilu.hutool.util.ArrayUtil;
-import com.xiaoleilu.hutool.bean.BeanUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -125,12 +125,14 @@ public class ActionMethod {
 	/**
 	 * 指定用户请求的HTTP方法是否和定义的方法匹配<br>
 	 * 用户只有在Route注解中定义方法后才会匹配有效性
+	 * 
+	 * @param method 客户端使用的Http方法
 	 * @return 是否匹配
 	 */
-	protected boolean isHttpMethodMatch() {
-		if(StrUtil.isNotBlank(httpMethod) && httpMethod.equalsIgnoreCase(Request.getServletRequest().getMethod()) == false) {
+	protected boolean isHttpMethodMatch(String method) {
+		if(StrUtil.isNotBlank(httpMethod) && httpMethod.equalsIgnoreCase(method) == false) {
 			if(HuluSetting.isDevMode) {
-				StaticLog.warn("Request [{}] method [{}] is not match [{}]", requestPath, Request.getServletRequest().getMethod(), httpMethod);
+				StaticLog.warn("Request [{}] method [{}] is not match [{}]", requestPath, method, httpMethod);
 			}
 			return false;
 		}

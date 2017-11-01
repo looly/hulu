@@ -46,12 +46,13 @@ public class ActionHandler{
 	 * @return 是否处理成功
 	 */
 	public final boolean handle(HttpServletRequest req, HttpServletResponse res, String target) {
+		final String method = req.getMethod();
 		if (HuluSetting.isDevMode) {
-			log.debug("Client [{}] {} [{}]", HttpUtil.getClientIP(req), req.getMethod(), target);
+			log.debug("Client [{}] {} [{}]", HttpUtil.getClientIP(req), method, target);
 		}
 
 		final ActionMethod actionMethod = actionMapping.getActionMethod(target);
-		if (actionMethod == null || actionMethod.isHttpMethodMatch() == false) {
+		if (actionMethod == null || actionMethod.isHttpMethodMatch(method) == false) {
 			//无对应的Action或者Http方法不匹配，跳过执行后续过程
 			return false;
 		}

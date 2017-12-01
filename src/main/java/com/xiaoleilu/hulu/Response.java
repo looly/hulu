@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.Date;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.xiaoleilu.hulu.exception.RenderException;
 import com.xiaoleilu.hulu.view.View;
+import com.xiaoleilu.hutool.extra.servlet.ServletUtil;
 import com.xiaoleilu.hutool.io.IoUtil;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
@@ -74,16 +74,7 @@ public class Response {
 	 * @param value 值，可以是String，Date， int
 	 */
 	public static void setHeader(String name, Object value) {
-		final HttpServletResponse response = getServletResponse();
-		if(value instanceof String) {
-			response.setHeader(name, (String)value);
-		}else if(Date.class.isAssignableFrom(value.getClass())) {
-			response.setDateHeader(name, ((Date)value).getTime());
-		}else if(value instanceof Integer || "int".equals(value.getClass().getSimpleName().toLowerCase())) {
-			response.setIntHeader(name, (Integer)value);
-		}else {
-			response.setHeader(name, value.toString());
-		}
+		ServletUtil.setHeader(getServletResponse(), name, value);
 	}
 	
 	/**
@@ -219,13 +210,7 @@ public class Response {
 	 * @param domain the domain name within which this cookie is visible; form is according to RFC 2109
 	 */
 	public final static void addCookie(String name, String value, int maxAgeInSeconds, String path, String domain) {
-		Cookie cookie = new Cookie(name, value);
-		if (domain != null) {
-			cookie.setDomain(domain);
-		}
-		cookie.setMaxAge(maxAgeInSeconds);
-		cookie.setPath(path);
-		addCookie(cookie);
+		ServletUtil.addCookie(getServletResponse(), name, value, maxAgeInSeconds, path, domain);
 	}
 
 	/**

@@ -1,12 +1,8 @@
 package com.xiaoleilu.hulu;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -33,9 +29,7 @@ import com.xiaoleilu.hutool.json.JSONUtil;
 import com.xiaoleilu.hutool.lang.Dict;
 import com.xiaoleilu.hutool.log.Log;
 import com.xiaoleilu.hutool.log.LogFactory;
-import com.xiaoleilu.hutool.util.ArrayUtil;
 import com.xiaoleilu.hutool.util.CharsetUtil;
-import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 /**
@@ -140,16 +134,7 @@ public class Request {
 	 * @return header值
 	 */
 	public final static String getHeaderIgnoreCase(String headerKey) {
-		Enumeration<String> headerNames = getServletRequest().getHeaderNames();
-		String name = null;
-		while (headerNames.hasMoreElements()) {
-			name = headerNames.nextElement();
-			if (name != null && name.equalsIgnoreCase(headerKey)) {
-				return getHeader(name);
-			}
-		}
-
-		return null;
+		return ServletUtil.getHeaderIgnoreCase(getServletRequest(), headerKey);
 	}
 
 	/**
@@ -160,15 +145,7 @@ public class Request {
 	 * @return header值
 	 */
 	public final static String getHeader(String headerKey, String charset) {
-		final String header = getHeader(headerKey);
-		if (null != header) {
-			try {
-				return new String(header.getBytes(CharsetUtil.ISO_8859_1), charset);
-			} catch (UnsupportedEncodingException e) {
-				throw new ActionRuntimeException(StrUtil.format("Error charset {} for http request header.", charset));
-			}
-		}
-		return null;
+		return ServletUtil.getHeader(getServletRequest(), headerKey, charset);
 	}
 
 	/**
@@ -186,47 +163,28 @@ public class Request {
 	 * @return 是否为GET请求
 	 */
 	public static boolean isGetMethod() {
-		return METHOD_GET.equalsIgnoreCase(getMethod());
+		return ServletUtil.isGetMethod(getServletRequest());
 	}
 	
 	/**
 	 * @return 是否为POST请求
 	 */
 	public static boolean isPostMethod() {
-		return METHOD_POST.equalsIgnoreCase(getMethod());
+		return ServletUtil.isPostMethod(getServletRequest());
 	}
 	
 	/**
 	 * @return 客户浏览器是否为IE
 	 */
 	public static boolean isIE() {
-		String userAgent = Request.getHeaderIgnoreCase("User-Agent");
-		if (StrUtil.isNotBlank(userAgent)) {
-			userAgent = userAgent.toUpperCase();
-			if (userAgent.contains("MSIE") || userAgent.contains("TRIDENT")) {
-				return true;
-			}
-		}
-		return false;
+		return ServletUtil.isIE(getServletRequest());
 	}
 	
 	/**
 	 * @return 是否为Multipart类型表单，此类型表单用于文件上传
 	 */
 	public static boolean isMultipart() {
-		if (false == isPostMethod()) {
-			return false;
-		}
-
-		String contentType = getServletRequest().getContentType();
-		if (StrUtil.isBlank(contentType)) {
-			return false;
-		}
-		if (contentType.toLowerCase().startsWith("multipart/")) {
-			return true;
-		}
-
-		return false;
+		return ServletUtil.isMultipart(getServletRequest());
 	}
 
 	// --------------------------------------------------------- Header end
@@ -239,8 +197,7 @@ public class Request {
 	 * @return Cookie对象
 	 */
 	public final static Cookie getCookie(String name) {
-		final Map<String, Cookie> cookieMap = readCookieMap();
-		return cookieMap == null ? null : cookieMap.get(name);
+		return ServletUtil.getCookie(getServletRequest(), name);
 	}
 
 	/**
@@ -249,15 +206,7 @@ public class Request {
 	 * @return Cookie map
 	 */
 	public final static Map<String, Cookie> readCookieMap() {
-		Map<String, Cookie> cookieMap = new HashMap<String, Cookie>();
-		Cookie[] cookies = getServletRequest().getCookies();
-		if (null == cookies) {
-			return null;
-		}
-		for (Cookie cookie : cookies) {
-			cookieMap.put(cookie.getName().toLowerCase(), cookie);
-		}
-		return cookieMap;
+		return ServletUtil.readCookieMap(getServletRequest());
 	}
 
 	// --------------------------------------------------------- Cookie end
@@ -465,14 +414,7 @@ public class Request {
 	 * @return Map
 	 */
 	public static Map<String, String[]> getParams() {
-		Map<String, String[]> map = getServletRequest().getParameterMap();
-		if(CollectionUtil.isEmpty(map)){
-			final MultipartFormData multipart = getMultipart();
-			if(null != multipart){
-				map = multipart.getParamMap();
-			}
-		}
-		return Collections.unmodifiableMap(map);
+		return ServletUtil.getParams(getServletRequest());
 	}
 	
 	/**
@@ -481,11 +423,7 @@ public class Request {
 	 * @return Map
 	 */
 	public static Map<String, String> getParamMap() {
-		Map<String,String> params = new HashMap<String,String>();
-		for (Map.Entry<String,String[]> entry : getParams().entrySet()) {
-			params.put( entry.getKey(), ArrayUtil.join(entry.getValue(), StrUtil.COMMA) );
-		}
-		return params;
+		return ServletUtil.getParamMap(getServletRequest());
 	}
 	
 	/**

@@ -2,8 +2,8 @@ package com.xiaoleilu.hulu.view;
 
 import java.io.File;
 
-import com.xiaoleilu.hutool.json.JSON;
-import com.xiaoleilu.hutool.json.JSONSupport;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONSupport;
 
 /**
  * 默认的视图<br>

@@ -9,9 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hulu.exception.RenderException;
-import com.xiaoleilu.hutool.http.HttpUtil;
-import com.xiaoleilu.hutool.io.IoUtil;
-import com.xiaoleilu.hutool.util.StrUtil;
+
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpUtil;
 
 /**
  * 返回文件

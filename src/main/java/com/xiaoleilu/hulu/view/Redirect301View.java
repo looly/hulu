@@ -5,7 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.xiaoleilu.hulu.ActionContext;
 import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.Response;
-import com.xiaoleilu.hutool.util.StrUtil;
+
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 服务器端跳转

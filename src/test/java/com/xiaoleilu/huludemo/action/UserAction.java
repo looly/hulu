@@ -16,10 +16,11 @@ import com.xiaoleilu.huludemo.interceptor.IpInterceptor;
 import com.xiaoleilu.huludemo.interceptor.Log1Interceptor;
 import com.xiaoleilu.huludemo.interceptor.Log2Interceptor;
 import com.xiaoleilu.huludemo.po.User;
-import com.xiaoleilu.hutool.json.JSONUtil;
-import com.xiaoleilu.hutool.log.Log;
-import com.xiaoleilu.hutool.log.LogFactory;
-import com.xiaoleilu.hutool.util.StrUtil;
+
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 
 /**
  * 用户相操作的Action<br>

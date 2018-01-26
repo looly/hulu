@@ -8,12 +8,13 @@ import java.util.Set;
 import com.xiaoleilu.hulu.exception.ActionException;
 import com.xiaoleilu.hulu.interceptor.Interceptor;
 import com.xiaoleilu.hulu.interceptor.InterceptorBuilder;
-import com.xiaoleilu.hutool.lang.Filter;
-import com.xiaoleilu.hutool.log.Log;
-import com.xiaoleilu.hutool.log.StaticLog;
-import com.xiaoleilu.hutool.util.ArrayUtil;
-import com.xiaoleilu.hutool.util.ClassUtil;
-import com.xiaoleilu.hutool.util.StrUtil;
+
+import cn.hutool.core.lang.Filter;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 
 /**
  * Action映射表
@@ -22,7 +23,7 @@ import com.xiaoleilu.hutool.util.StrUtil;
  */
 public class ActionMapping extends HashMap<String, ActionMethod>{
 	private static final long serialVersionUID = -6041272411190069856L;
-	private static Log log = StaticLog.get();
+	private static Log log = LogFactory.get();
 	
 	// -------------------------------------------------------------------- Constructor start
 	public ActionMapping(String[] packageNames) {

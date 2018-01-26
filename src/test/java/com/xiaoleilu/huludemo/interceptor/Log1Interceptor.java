@@ -3,8 +3,9 @@ package com.xiaoleilu.huludemo.interceptor;
 import com.xiaoleilu.hulu.ActionMethod;
 import com.xiaoleilu.hulu.exception.ActionException;
 import com.xiaoleilu.hulu.interceptor.Interceptor;
-import com.xiaoleilu.hutool.log.Log;
-import com.xiaoleilu.hutool.log.LogFactory;
+
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 
 /**
  * 日志过滤器

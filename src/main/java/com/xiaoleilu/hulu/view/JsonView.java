@@ -2,7 +2,8 @@ package com.xiaoleilu.hulu.view;
 
 import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.Response;
-import com.xiaoleilu.hutool.json.JSON;
+
+import cn.hutool.json.JSON;
 
 /**
  * JSON内容

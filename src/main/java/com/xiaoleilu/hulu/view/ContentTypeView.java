@@ -1,7 +1,8 @@
 package com.xiaoleilu.hulu.view;
 
 import com.xiaoleilu.hulu.Response;
-import com.xiaoleilu.hutool.util.StrUtil;
+
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 自定义Content-Type的视图

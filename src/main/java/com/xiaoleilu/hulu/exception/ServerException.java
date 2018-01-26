@@ -1,6 +1,6 @@
 package com.xiaoleilu.hulu.exception;
 
-import com.xiaoleilu.hutool.util.StrUtil;
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 应用服务器异常

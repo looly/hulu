@@ -5,8 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hulu.view.View;
-import com.xiaoleilu.hutool.extra.template.VelocityUtil;
-import com.xiaoleilu.hutool.util.StrUtil;
+
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.template.VelocityUtil;
 
 /**
  * Velocity内容<br>

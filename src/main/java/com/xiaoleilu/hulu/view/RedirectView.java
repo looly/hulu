@@ -5,7 +5,8 @@ import java.io.IOException;
 import com.xiaoleilu.hulu.ActionContext;
 import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hulu.exception.RenderException;
-import com.xiaoleilu.hutool.util.StrUtil;
+
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 重定向跳转

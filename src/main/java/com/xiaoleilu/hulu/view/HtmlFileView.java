@@ -4,8 +4,9 @@ import java.io.File;
 
 import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hulu.exception.ActionRuntimeException;
-import com.xiaoleilu.hutool.io.FileUtil;
-import com.xiaoleilu.hutool.io.IORuntimeException;
+
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IORuntimeException;
 
 /**
  * HTML文件，读取文件内容作为HTML返回

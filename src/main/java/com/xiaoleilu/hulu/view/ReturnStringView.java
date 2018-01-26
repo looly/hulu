@@ -1,7 +1,8 @@
 package com.xiaoleilu.hulu.view;
 
 import com.xiaoleilu.hulu.view.extra.VelocityView;
-import com.xiaoleilu.hutool.util.StrUtil;
+
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 返回值为String时的View处理，根据前缀判断需要响应对象的类型

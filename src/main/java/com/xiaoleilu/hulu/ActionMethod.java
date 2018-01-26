@@ -14,16 +14,17 @@ import com.xiaoleilu.hulu.annotation.Param;
 import com.xiaoleilu.hulu.annotation.Route;
 import com.xiaoleilu.hulu.exception.ActionException;
 import com.xiaoleilu.hulu.interceptor.Interceptor;
-import com.xiaoleilu.hulu.multipart.MultipartFormData;
-import com.xiaoleilu.hulu.multipart.UploadFile;
 import com.xiaoleilu.hulu.view.DefaultView;
 import com.xiaoleilu.hulu.view.View;
-import com.xiaoleilu.hutool.bean.BeanUtil;
-import com.xiaoleilu.hutool.json.JSON;
-import com.xiaoleilu.hutool.lang.Dict;
-import com.xiaoleilu.hutool.log.StaticLog;
-import com.xiaoleilu.hutool.util.ArrayUtil;
-import com.xiaoleilu.hutool.util.StrUtil;
+
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.servlet.multipart.MultipartFormData;
+import cn.hutool.extra.servlet.multipart.UploadFile;
+import cn.hutool.json.JSON;
+import cn.hutool.log.StaticLog;
 
 /**
  * Action方法<br>

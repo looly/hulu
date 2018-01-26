@@ -1,8 +1,8 @@
 package com.xiaoleilu.hulu.server.undertow;
 
-import com.xiaoleilu.hutool.log.Log;
-import com.xiaoleilu.hutool.log.LogFactory;
-import com.xiaoleilu.hutool.setting.Setting;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
+import cn.hutool.setting.Setting;
 
 /**
  * 内嵌Undertow服务器配置

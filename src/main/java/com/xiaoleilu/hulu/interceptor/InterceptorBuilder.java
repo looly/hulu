@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.xiaoleilu.hutool.log.Log;
-import com.xiaoleilu.hutool.log.StaticLog;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 
 /**
  * 拦截器实例构建器<br>
@@ -17,7 +17,7 @@ import com.xiaoleilu.hutool.log.StaticLog;
  *
  */
 public class InterceptorBuilder{
-	private static Log log = StaticLog.get();
+	private static Log log = LogFactory.get();
 	
 	private static Map<Class<? extends Interceptor>, Interceptor> pool = new ConcurrentHashMap<Class<? extends Interceptor>, Interceptor>();
 	

@@ -1,8 +1,8 @@
 package com.xiaoleilu.huludemo.client;
 
-import com.xiaoleilu.hutool.http.HttpUtil;
-import com.xiaoleilu.hutool.json.JSONObject;
-import com.xiaoleilu.hutool.json.JSONUtil;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 
 public class RestClientTest {
 	public static void main(String[] args) {

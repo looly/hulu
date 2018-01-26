@@ -6,7 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.xiaoleilu.hulu.exception.DaoException;
 import com.xiaoleilu.huludemo.po.User;
-import com.xiaoleilu.hutool.util.StrUtil;
+
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 虚拟数据库，为了演示，直接存HashMap里了

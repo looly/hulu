@@ -1,6 +1,6 @@
 package com.xiaoleilu.huludemo.po;
 
-import com.xiaoleilu.hutool.json.JSONUtil;
+import cn.hutool.json.JSONUtil;
 
 /**
  * 用户PO<br>

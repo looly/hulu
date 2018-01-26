@@ -3,10 +3,11 @@ package com.xiaoleilu.hulu.view;
 import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hulu.Request;
 import com.xiaoleilu.hulu.Response;
-import com.xiaoleilu.hutool.exceptions.ExceptionUtil;
-import com.xiaoleilu.hutool.json.JSONUtil;
-import com.xiaoleilu.hutool.log.StaticLog;
-import com.xiaoleilu.hutool.util.StrUtil;
+
+import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
+import cn.hutool.log.StaticLog;
 
 /**
  * 错误视图

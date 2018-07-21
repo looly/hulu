@@ -7,7 +7,7 @@ import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hulu.view.View;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.template.VelocityUtil;
+import cn.hutool.extra.template.engine.velocity.VelocityUtil;
 
 /**
  * Velocity内容<br>

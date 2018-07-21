@@ -13,6 +13,7 @@ public class RestAction {
 	public String restTest(){
 		String body = Request.getBody();
 		
+		Console.log("Conteny-Type: {}", Request.getHeader("Content-Type"));
 		Console.log(body);
 		return "OK";
 	}

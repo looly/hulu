@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='utf-8' ?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+	<modelVersion>4.0.0</modelVersion>
 	<packaging>jar</packaging>
 
 	<groupId>com.xiaoleilu</groupId>
@@ -21,7 +23,7 @@
 	<developers>
 		<developer>
 			<name>Looly</name>
-			<email>loolly@gmail.com</email>
+			<email>loolly@aliyun.com</email>
 		</developer>
 	</developers>
 
@@ -61,7 +63,7 @@
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>4.0.13-SNAPSHOT</version>
+			<version>4.4.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -74,13 +76,6 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity</artifactId>
-			<version>1.7</version>
-			<scope>compile</scope>
-			<optional>true</optional>
 		</dependency>
 		<!-- Jetty -->
 		<dependency>

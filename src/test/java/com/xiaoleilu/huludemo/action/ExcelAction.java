@@ -40,15 +40,15 @@ public class ExcelAction {
 		List<?> row5 = CollUtil.newArrayList("aa4", "bb4", "cc4", "dd4", DateUtil.date(), 28.00);
 
 		List<List<?>> rows = CollUtil.newArrayList(row1, row2, row3, row4, row5);
-		ExcelWriter writer = ExcelUtil.getWriter();
+		ExcelWriter writer = ExcelUtil.getWriter(true);
 		writer.passCurrentRow();
 		writer.merge(rows.size(), "sdddf测试接口");
 		writer.write(rows);
 
 		Response.setContentType("application/vnd.ms-excel;charset=utf-8");
-		Response.setHeader("Content-disposition", "attachment;filename=\"test.xls\"");
+		Response.setHeader("Content-disposition", "attachment;filename=\"test.xlsx\"");
 		ServletOutputStream out = Response.getOutputStream();
-		writer.flush(out);
+		writer.flush(out, true);
 		writer.close();
 	}
 }

@@ -1,7 +1,5 @@
 package com.xiaoleilu.hulu.view;
 
-import com.xiaoleilu.hulu.view.extra.VelocityView;
-
 import cn.hutool.core.util.StrUtil;
 
 /**
@@ -29,7 +27,7 @@ public class ReturnStringView implements View{
 			if(StrUtil.startWithIgnoreCase(objStr, "jsp:")){
 				new JspView(objStr).render();
 			}else if(StrUtil.startWithIgnoreCase(objStr, "velocity:")){
-				new VelocityView(objStr).render();
+				new TemplateView(objStr).render();
 			}else if(StrUtil.startWithIgnoreCase(objStr, "redirect:")){
 				new RedirectView(objStr).render();
 			}else if(StrUtil.startWithIgnoreCase(objStr, "forward:")){

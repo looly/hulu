@@ -16,10 +16,10 @@ import com.xiaoleilu.hulu.view.JsonView;
 import com.xiaoleilu.hulu.view.JspView;
 import com.xiaoleilu.hulu.view.Redirect301View;
 import com.xiaoleilu.hulu.view.RedirectView;
+import com.xiaoleilu.hulu.view.TemplateView;
 import com.xiaoleilu.hulu.view.TextView;
 import com.xiaoleilu.hulu.view.View;
 import com.xiaoleilu.hulu.view.XmlView;
-import com.xiaoleilu.hulu.view.extra.VelocityView;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSON;
@@ -138,22 +138,22 @@ public class Render {
 	}
 
 	/**
-	 * 返回Velocity处理后的HTML内容<br>
+	 * 返回模板引擎处理后的HTML内容<br>
 	 * 模板的参数全部来自于Request 的Parameter，如需自定义，请填充其值
 	 * @param templateFileName 模板文件
 	 */
-	public static void renderVelocityHtml(String templateFileName) {
-		renderVelocity(templateFileName, Response.CONTENT_TYPE_HTML);
+	public static void renderTemplate(String templateFileName) {
+		renderTemplate(templateFileName, Response.CONTENT_TYPE_HTML);
 	}
 
 	/**
-	 * 返回Velocity处理后的内容<br>
+	 * 返回模板引擎处理后的内容<br>
 	 * 模板的参数全部来自于Request 的Parameter，如需自定义，请填充其值
 	 * @param templateFileName 模板文件
 	 * @param contentType 文件类型
 	 */
-	public static void renderVelocity(String templateFileName, String contentType) {
-		new VelocityView(templateFileName, contentType).render();
+	public static void renderTemplate(String templateFileName, String contentType) {
+		new TemplateView(templateFileName, contentType).render();
 	}
 
 	/**

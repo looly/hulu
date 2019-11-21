@@ -21,6 +21,20 @@ import cn.hutool.poi.excel.ExcelWriter;
  *
  */
 public class ExcelAction {
+	
+	/**
+	 * 读取下载
+	 * 
+	 * @throws IOException
+	 */
+	public void getExcel() throws IOException {
+		ExcelWriter writer = ExcelUtil.getWriter("e:/mysqlSchema.xlsx");
+		Response.setContentType("application/vnd.ms-excel;charset=utf-8");
+		Response.setHeader("Content-disposition", "attachment;filename=\"mysqlSchema.xlsx\"");
+		ServletOutputStream out = Response.getOutputStream();
+		writer.flush(out, true);
+		writer.close();
+	}
 
 	/**
 	 * 生成并下载

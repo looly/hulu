@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.xiaoleilu.hulu.exception.ActionException;
 
-import cn.hutool.http.HttpUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.StaticLog;
 
@@ -49,7 +49,7 @@ public class ActionHandler{
 	public final boolean handle(HttpServletRequest req, HttpServletResponse res, String target) {
 		final String method = req.getMethod();
 		if (HuluSetting.isDevMode) {
-			log.debug("Client [{}] {} [{}]", HttpUtil.getClientIP(req), method, target);
+			log.debug("Client [{}] {} [{}]", ServletUtil.getClientIP(req), method, target);
 		}
 
 		final ActionMethod actionMethod = actionMapping.getActionMethod(target);

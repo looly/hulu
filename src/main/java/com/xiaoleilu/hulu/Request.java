@@ -25,7 +25,6 @@ import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.extra.servlet.multipart.MultipartFormData;
 import cn.hutool.extra.servlet.multipart.UploadFile;
 import cn.hutool.extra.servlet.multipart.UploadSetting;
-import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
@@ -116,7 +115,7 @@ public class Request {
 	 * @return 客户端IP
 	 */
 	public static String getIp() {
-		return HttpUtil.getClientIP(getServletRequest());
+		return ServletUtil.getClientIP(getServletRequest());
 	}
 	
 	/**

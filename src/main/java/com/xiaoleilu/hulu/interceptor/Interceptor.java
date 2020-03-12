@@ -15,7 +15,7 @@ public interface Interceptor {
 	 * 之前执行的方法<br>
 	 * 返回false表示中断
 	 * @param actionMethod ActionMethod
-	 * @throws ActionException 
+	 * @throws ActionException Action异常
 	 */
-	public void invoke(ActionMethod actionMethod) throws ActionException;
+	void invoke(ActionMethod actionMethod) throws ActionException;
 }

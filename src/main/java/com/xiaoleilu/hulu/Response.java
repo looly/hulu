@@ -164,7 +164,8 @@ public class Response {
 	
 	/**
 	 * 返回数据给客户端
-	 * 
+	 *
+	 * @param bufferSize 缓存大小
 	 * @param in 需要返回客户端的内容
 	 */
 	public static void write(InputStream in, int bufferSize) {
@@ -206,7 +207,7 @@ public class Response {
 	 * 
 	 * @param name cookie名
 	 * @param value cookie值
-	 * @param maxAgeInSeconds -1: 关闭浏览器清除Cookie. 0: 立即清除Cookie. n>0 : Cookie存在的秒数.
+	 * @param maxAgeInSeconds -1: 关闭浏览器清除Cookie. 0: 立即清除Cookie. n&gt;0 : Cookie存在的秒数.
 	 * @param path Cookie的有效路径
 	 * @param domain the domain name within which this cookie is visible; form is according to RFC 2109
 	 */
@@ -221,7 +222,7 @@ public class Response {
 	 * 
 	 * @param name cookie名
 	 * @param value cookie值
-	 * @param maxAgeInSeconds -1: 关闭浏览器清除Cookie. 0: 立即清除Cookie. n>0 : Cookie存在的秒数.
+	 * @param maxAgeInSeconds -1: 关闭浏览器清除Cookie. 0: 立即清除Cookie. n&gt;0 : Cookie存在的秒数.
 	 */
 	public static void addCookie(String name, String value, int maxAgeInSeconds) {
 		addCookie(name, value, maxAgeInSeconds, "/", null);

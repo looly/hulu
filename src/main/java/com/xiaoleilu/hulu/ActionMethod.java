@@ -1,22 +1,5 @@
 package com.xiaoleilu.hulu;
 
-import java.io.OutputStream;
-import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.sql.Date;
-import java.util.List;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
-import com.xiaoleilu.hulu.annotation.Param;
-import com.xiaoleilu.hulu.annotation.Route;
-import com.xiaoleilu.hulu.exception.ActionException;
-import com.xiaoleilu.hulu.interceptor.Interceptor;
-import com.xiaoleilu.hulu.view.DefaultView;
-import com.xiaoleilu.hulu.view.View;
-
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ArrayUtil;
@@ -25,6 +8,21 @@ import cn.hutool.extra.servlet.multipart.MultipartFormData;
 import cn.hutool.extra.servlet.multipart.UploadFile;
 import cn.hutool.json.JSON;
 import cn.hutool.log.StaticLog;
+import com.xiaoleilu.hulu.annotation.Param;
+import com.xiaoleilu.hulu.annotation.Route;
+import com.xiaoleilu.hulu.exception.ActionException;
+import com.xiaoleilu.hulu.interceptor.Interceptor;
+import com.xiaoleilu.hulu.view.DefaultView;
+import com.xiaoleilu.hulu.view.View;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.sql.Date;
+import java.util.List;
 
 /**
  * Action方法<br>
@@ -34,7 +32,7 @@ import cn.hutool.log.StaticLog;
  */
 public class ActionMethod {
 	/** 过滤器执行位置记录器 */
-	private static ThreadLocal<Integer> interceptorPosition = new ThreadLocal<Integer>();
+	private static ThreadLocal<Integer> interceptorPosition = new ThreadLocal<>();
 
 	private Object action;						//Action对象
 	private Method method;					//Action方法
@@ -95,7 +93,7 @@ public class ActionMethod {
 	 * 此方法为递归调用，每次递归调用此方法，都会判断执行到了第几个拦截器，从而执行拦截器。<br>
 	 * 当拦截器数量执行完毕后，执行本体方法
 	 * 
-	 * @throws ActionException
+	 * @throws ActionException Action异常
 	 */
 	public void invoke() throws ActionException {
 		Integer position = interceptorPosition.get();
@@ -143,10 +141,10 @@ public class ActionMethod {
 	// ------------------------------------------------------------- Private method start
 	/**
 	 * 执行本体方法
-	 * @throws ActionException 
+	 * @throws ActionException  Action异常
 	 */
 	private void invokeActionMethod() throws ActionException {
-		Object returnValue = null;
+		Object returnValue;
 		Class<?>[] parameterTypes = this.method.getParameterTypes();
 		try {
 			returnValue = this.method.invoke(action, paramTypesToObj(parameterTypes));
@@ -171,7 +169,7 @@ public class ActionMethod {
 	 * 参数值列表为空时返回<code>null</code>
 	 * @param paramTypes 参数类型列表
 	 * @return 参数值列表
-	 * @throws Exception
+	 * @throws Exception 异常
 	 */
 	private Object[] paramTypesToObj(Class<?>[] paramTypes) throws Exception{
 		if(ArrayUtil.isEmpty(paramTypes)){
@@ -268,7 +266,6 @@ public class ActionMethod {
 	 * 1、去除空白符
 	 * 2、去除尾部斜杠
 	 * @param path 原请求路径
-	 * @param isFixFirstSlash 是否补全开头的斜杠
 	 * @return 修正后的请求路径
 	 */
 	private static String fixPath(String path) {
@@ -350,7 +347,7 @@ public class ActionMethod {
 	private static String[] getHttpMethodAndPath(Route route){
 		final String routeAnnotationValue = route.value();
 		String httpMethod = null;
-		String path = null;
+		String path;
 		if(StrUtil.isNotBlank(routeAnnotationValue) && routeAnnotationValue.indexOf(":") > 0) {
 			//处理带Http方法前缀的注解，类似于 "post:" 或者 "post:/example"
 			final List<String> methodAndPath = StrUtil.split(routeAnnotationValue, ':', 2);

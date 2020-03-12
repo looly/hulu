@@ -37,14 +37,13 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 	 * 会排除Object对象中的public方法
 	 * 
 	 * @param packageNames Action类所在包的位置
-	 * @throws Exception
 	 */
 	public final void init(String[] packageNames) {
 		if(ArrayUtil.isEmpty(packageNames)){
 			return;
 		}
 		
-		final Set<Class<?>> actionClasses = new HashSet<Class<?>>();
+		final Set<Class<?>> actionClasses = new HashSet<>();
 		final Filter<Class<?>> actionClassFilter = createActionClassFilter();	//Action类的过滤器，剔除不符合过滤条件的类
 		for (String packageName : packageNames) {
 			if(StrUtil.isNotBlank(packageName)) {
@@ -61,8 +60,8 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 		//Object里的那些方法不能被识别成Action方法
 		final Set<String> forbiddenMethods = ClassUtil.getPublicMethodNames(Object.class);
 		
-		Object actionInstance = null;
-		Method[] methods = null;
+		Object actionInstance;
+		Method[] methods;
 		for (Class<?> actionClass : actionClasses) {
 			try {
 				// 每个Action单独捕获异常，这样不会影响其它Action
@@ -131,12 +130,9 @@ public class ActionMapping extends HashMap<String, ActionMethod>{
 	 * @return 创建Action类扫描过滤器
 	 */
 	private Filter<Class<?>> createActionClassFilter() {
-		return new Filter<Class<?>>(){
-			@Override
-			public boolean accept(Class<?> clazz) {
-				//过滤条件是必须为给定后缀
-				return clazz.getSimpleName().endsWith(HuluSetting.actionSuffix);
-			}
+		return clazz -> {
+			//过滤条件是必须为给定后缀
+			return clazz.getSimpleName().endsWith(HuluSetting.actionSuffix);
 		};
 	}
 	

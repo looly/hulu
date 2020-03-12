@@ -38,7 +38,7 @@
 		<project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
 
 		<!-- 9.2.X最低支持JDK到1.7 -->
-		<jetty.version>9.2.19.v20160908</jetty.version>
+		<jetty.version>9.4.23.v20191118</jetty.version>
 		<tomcat.version>8.5.2</tomcat.version>
 		<undertow.version>2.0.28.Final</undertow.version>
 		<poi.version>3.17</poi.version>

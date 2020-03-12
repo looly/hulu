@@ -41,7 +41,7 @@ public class Response {
 	public final static String CONTENT_TYPE_JSON_IE = "text/json";
 	
 	/**Servlet Response */
-	private final static ThreadLocal<HttpServletResponse> responseThreadLocal = new ThreadLocal<HttpServletResponse>();
+	private final static ThreadLocal<HttpServletResponse> responseThreadLocal = new ThreadLocal<>();
 	
 	private Response() {
 	}
@@ -55,7 +55,7 @@ public class Response {
 	
 	/**
 	 * @return 获得输出流
-	 * @throws IOException
+	 * @throws IOException IO异常
 	 */
 	public static ServletOutputStream getOutputStream() throws IOException{
 		return getServletResponse().getOutputStream();
@@ -63,7 +63,7 @@ public class Response {
 	
 	/**
 	 * @return 获得PrintWriter
-	 * @throws IOException
+	 * @throws IOException IO异常
 	 */
 	public static PrintWriter getWriter() throws IOException{
 		return getServletResponse().getWriter();
@@ -185,9 +185,9 @@ public class Response {
 	/**
 	 * 设定返回给客户端的Cookie
 	 * 
-	 * @param cookie
+	 * @param cookie Cookie
 	 */
-	public final static void addCookie(Cookie cookie) {
+	public static void addCookie(Cookie cookie) {
 		getServletResponse().addCookie(cookie);
 	}
 
@@ -197,7 +197,7 @@ public class Response {
 	 * @param name Cookie名
 	 * @param value Cookie值
 	 */
-	public final static void addCookie(String name, String value) {
+	public static void addCookie(String name, String value) {
 		getServletResponse().addCookie(new Cookie(name, value));
 	}
 
@@ -210,7 +210,7 @@ public class Response {
 	 * @param path Cookie的有效路径
 	 * @param domain the domain name within which this cookie is visible; form is according to RFC 2109
 	 */
-	public final static void addCookie(String name, String value, int maxAgeInSeconds, String path, String domain) {
+	public static void addCookie(String name, String value, int maxAgeInSeconds, String path, String domain) {
 		ServletUtil.addCookie(getServletResponse(), name, value, maxAgeInSeconds, path, domain);
 	}
 
@@ -223,7 +223,7 @@ public class Response {
 	 * @param value cookie值
 	 * @param maxAgeInSeconds -1: 关闭浏览器清除Cookie. 0: 立即清除Cookie. n>0 : Cookie存在的秒数.
 	 */
-	public final static void addCookie(String name, String value, int maxAgeInSeconds) {
+	public static void addCookie(String name, String value, int maxAgeInSeconds) {
 		addCookie(name, value, maxAgeInSeconds, "/", null);
 	}
 	// --------------------------------------------------------- Cookie end
@@ -234,7 +234,7 @@ public class Response {
 	 * 
 	 * @param res 响应对象
 	 */
-	protected final static void init(HttpServletResponse res) {
+	protected static void init(HttpServletResponse res) {
 		// -- 字符集的过滤
 		String charset = HuluSetting.charset;
 		try {

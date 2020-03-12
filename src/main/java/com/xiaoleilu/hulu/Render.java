@@ -1,10 +1,7 @@
 package com.xiaoleilu.hulu;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.json.JSON;
 import com.xiaoleilu.hulu.view.Error404View;
 import com.xiaoleilu.hulu.view.Error500View;
 import com.xiaoleilu.hulu.view.ErrorView;
@@ -21,8 +18,7 @@ import com.xiaoleilu.hulu.view.TextView;
 import com.xiaoleilu.hulu.view.View;
 import com.xiaoleilu.hulu.view.XmlView;
 
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.json.JSON;
+import java.io.File;
 
 /**
  * 生成和处理Action返回结果的类
@@ -37,9 +33,8 @@ public class Render {
 	 * status 302
 	 * 
 	 * @param uri 新地址
-	 * @throws IOException
 	 */
-	public static final void redirect(String uri) {
+	public static void redirect(String uri) {
 		new RedirectView(uri).render();
 	}
 	
@@ -66,10 +61,8 @@ public class Render {
 	 * 服务端跳转
 	 * 
 	 * @param uri 跳转的URI
-	 * @throws ServletException
-	 * @throws IOException
 	 */
-	public static final void forward(String uri) {
+	public static void forward(String uri) {
 		new ForwardView(uri).render();
 	}
 

@@ -9,7 +9,7 @@ import com.xiaoleilu.hulu.server.jetty.EmbedJettyServer;
  *
  */
 public class Server {
-	public static void main(String[] args) throws ServerException {
+	public static void main(String[] args) {
 		String serverName = "jetty";
 		
 		switch (serverName) {

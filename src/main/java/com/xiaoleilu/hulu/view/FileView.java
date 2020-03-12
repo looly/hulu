@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.util.URLUtil;
 import com.xiaoleilu.hulu.HuluSetting;
 import com.xiaoleilu.hulu.Response;
 import com.xiaoleilu.hulu.exception.RenderException;
@@ -135,7 +136,7 @@ public class FileView implements View{
 			// 如果未指定文件名，使用原文件名
 			responseFileName = file.getName();
 		}
-		responseFileName = HttpUtil.encode(responseFileName, HuluSetting.charset);
+		responseFileName = URLUtil.encode(responseFileName, HuluSetting.charset);
 		
 		final HttpServletResponse response = Response.getServletResponse();
 		response.addHeader("Content-disposition", "attachment; filename=" + responseFileName);

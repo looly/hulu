@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 默认Servlet<br>
- * @author Looly
+ * 默认Servlet
  *
+ * @author Looly
  */
-public class DefaultServlet extends HttpServlet{
+public class DefaultServlet extends HttpServlet {
 	private static final long serialVersionUID = -8137983239382306470L;
-	
+
 	private Servlet targetDefaultServlet;
 
 	@Override
@@ -29,16 +29,16 @@ public class DefaultServlet extends HttpServlet{
 		targetDefaultServlet.init(config);
 		super.init(config);
 	}
-	
+
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		if(null != targetDefaultServlet){
+		if (null != targetDefaultServlet) {
 			targetDefaultServlet.service(req, res);
-		}else{
+		} else {
 			super.service(req, res);
 		}
 	}
-	
+
 	@Override
 	public void destroy() {
 	}

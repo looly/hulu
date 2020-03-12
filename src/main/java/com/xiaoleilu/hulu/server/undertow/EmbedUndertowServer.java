@@ -44,7 +44,7 @@ public class EmbedUndertowServer {
 		DeploymentManager manager = Servlets.defaultContainer().addDeployment(deploymentInfo);
 		manager.deploy();
 		
-		HttpHandler httpHandler = null;
+		HttpHandler httpHandler;
 		try {
 			httpHandler = manager.start();
 		} catch (ServletException e) {
@@ -65,7 +65,7 @@ public class EmbedUndertowServer {
 		log.info("Undertow Server for Hulu Listen on {}: {}", host, port);
 	}
 	
-	public static void main(String[] args) throws ServletException {
+	public static void main(String[] args) {
 		startup();
 	}
 }

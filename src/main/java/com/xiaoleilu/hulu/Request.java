@@ -62,8 +62,7 @@ public class Request {
 	 * @return 获得Servlet Request对象
 	 */
 	public static HttpServletRequest getServletRequest() {
-		HttpServletRequest httpServletRequest = servletRequestLocal.get();
-		return httpServletRequest;
+		return servletRequestLocal.get();
 	}
 	
 	/**
@@ -96,7 +95,7 @@ public class Request {
 	/**
 	 * @return 获得Session会话
 	 */
-	public final static HttpSession getSession() {
+	public static HttpSession getSession() {
 		return getServletRequest().getSession();
 	}
 	
@@ -104,7 +103,7 @@ public class Request {
 	 * @return 获得Session会话
 	 * @param isCreate Session不存在的情况下是否创建之
 	 */
-	public final static HttpSession getSession(boolean isCreate) {
+	public static HttpSession getSession(boolean isCreate) {
 		return getServletRequest().getSession(isCreate);
 	}
 
@@ -121,7 +120,7 @@ public class Request {
 	/**
 	 * @return 获得Http Method
 	 */
-	public final static String getMethod() {
+	public static String getMethod() {
 		return getServletRequest().getMethod();
 	}
 	
@@ -133,7 +132,7 @@ public class Request {
 	 * @param headerKey 头信息的KEY
 	 * @return header值
 	 */
-	public final static String getHeaderIgnoreCase(String headerKey) {
+	public static String getHeaderIgnoreCase(String headerKey) {
 		return ServletUtil.getHeaderIgnoreCase(getServletRequest(), headerKey);
 	}
 
@@ -144,7 +143,7 @@ public class Request {
 	 * @param charset 字符集
 	 * @return header值
 	 */
-	public final static String getHeader(String headerKey, String charset) {
+	public static String getHeader(String headerKey, String charset) {
 		return ServletUtil.getHeader(getServletRequest(), headerKey, charset);
 	}
 
@@ -155,7 +154,7 @@ public class Request {
 	 * @param headerKey 头信息的KEY
 	 * @return 值
 	 */
-	public final static String getHeader(String headerKey) {
+	public static String getHeader(String headerKey) {
 		return getServletRequest().getHeader(headerKey);
 	}
 	
@@ -196,7 +195,7 @@ public class Request {
 	 * @param name cookie名
 	 * @return Cookie对象
 	 */
-	public final static Cookie getCookie(String name) {
+	public static Cookie getCookie(String name) {
 		return ServletUtil.getCookie(getServletRequest(), name);
 	}
 
@@ -205,7 +204,7 @@ public class Request {
 	 * 
 	 * @return Cookie map
 	 */
-	public final static Map<String, Cookie> readCookieMap() {
+	public static Map<String, Cookie> readCookieMap() {
 		return ServletUtil.readCookieMap(getServletRequest());
 	}
 
@@ -253,7 +252,7 @@ public class Request {
 		if(null == param){
 			MultipartFormData multipart = getMultipart();
 			if(null != multipart){
-				param = multipart.getParam(param);
+				param = multipart.getParam(name);
 			}
 		}
 		return param;
@@ -560,7 +559,7 @@ public class Request {
 	 * 
 	 * @param req 请求对象
 	 */
-	protected final static void init(HttpServletRequest req) {
+	protected static void init(HttpServletRequest req) {
 		// -- 字符集的过滤
 		String charset = HuluSetting.charset;
 		try {
@@ -631,19 +630,12 @@ public class Request {
 	 * 获得MultiPart表单内容，多用于获得上传的文件 在同一次请求中，此方法只能被执行一次！
 	 * 
 	 * @return MultipartFormData
-	 * @throws IOException
+	 * @throws IOException IO异常
 	 */
 	private static MultipartFormData parseMultipart() throws IOException {
 		return parseMultipart(null);
 	}
 
-	/**
-	 * 获得MultiPart表单内容，多用于获得上传的文件
-	 * 
-	 * @param paramName 文件对应的参数名
-	 * @return 文件流
-	 * @throws IOException
-	 */
 	/**
 	 * 获得multipart/form-data 表单内容<br>
 	 * 包括文件和普通表单数据<br>
@@ -651,7 +643,7 @@ public class Request {
 	 * 
 	 * @param uploadSetting 上传文件的设定，包括最大文件大小、保存在内存的边界大小、临时目录、扩展名限定等
 	 * @return MultiPart表单
-	 * @throws IOException
+	 * @throws IOException IO异常
 	 */
 	private static MultipartFormData parseMultipart(UploadSetting uploadSetting) throws IOException {
 		MultipartFormData formData = new MultipartFormData(uploadSetting);

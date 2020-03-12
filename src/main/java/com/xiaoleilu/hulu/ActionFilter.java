@@ -23,7 +23,7 @@ public class ActionFilter implements Filter{
 	 * @param filterConfig FilterConfig
 	 */
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
+	public void init(FilterConfig filterConfig) {
 		ActionContext.init(filterConfig.getServletContext());
 	}
 

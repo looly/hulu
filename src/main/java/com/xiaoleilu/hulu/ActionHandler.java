@@ -1,15 +1,13 @@
 package com.xiaoleilu.hulu;
 
+import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.log.Log;
+import com.xiaoleilu.hulu.exception.ActionException;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.xiaoleilu.hulu.exception.ActionException;
-
-import cn.hutool.extra.servlet.ServletUtil;
-import cn.hutool.log.Log;
-import cn.hutool.log.StaticLog;
 
 /**
  * Action处理类
@@ -17,7 +15,7 @@ import cn.hutool.log.StaticLog;
  * @author xiaoleilu
  */
 public class ActionHandler{
-	private static Log log = StaticLog.get();
+	private static Log log = Log.get();
 	
 	private ActionMapping actionMapping;
 

@@ -40,7 +40,7 @@
 		<!-- 9.2.X最低支持JDK到1.7 -->
 		<jetty.version>9.4.44.v20210927</jetty.version>
 		<tomcat.version>9.0.41</tomcat.version>
-		<undertow.version>2.2.11.Final</undertow.version>
+		<undertow.version>2.2.15.Final</undertow.version>
 		<poi.version>4.1.2</poi.version>
 		<xerces.version>2.12.2</xerces.version>
 	</properties>
